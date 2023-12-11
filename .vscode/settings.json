@@ -1,0 +1,14 @@
+{
+    // Set the default
+    "editor.formatOnSave": true,
+    // Enable per-language
+    "[javascript]": {
+      "editor.formatOnSave": false
+    },
+    "editor.codeActionsOnSave": {
+      // For ESLint
+      "source.fixAll.eslint": true
+    },
+    "eslint.alwaysShowStatus": true,
+    "files.autoSave": "onFocusChange",
+}
