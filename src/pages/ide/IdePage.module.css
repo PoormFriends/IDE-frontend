@@ -1,0 +1,116 @@
+/* * 부분은 index.css에 넣어야함 */
+* {
+  box-sizing: border-box;
+}
+/* Header */
+.header {
+  display: flex;
+  padding: 1rem 2rem;
+  width: 100%;
+  background-color: var(--color-primary-accent);
+}
+.myListMenuButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+/* Body */
+.container {
+  display: flex;
+}
+/* Problem Information */
+.problemInfoContainer {
+  padding: 1rem 1rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  height: 100%;
+  gap: 1rem;
+  border-right: 1px solid var(--color-darkgray);
+}
+.problemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.problemInformationLabel {
+  font-size: 0.85rem;
+  color: var(--color-darkgray);
+}
+.problemInformationContent {
+  font-size: 0.9rem;
+}
+/* Editor, Execute Result */
+.solveContainer {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  gap: 1rem;
+  padding: 1rem 0 1rem 1rem;
+}
+.problemInfo::after,
+.editorContainer::after {
+  content: "";
+  display: block;
+  margin-top: 0.8rem;
+  border-bottom: 1px solid var(--color-darkgray);
+  opacity: 0.2;
+}
+.editorContainer {
+  width: 100%;
+  height: 60%;
+  overflow-y: auto;
+}
+.executeResult {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.executeResultLabel {
+  font-size: 0.85rem;
+  color: var(--color-darkgray);
+}
+.executeResultContent {
+}
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 2rem;
+  background-color: var(--color-primary-accent);
+}
+.chattingButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 2.5rem;
+  margin-right: 1rem;
+}
+.chattingIcon {
+  color: var(--color-accent);
+}
+.executeButton {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: 0.8rem;
+  border: none;
+  outline: none;
+  padding: 1rem 1.3rem;
+  border-radius: 40px;
+}
+.executeButton:hover {
+  box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+}
