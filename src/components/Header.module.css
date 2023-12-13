@@ -1,0 +1,52 @@
+.header {
+  width: 100vw;
+  height: 80px;
+  background-color: #403e3f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: fixed;
+  top: 0px;
+}
+
+.header_title {
+  padding-left: 60px;
+  color: #f4f4f4;
+  cursor: pointer;
+}
+
+.header_title:hover {
+  transition: 0.1s;
+  opacity: 0.8;
+}
+
+.buttons {
+  padding-right: 70px;
+}
+
+.header_user_profile {
+  margin-right: 30px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+
+  border-radius: 50px;
+}
+
+.header_user_profile:hover {
+  transition: 0.1s;
+  opacity: 0.8;
+}
+
+.logout_icon {
+  color: #f4f4f4;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.logout_icon:hover {
+  transition: 0.1s;
+  opacity: 0.8;
+}
