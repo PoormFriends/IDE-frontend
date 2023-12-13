@@ -84,11 +84,11 @@ const problemListsPage = () => {
               <Table sx={{ minWidth: 600 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>번호</TableCell>
-                    <TableCell>제목</TableCell>
-                    <TableCell align="right">난이도</TableCell>
-                    <TableCell align="right">리스트</TableCell>
-                    <TableCell align="right">정답 여부</TableCell>
+                    <TableCell align="left">번호</TableCell>
+                    <TableCell align="left">제목</TableCell>
+                    <TableCell align="center">난이도</TableCell>
+                    <TableCell align="center">리스트</TableCell>
+                    <TableCell align="center">정답 여부</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -97,12 +97,13 @@ const problemListsPage = () => {
                       key={row.name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row" />
-                      <TableCell align="right">{row.num}</TableCell>
-                      <TableCell align="right">{row.title}</TableCell>
-                      <TableCell align="right">Lv.{row.level}</TableCell>
-                      <TableCell align="right" />
-                      <TableCell align="right">{row.isCorrect}</TableCell>
+                      <TableCell component="th" scope="row" align="center">
+                        {row.num}
+                      </TableCell>
+                      <TableCell align="left">{row.title}</TableCell>
+                      <TableCell align="center">Lv.{row.level}</TableCell>
+                      <TableCell align="left" />
+                      <TableCell align="center">{row.isCorrect}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
