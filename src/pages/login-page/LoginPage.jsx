@@ -1,26 +1,30 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+
+import instance from "./api";
 import styles from "./LoginPage.module.css";
 import logo from "../images/logo_main.png";
 
 export default function LoginPage() {
-  const KakaoRestApi = process.env.REACT_APP_KAKAO_API;
-  const KakaRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-  const GithubRestApi = process.env.REACT_APP_GITHUB_API;
-  const GithubRedirectUri = process.env.REACT_APP_GITHUB_REDIRECT_URI;
+  const params = new URLSearchParams(window.location.search);
+  const accessToken = String(params.get("accessToken")); // 토큰 코드 가져오기
 
-  let { params } = useParams();
-  useEffect(() => {
-    params = new URL(window.location.href).searchParams.get("code");
-    console.log(params);
-  }, []);
   const kakaoLoginHandler = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KakaoRestApi}&redirect_uri=${KakaRedirectUri}&response_type=code`;
+    window.location.href = `http://localhost:8081/oauth2/authorization/kakao`;
   };
   const githubLoginHandler = () => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GithubRestApi}&redirect_uri=${GithubRedirectUri}&response_type=code`;
+    window.location.href = `http://localhost:8081/oauth2/authorization/github`;
   };
 
+  const handleToken = () => {
+    localStorage.setItem("accessToken", accessToken); // 토큰 저장
+  };
+  const requestUserInfo = () => {
+    return instance.get(`/user/oauth/login`);
+  };
+  useEffect(() => {
+    handleToken();
+    requestUserInfo();
+  }, []);
   return (
     <div>
       <section className={styles.login_container}>
