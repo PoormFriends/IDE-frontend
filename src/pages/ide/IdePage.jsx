@@ -3,6 +3,8 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
+import ProblemContent from "../../components/Ide/ProblemContent";
+import problemFakeData from "./ProblemFakeData.json";
 
 export default function IdePage() {
   return (
@@ -15,37 +17,14 @@ export default function IdePage() {
         >
           <CiMenuBurger />
         </button>
-        <h2>문제 이름</h2>
+        <h2 className={styles.problemTitle}>{problemFakeData.title}</h2>
+        <span className={styles.problemLevel}>Lv. {problemFakeData.level}</span>
       </header>
       <div className={styles.container}>
         <section className={styles.problemInfoContainer}>
-          <article className={`${styles.problemInfo} ${styles.borderBottom}`}>
-            <h4 className={styles.problemInformationLabel}>문제 설명</h4>
-            <p className={styles.problemInformationContent}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Recusandae pariatur maxime mollitia hic porro, expedita molestias
-              est similique? Ipsa ullam nesciunt reiciendis velit dolore,
-              assumenda voluptas sequi facere maxime magnam?
-            </p>
-          </article>
-          <article className={styles.problemInfo}>
-            <h4 className={styles.problemInformationLabel}>제한 사항</h4>
-            <p className={styles.problemInformationContent}>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque
-              beatae alias repellendus esse dolor molestias, non, cum unde quod,
-              ipsa tenetur obcaecati earum praesentium voluptas recusandae
-              veritatis commodi distinctio ea?
-            </p>
-          </article>
-          <article className={styles.problemInfo}>
-            <h4 className={styles.problemInformationLabel}>입출력 예</h4>
-            <p className={styles.problemInformationContent}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-              deserunt exercitationem officia quis laborum similique cumque?
-              Minus minima tenetur omnis excepturi similique ut, est tempore
-              ipsam adipisci ipsum, eum molestiae.
-            </p>
-          </article>
+          <ProblemContent type="문제 설명" content={problemFakeData.content} />
+          <ProblemContent type="입력" content={problemFakeData.input} />
+          <ProblemContent type="출력" content={problemFakeData.output} />
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
