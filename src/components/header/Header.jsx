@@ -1,11 +1,18 @@
 import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import styles from "./Header.module.css";
+import titleLogo from "../../assets/images/title_logo.png";
 
 function Header() {
   return (
     <div className={styles.header}>
-      <h1 className={styles.header_title}>Goorm Friends IDE</h1>
+      <div className={styles.header_title}>
+        <img
+          src={titleLogo}
+          className={styles.header_title_icon}
+          alt="header-title-icon"
+        />
+      </div>
       <div className={styles.buttons}>
         <img
           className={styles.header_user_profile}
