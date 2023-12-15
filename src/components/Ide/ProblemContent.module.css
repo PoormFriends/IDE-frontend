@@ -1,0 +1,12 @@
+.problemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.problemInformationLabel {
+  font-size: 0.85rem;
+  color: var(--color-darkgray);
+}
+.problemInformationContent {
+  font-size: 0.9rem;
+}
