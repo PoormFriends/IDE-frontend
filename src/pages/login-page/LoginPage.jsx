@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import instance from "./api";
 import styles from "./LoginPage.module.css";
 import logo from "../../asset/images/logo_main.png";
 
 export default function LoginPage() {
-  const params = new URLSearchParams(window.location.search);
-  const accessToken = String(params.get("accessToken")); // 토큰 코드 가져오기
-
   const kakaoLoginHandler = () => {
     window.location.href = `http://localhost:8081/oauth2/authorization/kakao`;
   };
@@ -15,16 +11,6 @@ export default function LoginPage() {
     window.location.href = `http://localhost:8081/oauth2/authorization/github`;
   };
 
-  const handleToken = () => {
-    localStorage.setItem("accessToken", accessToken); // 토큰 저장
-  };
-  const requestUserInfo = () => {
-    return instance.get(`/user/oauth/login`);
-  };
-  useEffect(() => {
-    handleToken();
-    requestUserInfo();
-  }, []);
   return (
     <div>
       <section className={styles.login_container}>

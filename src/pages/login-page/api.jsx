@@ -2,23 +2,48 @@ import axios from "axios";
 
 const instance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:8081",
+  baseURL: "https://localhost:8081",
 });
+export default instance;
+
+// auth 역할
+export const requestUserInfo = () => {
+  // 로그인 완료 후 유저 정보 get요청
+  return instance.get(`/user/oauth/login`);
+};
+
+export const requestToken = accessToken => {
+  // 토큰 재요청
+  return instance.post(`/user/reissue`, accessToken);
+};
+export const requestCheckLoginUser = async userId => {
+  // 로그인한 유저 정보 검증
+  const result = await instance.get(`/user/check/login/${userId}`);
+  return result;
+};
+
+export const requestLogout = async () => {
+  // 로그아웃 요청
+  localStorage.clear();
+  const result = await instance.get(`/user/logout`);
+  return result;
+};
+// auth 역할
 
 instance.interceptors.request.use(
   config => {
-    const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 가져오기
-    const headers = { ...config.headers };
-    headers.Authorization = `Bearer ${accessToken}`;
+    const accessToken = localStorage.getItem("accessToken");
+    const newConfig = { ...config };
+    newConfig.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${accessToken}`,
+    };
     return config;
   },
   error => {
     return Promise.reject(error);
   },
 );
-const requestToken = accessToken => {
-  return instance.post("/user/reissue", accessToken);
-};
 
 instance.interceptors.response.use(
   config => {
@@ -26,26 +51,20 @@ instance.interceptors.response.use(
   },
   async error => {
     const accessToken = localStorage.getItem("accessToken");
-    // HTTP 응답 에러발생 => accessToekn 만료
-    if (
-      error.response &&
-      (error.response.status === 401 || error.response.status === 403)
-    ) {
+    if (error.response.status === 401 || error.response.status === 403) {
       try {
         const response = await requestToken(accessToken);
-        // 새로운 access token 받아옴
         const newAccessToken = response.data.accessToken;
         const { config } = error;
         config.headers.Authorization = `Bearer ${newAccessToken}`;
         return axios(config);
       } catch (e) {
-        console.error(error);
+        console.error(e);
+        requestLogout();
         window.location.reload();
-        return Promise.reject(e);
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);
   },
 );
-
-export default instance;
