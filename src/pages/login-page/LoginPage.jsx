@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import instance from "./api";
 import styles from "./LoginPage.module.css";
-import logo from "../images/logo_main.png";
+import logo from "../../asset/images/logo_main.png";
 
 export default function LoginPage() {
   const params = new URLSearchParams(window.location.search);
