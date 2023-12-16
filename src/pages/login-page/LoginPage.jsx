@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./LoginPage.module.css";
-import logo from "../../asset/images/logo_main.png";
+import logo from "../../asset/images/logo.png";
 
 export default function LoginPage() {
   const kakaoLoginHandler = () => {
