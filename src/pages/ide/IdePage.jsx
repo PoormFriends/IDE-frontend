@@ -17,6 +17,18 @@ export default function IdePage() {
       .catch(error => console.error(error));
   }, []);
 
+  const handleSubmit = () => {
+    fetch("", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error("Error: ", error));
+  };
   return (
     <div>
       <header className={styles.header}>
@@ -67,7 +79,11 @@ export default function IdePage() {
         >
           <IoChatboxEllipsesOutline className={styles.chattingIcon} />
         </button>
-        <button type="button" className={styles.executeButton}>
+        <button
+          type="button"
+          className={styles.executeButton}
+          onClick={handleSubmit}
+        >
           제출 후 채점하기
         </button>
       </footer>
