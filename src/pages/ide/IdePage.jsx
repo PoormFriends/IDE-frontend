@@ -4,15 +4,15 @@ import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
+import InputOutput from "../../components/Ide/InputOutput";
 
 export default function IdePage() {
-  const [problem, setProblem] = useState({});
+  const [problems, setProblems] = useState(null);
   useEffect(() => {
     fetch("/ProblemFakeData.json")
       .then(response => response.json())
       .then(data => {
-        console.log(data.problems);
-        setProblem(data.problems);
+        setProblems(data.problems);
       })
       .catch(error => console.error(error));
   }, []);
@@ -27,14 +27,27 @@ export default function IdePage() {
         >
           <CiMenuBurger />
         </button>
-        <h2 className={styles.problemTitle}>{problem.title}</h2>
-        <span className={styles.problemLevel}>Lv. {problem.level}</span>
+        {problems && (
+          <>
+            <h2 className={styles.problemTitle}>{problems.title}</h2>
+            <span className={styles.problemLevel}>Lv. {problems.level}</span>
+          </>
+        )}
       </header>
       <div className={styles.container}>
         <section className={styles.problemInfoContainer}>
-          <ProblemContent type="문제 설명" content={problem.content} />
-          <ProblemContent type="입력" content={problem.input} />
-          <ProblemContent type="출력" content={problem.output} />
+          {problems && (
+            <ProblemContent type="문제 설명" content={problems.content} />
+          )}
+          {problems &&
+            problems.examples.map((example, index) => (
+              <InputOutput
+                key={example.id}
+                num={index}
+                input={example.input}
+                output={example.output}
+              />
+            ))}
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
