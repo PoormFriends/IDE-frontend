@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
-import problemFakeData from "./ProblemFakeData.json";
 
 export default function IdePage() {
+  const [problem, setProblem] = useState({});
+  useEffect(() => {
+    fetch("/ProblemFakeData.json")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.problems);
+        setProblem(data.problems);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
   return (
     <div>
       <header className={styles.header}>
@@ -17,14 +27,14 @@ export default function IdePage() {
         >
           <CiMenuBurger />
         </button>
-        <h2 className={styles.problemTitle}>{problemFakeData.title}</h2>
-        <span className={styles.problemLevel}>Lv. {problemFakeData.level}</span>
+        <h2 className={styles.problemTitle}>{problem.title}</h2>
+        <span className={styles.problemLevel}>Lv. {problem.level}</span>
       </header>
       <div className={styles.container}>
         <section className={styles.problemInfoContainer}>
-          <ProblemContent type="문제 설명" content={problemFakeData.content} />
-          <ProblemContent type="입력" content={problemFakeData.input} />
-          <ProblemContent type="출력" content={problemFakeData.output} />
+          <ProblemContent type="문제 설명" content={problem.content} />
+          <ProblemContent type="입력" content={problem.input} />
+          <ProblemContent type="출력" content={problem.output} />
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
