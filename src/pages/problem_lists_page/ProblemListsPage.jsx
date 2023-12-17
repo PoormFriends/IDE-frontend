@@ -98,8 +98,7 @@ const problemListsPage = () => {
       const searchTermSeparated = hangulToJamo(itemText.toLowerCase());
       const separatedSearchTerm = hangulToJamo(searchTerm.toLowerCase());
       const corFilterMatch =
-        corFilter === "default" ||
-        item.state.toLowerCase() === corFilter.toLowerCase();
+        corFilter === "default" || item.state === corFilter;
       const levFilterMatch =
         levFilter === "default" ||
         item.level.toLowerCase() === levFilter.toLowerCase();
