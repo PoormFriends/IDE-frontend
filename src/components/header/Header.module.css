@@ -1,6 +1,7 @@
 .header {
+  z-index: 1000;
   width: 100vw;
-  height: 80px;
+  height: 90px;
   background-color: #403e3f;
   display: flex;
   justify-content: space-between;
@@ -8,6 +9,10 @@
 
   position: fixed;
   top: 0px;
+}
+
+.header_title_icon {
+  width: 280px;
 }
 
 .header_title {
