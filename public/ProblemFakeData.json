@@ -1,0 +1,21 @@
+{
+  "problems": {
+    "id": 1,
+    "title": "몫 구하기",
+    "level": 0,
+    "content": "정수 num1, num2가 매개변수로 주어질 때, num1을 num2로 나눈 몫을 return 하도록 solution 함수를 완성해주세요.\n",
+    "examples": [
+      {
+        "id": "1",
+        "input": "5 5\n#####\n#..B#\n#.#.#\n#RO.#\n#####",
+        "output": "2"
+      },
+      {
+        "id": "2",
+        "input": "7 7\n#######\n#...RB#\n#.#####\n#.....#\n#####.#\n#O....#\n#######",
+        "output": "3"
+      }
+    ],
+    "userCode": ""
+  }
+}
