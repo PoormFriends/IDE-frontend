@@ -8,6 +8,7 @@ import InputOutput from "../../components/Ide/InputOutput";
 
 export default function IdePage() {
   const [problems, setProblems] = useState(null);
+  const [code, setCode] = useState("");
   useEffect(() => {
     fetch("/ProblemFakeData.json")
       .then(response => response.json())
@@ -23,12 +24,17 @@ export default function IdePage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(),
+      body: JSON.stringify(code),
     })
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error("Error: ", error));
   };
+
+  const handleValueChange = newCode => {
+    setCode(newCode);
+  };
+
   return (
     <div>
       <header className={styles.header}>
@@ -63,7 +69,7 @@ export default function IdePage() {
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
-            <MonacoEditor />
+            <MonacoEditor onValueChange={handleValueChange} />
           </div>
           <div className={styles.executeResult}>
             <h4 className={styles.executeResultLabel}>실행 결과</h4>

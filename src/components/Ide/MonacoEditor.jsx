@@ -1,20 +1,17 @@
-import React, { useRef } from "react";
+/* eslint-disable react/prop-types */
+import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 
-export default function MonacoEditor() {
-  const editorRef = useRef(null);
+export default function MonacoEditor({ onValueChange }) {
+  const [code, setCode] = useState("");
 
-  const handleEditorDidMount = editor => {
-    editorRef.current = editor;
+  const handleEditorChange = value => {
+    setCode(value);
   };
 
-  function showValue() {
-    if (editorRef.current) {
-      alert(editorRef.current.getValue());
-    } else {
-      console.log("Editor is not mounted yet");
-    }
-  }
+  const handleButtonClick = () => {
+    onValueChange(code);
+  };
   return (
     <>
       <Editor
@@ -30,9 +27,9 @@ export default function MonacoEditor() {
             horizontal: "auto",
           },
         }}
-        onMount={handleEditorDidMount}
+        onChange={handleEditorChange}
       />
-      <button type="button" onClick={showValue}>
+      <button type="button" onClick={handleButtonClick}>
         show value
       </button>
     </>
