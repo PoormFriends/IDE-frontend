@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.container::after {
+  content: "";
+  display: block;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid var(--color-darkgray);
+  opacity: 0.2;
+}
+.label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--color-darkgray);
+}
+.contents {
+  font-size: 0.9rem;
+}
