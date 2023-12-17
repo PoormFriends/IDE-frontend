@@ -1,0 +1,33 @@
+.wrapper {
+  max-width: 60vw;
+  margin: auto;
+  position: relative;
+}
+
+.search_bar {
+  max-width: 650px;
+  margin: auto;
+  display: flex;
+}
+
+.sort_standard {
+  padding-top: 15px;
+  max-width: 600px;
+  margin: auto;
+
+  position: relative;
+}
+
+.sort_isCorrect {
+  max-width: 100px;
+  position: absolute;
+  left: 130px;
+}
+
+.sort_level {
+  max-width: 100px;
+}
+
+.proplem_table_container {
+  position: absolute;
+}
