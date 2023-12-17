@@ -9,7 +9,7 @@ export default instance;
 // auth 역할
 export const requestUserInfo = () => {
   // 로그인 완료 후 유저 정보 get요청
-  return instance.get(`/user/oauth/login`);
+  return instance.get(`/user/info`);
 };
 
 export const requestToken = accessToken => {
@@ -38,7 +38,7 @@ instance.interceptors.request.use(
       ...config.headers,
       Authorization: `Bearer ${accessToken}`,
     };
-    return config;
+    return newConfig;
   },
   error => {
     return Promise.reject(error);
