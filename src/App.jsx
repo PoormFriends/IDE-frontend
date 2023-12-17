@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<ProblemListsPage />} />
-        <Route path="/problems/:id" element={<IdePage />} />
+        <Route path="/solve/:user_id/:problem_id" element={<IdePage />} />
       </Routes>
     </Router>
   );

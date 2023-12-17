@@ -32,3 +32,15 @@
   margin-top: 20px;
   position: absolute;
 }
+
+.problem_title {
+  color: black;
+  text-decoration: none;
+}
+
+.list_box {
+  margin-left: 5px;
+  padding: 2px;
+  border-radius: 5px;
+  background-color: lightblue;
+}

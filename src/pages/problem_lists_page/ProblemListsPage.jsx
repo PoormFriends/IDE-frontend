@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -16,39 +17,46 @@ import TablePagination from "@mui/material/TablePagination";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(id, num, title, level, lists, state) {
+  return { id, num, title, level, lists, state };
 }
 
 const rows = [
-  createData(1, 159, 6.0, 24, 4.0),
-  createData(2, 237, 9.0, 37, 4.3),
-  createData(3, 262, 16.0, 24, 6.0),
-  createData(4, 305, 3.7, 67, 4.3),
-  createData(5, 356, 16.0, 49, 3.9),
-  createData(6, 356, 16.0, 49, 3.9),
-  createData(7, 356, 16.0, 49, 3.9),
-  createData(8, 356, 16.0, 49, 3.9),
-  createData(9, 356, 16.0, 49, 3.9),
-  createData(10, 356, 16.0, 49, 3.9),
-  createData(11, 356, 16.0, 49, 3.9),
-  createData(12, 356, 16.0, 49, 3.9),
-  createData(13, 356, 16.0, 49, 3.9),
-  createData(14, 356, 16.0, 49, 3.9),
-  createData(15, 356, 16.0, 49, 3.9),
-  createData(16, 356, 16.0, 49, 3.9),
-  createData(17, 356, 16.0, 49, 3.9),
-  createData(18, 356, 16.0, 49, 3.9),
-  createData(19, 356, 16.0, 49, 3.9),
-  createData(20, 356, 16.0, 49, 3.9),
-  createData(21, 356, 16.0, 49, 3.9),
-  createData(22, 356, 16.0, 49, 3.9),
-  createData(23, 356, 16.0, 49, 3.9),
+  createData("fjsda423897", 1, "최댓값과 최솟값", "Lv.1", ["A", "B"], "O"),
+  createData("razcg56", 2, "길 찾기", "Lv.2", [], "O"),
+  createData("fgsrwer456", 3, "최소 비용 찾기", "Lv.0", ["B"], null),
+  createData("rtfgxb", 4, "문제4", "Lv.0", [], null),
+  createData("adfeqrttz", 5, "문제5", "Lv.2", [], null),
+  createData("fasdfae", 6, "카드 놀이", "Lv.1", ["C"], null),
+  createData("yrtsfg", 8, "문자열", "Lv.0", [], "X"),
+  createData("sdfgsrt", 9, "별 찍기", "Lv.1", [], "O"),
+  createData("fgsty", 10, "ABCDEFG", "Lv.2", ["C"], "X"),
+  createData("gafdgfda", 11, "abcdwer", "Lv.1", [], null),
+  createData("gadfgazvb", 12, "qwert", "Lv.0", ["B"], "X"),
+  createData("dgafgqr", 13, "QWERabc", "Lv.1", ["B"], "O"),
+  createData("agafdzc", 14, "문제10", "Lv.2", [], "X"),
+  createData("dafrtq4", 15, "문제6", "Lv.1", [], null),
+  createData("ertqertafdg5", 16, "문제8", "Lv.0", ["C"], "X"),
+  createData("sdfasdf", 17, "문제9", "Lv.1", [], "O"),
+  createData("ghdfghfdg", 18, "문제10", "Lv.2", ["A"], "X"),
+  createData("bxcv", 19, "문제6", "Lv.1", ["A"], null),
+  createData("54645adfg", 20, "문제8", "Lv.0", ["B"], "X"),
+  createData("dfsgsdf", 21, "문제9", "Lv.1", [], "O"),
+  createData("5345adf", 22, "문제10", "Lv.2", [], "X"),
+  createData("45fgsd", 23, "문제6", "Lv.1", [], null),
+  createData("fdasfa", 24, "문제8", "Lv.0", [], "X"),
+  createData("534gsdf456", 25, "문제9", "Lv.1", [], "O"),
+  createData("gsdf45645", 26, "문제10", "Lv.2", [], "X"),
 ];
 
 const problemListsPage = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const userId = "zivjoij45892ldfk";
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [problemLists, setProblemLists] = useState(rows);
+  const [searchFilter, setSearchFilter] = useState("");
+  const [isCorrectFilter, setIsCorrectFilter] = useState("default");
+  const [levelFilter, setLevelFilter] = useState("default");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -57,6 +65,77 @@ const problemListsPage = () => {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  // 한글을 자음, 모음으로 분리하는 함수
+  const hangulToJamo = text => {
+    return [...text].map(char => {
+      const code = char.charCodeAt(0);
+      // 한글 범위 내에서 자음, 모음으로 분리
+      if (code >= 44032 && code <= 55203) {
+        const initialSoundIndex = (code - 44032) / 588;
+        return String.fromCharCode(44032 + Math.floor(initialSoundIndex) * 588);
+      }
+      return char;
+    });
+  };
+
+  const filterProblems = (searchTerm, corFilter, levFilter) => {
+    const filteredRows = rows.filter(item => {
+      // item.title이 정의되어 있는지 확인하고, 정의되어 있지 않다면 빈 문자열을 사용
+      const itemText = item.title ? item.title : "";
+
+      if (
+        !searchTerm.trim() &&
+        corFilter === "default" &&
+        levFilter === "default"
+      ) {
+        // 검색어, 정답여부, 난이도가 모두 비어 있는 경우, 모든 문제를 출력
+        return true;
+      }
+
+      // 검색어가 비어 있는 경우, 모든 문제를 대상으로 필터 적용
+      const searchTermSeparated = hangulToJamo(itemText.toLowerCase());
+      const separatedSearchTerm = hangulToJamo(searchTerm.toLowerCase());
+      const corFilterMatch =
+        corFilter === "default" ||
+        item.state.toLowerCase() === corFilter.toLowerCase();
+      const levFilterMatch =
+        levFilter === "default" ||
+        item.level.toLowerCase() === levFilter.toLowerCase();
+
+      return (
+        searchTermSeparated.join("").includes(separatedSearchTerm.join("")) &&
+        corFilterMatch &&
+        levFilterMatch
+      );
+    });
+
+    // 검색어, 정답여부, 난이도가 모두 비어 있는 경우 problemLists를 다시 rows로 설정
+    setProblemLists(
+      !searchTerm.trim() && corFilter === "default" && levFilter === "default"
+        ? rows
+        : filteredRows,
+    );
+  };
+
+  const handleFilterInput = e => {
+    setSearchFilter(e.target.value);
+    filterProblems(e.target.value, isCorrectFilter, levelFilter);
+  };
+
+  const handleIsCorrectFilterChange = event => {
+    const newIsCorrect = event.target.value;
+
+    setIsCorrectFilter(newIsCorrect);
+    filterProblems(searchFilter, newIsCorrect, levelFilter);
+  };
+
+  const handleLevelFilterChange = event => {
+    const newLevel = event.target.value;
+
+    setLevelFilter(newLevel);
+    filterProblems(searchFilter, isCorrectFilter, newLevel);
   };
 
   return (
@@ -69,7 +148,8 @@ const problemListsPage = () => {
               type="search"
               id="search"
               label="Search"
-              value="변수로 받아와야 함"
+              value={searchFilter}
+              onChange={e => handleFilterInput(e)}
               sx={{ width: 680 }}
             />
           </Container>
@@ -78,15 +158,17 @@ const problemListsPage = () => {
           <div className={styles.sort_isCorrect}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel id="isCorrect-select-label">정답여부</InputLabel>
+                <InputLabel id="isCorrect-select-label">상태</InputLabel>
                 <Select
                   labelId="isCorrect-select-label"
                   id="isCorrect-select"
                   label="isCorrect"
+                  value={isCorrectFilter}
+                  onChange={handleIsCorrectFilterChange}
                 >
                   <MenuItem value="default">none</MenuItem>
-                  <MenuItem value="true">O</MenuItem>
-                  <MenuItem value="false">X</MenuItem>
+                  <MenuItem value="O">O</MenuItem>
+                  <MenuItem value="X">X</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -99,11 +181,13 @@ const problemListsPage = () => {
                   labelId="level-select-label"
                   id="level-select"
                   label="level"
+                  value={levelFilter}
+                  onChange={handleLevelFilterChange}
                 >
                   <MenuItem value="default">none</MenuItem>
-                  <MenuItem value="lv0">Lv.0</MenuItem>
-                  <MenuItem value="lv1">Lv.1</MenuItem>
-                  <MenuItem value="lv2">Lv.2</MenuItem>
+                  <MenuItem value="lv.0">Lv.0</MenuItem>
+                  <MenuItem value="lv.1">Lv.1</MenuItem>
+                  <MenuItem value="lv.2">Lv.2</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -113,43 +197,56 @@ const problemListsPage = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
+                    <TableCell align="center">상태</TableCell>
                     <TableCell align="right">번호</TableCell>
                     <TableCell align="left">제목</TableCell>
                     <TableCell align="center">난이도</TableCell>
                     <TableCell align="left">리스트</TableCell>
-                    <TableCell align="center">정답 여부</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows
+                  {problemLists
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(row => {
+                    .map(problemList => {
                       return (
                         <TableRow
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.code}
+                          key={problemList.id}
                         >
+                          <TableCell width="60" align="center">
+                            {problemList.state}
+                          </TableCell>
                           <TableCell
                             width="30"
                             component="th"
                             scope="row"
                             align="right"
                           >
-                            {row.name}
+                            {problemList.num}
                           </TableCell>
                           <TableCell width="200" align="left">
-                            {row.calories}
+                            <Link
+                              className={styles.problem_title}
+                              to={`/solve/${userId}/${problemList.num}`}
+                            >
+                              {problemList.title}
+                            </Link>
+
+                            {/* 문제 num과 id를 조합한 값의 url을 만들어주어야 함. */}
                           </TableCell>
                           <TableCell width="50" align="center">
-                            {row.fat}
+                            {problemList.level}
                           </TableCell>
                           <TableCell width="150" align="left">
-                            {row.carbs}
-                          </TableCell>
-                          <TableCell width="60" align="center">
-                            {row.protein}
+                            {problemList.lists.map(item => (
+                              <span className={styles.list_box} key={item.num}>
+                                {item}
+                              </span>
+
+                              // item의 id가 아니라 태그 각각의 id를 넣어주어야 함!!(추후 수정)
+                            ))}
                           </TableCell>
                         </TableRow>
                       );
@@ -160,7 +257,7 @@ const problemListsPage = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={rows.length}
+              count={problemLists.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
