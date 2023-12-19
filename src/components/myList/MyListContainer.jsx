@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
+import AddMyList from "./AddMyList";
 
 export default function MyListContainer() {
   const [lists, setLists] = useState([
@@ -31,9 +32,12 @@ export default function MyListContainer() {
       contents: [],
     },
   ]);
-
-  const handleAdd = () => {
-    setLists([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const handleListChange = newList => {
+    setLists(prevLists => [...prevLists, newList]);
+  };
+  const handleClick = () => {
+    setIsEdit(prev => !prev);
   };
   return (
     <div className={styles.container}>
@@ -42,10 +46,20 @@ export default function MyListContainer() {
         {lists.map(list => (
           <MyList key={list.id} title={list.title} contents={list.contents} />
         ))}
-        <button className={styles.addButton} type="button" onClick={handleAdd}>
+      </div>
+      {/* isEdit 상태면 <AppMyList />을 보여주고,
+      입력해서 리스트 추가가 완료되면, isEdit=false */}
+      {isEdit ? (
+        <AddMyList onSubmit={handleListChange} onToggleEdit={handleClick} />
+      ) : (
+        <button
+          className={styles.addButton}
+          type="button"
+          onClick={handleClick}
+        >
           리스트 추가하기
         </button>
-      </div>
+      )}
     </div>
   );
 }
