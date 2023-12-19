@@ -25,6 +25,23 @@ export default function MyList({ id, title, list }) {
       .then(data => console.log(data))
       .catch(error => console.error(error));
   };
+  const handleDeleteList = () => {
+    fetch("http://localhost:8080/directory", {
+      method: "DELETE",
+      headers: {
+        // 추후 Authorization: Bearer <Token> 로 수정 예정
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        directoryId: id,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -34,6 +51,7 @@ export default function MyList({ id, title, list }) {
             className={styles.deleteButton}
             type="button"
             aria-label="리스트 삭제하기 버튼"
+            onClick={handleDeleteList}
           >
             <FaCircleMinus className={styles.deleteIcon} />
           </button>
