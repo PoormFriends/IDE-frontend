@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
+import { fetchMyLists } from "../../api/MyListService";
 
 export default function MyListContainer() {
-  const [myLists, setMyLists] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  const [fetchTrigger, setFetchTrigger] = useState(false);
+  const { userId } = useParams();
 
-  // react query로 서버 상태 업데이트 필요(현재는 첫번째 렌더링)
-  useEffect(() => {
-    // `https://localhost:8080/directory?userId=${"id"}` 으로 변경
-    fetch("/SampleMyLists.json")
-      .then(response => response.json())
-      .then(data => {
-        setMyLists(data.myLists);
-      })
-      .catch(error => console.error("Errors: ", error));
-  }, [fetchTrigger]);
+  const {
+    data: myLists,
+    isLoading,
+    error,
+  } = useQuery(["myLists", userId], fetchMyLists);
 
-  const handleAddList = isTrigger => {
-    setFetchTrigger(isTrigger);
-  };
   const handleClick = () => {
     setIsEdit(prev => !prev);
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
+
   return (
     <div className={styles.container}>
       <h4 className={styles.label}>oo의 마이리스트</h4>
@@ -33,15 +31,15 @@ export default function MyListContainer() {
           myLists.map(myList => (
             <MyList
               key={myList.directoryId}
-              id={myList.directoryId}
-              title={myList.directoryName}
-              list={myList.problemList}
+              directoryId={myList.directoryId}
+              directoryName={myList.directoryName}
+              problemList={myList.problemList}
             />
           ))}
       </div>
       <div className={styles.addContainer}>
         {isEdit ? (
-          <AddMyList onSubmit={handleAddList} onToggleEdit={handleClick} />
+          <AddMyList onToggleEdit={handleClick} />
         ) : (
           <button
             className={styles.addButton}
