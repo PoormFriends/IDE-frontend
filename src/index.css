@@ -13,16 +13,35 @@ code {
 }
 
 :root {
-  --color-primary: #ffffff; /* 주 배경색 */
-  --color-primary-accent: #f4f4f4; /* 주 배경색2 */
-  --color-accent: #2793f2; /* 포인트 색 */
-  --color-lightgray: #f4f4f4; /* 밝은회색 */
-  --color-darkgray: #403e3f; /* 어두운회색: 선 */
-  --color-text: #000000; /* 글자 색 */
+  /* App Colors */
+  --color-primary: #ffffff;
+  --color-primary-variant: #f4f4f4;
+  --color-accent: #2793f2;
+  --color-level0: var(--color-blue);
+  --color-level1: var(--color-skyblue);
+  --color-level2: var(--color-green);
+  --color-level3: var(--color-orange);
+  --color-level4: var(--color-red);
+  --color-level5: var(--color-purple);
+  /* Colors */
+  --color-lightgray: #f4f4f4;
+  --color-darkgray: #403e3f;
+  --color-text: #000000;
   --color-white: #ffffff;
+  --color-blue: blue;
+  --color-skyblue: skyblue;
+  --color-green: green;
+  --color-orange: oragne;
+  --color-red: red;
+  --color-purple: purple;
 }
 
 * {
   padding: 0;
   margin: 0;
+}
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
 }
