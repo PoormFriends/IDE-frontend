@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
@@ -33,6 +33,15 @@ export default function MyListContainer() {
     },
   ]);
   const [isEdit, setIsEdit] = useState(false);
+
+  // react query로 서버 상태 업데이트 필요(현재는 첫번째 렌더링)
+  useEffect(() => {
+    fetch(`https://localhost:8080/directory?userId=${"id"}`)
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error("Errors: ", error));
+  }, []);
+
   const handleListChange = newList => {
     setLists(prevLists => [...prevLists, newList]);
   };
