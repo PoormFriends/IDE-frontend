@@ -11,26 +11,29 @@ export default function AddMyList({ onSubmit, onToggleEdit }) {
   const handleInput = e => {
     setTitle(e.target.value);
   };
-  const fetchPostMyList = directoryTitle => {
-    fetch("http://localhost:8080/directory", {
+  const fetchPostMyList = name => {
+    // "http://localhost:8080/directory" 로 변경
+    fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         userId,
-        directoryTitle,
-      },
+        directoryTitle: name,
+      }),
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        console.log(data);
+      })
       .catch(error => console.error("Errors: ", error));
   };
   const handleSubmit = e => {
     e.preventDefault();
     // title을 db에 post, MyListContainer로 보내서 setLists
     fetchPostMyList(title);
-    onSubmit({ id: "list5", title, contents: [] }); // 임시 id
+    onSubmit(true);
     onToggleEdit(false);
   };
 

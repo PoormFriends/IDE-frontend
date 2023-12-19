@@ -6,6 +6,7 @@ import AddMyList from "./AddMyList";
 export default function MyListContainer() {
   const [myLists, setMyLists] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   // react query로 서버 상태 업데이트 필요(현재는 첫번째 렌더링)
   useEffect(() => {
@@ -16,10 +17,10 @@ export default function MyListContainer() {
         setMyLists(data.myLists);
       })
       .catch(error => console.error("Errors: ", error));
-  }, []);
+  }, [fetchTrigger]);
 
-  const handleAddList = newList => {
-    setMyLists(prevLists => [...prevLists, newList]);
+  const handleAddList = isTrigger => {
+    setFetchTrigger(isTrigger);
   };
   const handleClick = () => {
     setIsEdit(prev => !prev);
