@@ -13,13 +13,12 @@ export default function MyListContainer() {
     fetch("/SampleMyLists.json")
       .then(response => response.json())
       .then(data => {
-        const { newMyLists } = data;
-        setMyLists(newMyLists);
+        setMyLists(data.myLists);
       })
       .catch(error => console.error("Errors: ", error));
   }, []);
 
-  const handleListChange = newList => {
+  const handleAddList = newList => {
     setMyLists(prevLists => [...prevLists, newList]);
   };
   const handleClick = () => {
@@ -29,14 +28,18 @@ export default function MyListContainer() {
     <div className={styles.container}>
       <h4 className={styles.label}>oo의 마이리스트</h4>
       <div className={styles.lists}>
-        {myLists.map(myList => (
-          <MyList key={myList.directoryId} myList={myList} />
-        ))}
+        {myLists &&
+          myLists.map(myList => (
+            <MyList
+              key={myList.directoryId}
+              id={myList.directoryId}
+              title={myList.directoryName}
+              list={myList.problemList}
+            />
+          ))}
       </div>
-      {/* isEdit 상태면 <AppMyList />을 보여주고,
-      입력해서 리스트 추가가 완료되면, isEdit=false */}
       {isEdit ? (
-        <AddMyList onSubmit={handleListChange} onToggleEdit={handleClick} />
+        <AddMyList onSubmit={handleAddList} onToggleEdit={handleClick} />
       ) : (
         <button
           className={styles.addButton}

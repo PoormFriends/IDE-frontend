@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MyListProblem from "./MyListProblem";
 import styles from "./MyList.module.css";
 
-export default function MyList({ title, contents }) {
-  // const { userId, problemIds } = useParams();
+export default function MyList({ id, title, list }) {
+  const { userId, problemId } = useParams();
   const handleAddProblem = () => {
     fetch("http://localhost:8080/directory/problem", {
       method: "POST",
@@ -13,17 +13,14 @@ export default function MyList({ title, contents }) {
         // 추후 Authorization: Bearer <Token> 로 수정 예정
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify({
-      //   userId,
-      //   directoryId,
-      //   problemId,
-      // }),
+      body: JSON.stringify({
+        userId,
+        directoryId: id,
+        problemId,
+      }),
     })
       .then(response => response.json())
-      .then(data => {
-        const { directoryId, problemId, directoryProblemId } = data;
-        console.log(directoryId, problemId, directoryProblemId);
-      })
+      .then(data => console.log(data))
       .catch(error => console.error(error));
   };
   return (
@@ -31,13 +28,14 @@ export default function MyList({ title, contents }) {
       <h4 className={styles.label}>{title}</h4>
       {/* 문제들 */}
       <div className={styles.problems}>
-        {contents.map(problem => (
-          <MyListProblem
-            key={problem.id}
-            title={problem.title}
-            level={problem.level}
-          />
-        ))}
+        {list &&
+          list.map(problem => (
+            <MyListProblem
+              key={problem.directoryProblemId}
+              title={problem.problemTitle}
+              level={problem.problemLevel}
+            />
+          ))}
       </div>
       <button
         className={styles.addButton}
