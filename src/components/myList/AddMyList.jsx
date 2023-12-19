@@ -9,12 +9,29 @@ export default function AddMyList({ onSubmit, onToggleEdit }) {
   const handleInput = e => {
     setTitle(e.target.value);
   };
+  const fetchPostMyList = directoryTitle => {
+    fetch("http://localhost:8080/directory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        userId: "",
+        directoryTitle,
+      },
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error("Errors: ", error));
+  };
   const handleSubmit = e => {
     e.preventDefault();
     // title을 db에 post, MyListContainer로 보내서 setLists
+    fetchPostMyList(title);
     onSubmit({ id: "list5", title, contents: [] }); // 임시 id
     onToggleEdit(false);
   };
+
   return (
     <div className={styles.container}>
       <h5 className={styles.label}>리스트 추가하기</h5>
