@@ -39,17 +39,19 @@ export default function MyListContainer() {
             />
           ))}
       </div>
-      {isEdit ? (
-        <AddMyList onSubmit={handleAddList} onToggleEdit={handleClick} />
-      ) : (
-        <button
-          className={styles.addButton}
-          type="button"
-          onClick={handleClick}
-        >
-          리스트 추가하기
-        </button>
-      )}
+      <div className={styles.addContainer}>
+        {isEdit ? (
+          <AddMyList onSubmit={handleAddList} onToggleEdit={handleClick} />
+        ) : (
+          <button
+            className={styles.addButton}
+            type="button"
+            onClick={handleClick}
+          >
+            리스트 추가하기
+          </button>
+        )}
+      </div>
     </div>
   );
 }

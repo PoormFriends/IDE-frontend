@@ -14,7 +14,12 @@
   flex-direction: column;
   gap: 0.7rem;
 }
+.addContainer {
+  display: flex;
+  margin-top: 0.5rem;
+}
 .addButton {
+  flex: 1;
   padding: 0.5rem;
   border: none;
   border-radius: 0.5rem;
