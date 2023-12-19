@@ -3,35 +3,37 @@ import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
 
+const initialLists = [
+  {
+    id: "list1",
+    title: "다시 풀 문제",
+    contents: [
+      {
+        id: "1",
+        title: "약수의 합",
+        level: "1",
+      },
+      {
+        id: "2",
+        title: "피보나치 수",
+        level: "2",
+      },
+      {
+        id: "3",
+        title: "JadenCase 문자열이 몇개일까요알아맞춰보세요딩동댕동",
+        level: "2",
+      },
+    ],
+  },
+  {
+    id: "list2",
+    title: "코딩테스트 대비 문제 모음",
+    contents: [],
+  },
+];
+
 export default function MyListContainer() {
-  const [lists, setLists] = useState([
-    {
-      id: "list1",
-      title: "다시 풀 문제",
-      contents: [
-        {
-          id: "1",
-          title: "약수의 합",
-          level: "1",
-        },
-        {
-          id: "2",
-          title: "피보나치 수",
-          level: "2",
-        },
-        {
-          id: "3",
-          title: "JadenCase 문자열이 몇개일까요알아맞춰보세요딩동댕동",
-          level: "2",
-        },
-      ],
-    },
-    {
-      id: "list2",
-      title: "코딩테스트 대비 문제 모음",
-      contents: [],
-    },
-  ]);
+  const [lists, setLists] = useState(initialLists);
   const [isEdit, setIsEdit] = useState(false);
 
   // react query로 서버 상태 업데이트 필요(현재는 첫번째 렌더링)
