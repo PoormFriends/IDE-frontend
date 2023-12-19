@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 0.8rem;
+  background-color: var(--color-primary-accent);
+  border-radius: 0.6rem;
+}
+.title {
+  font-size: 1.05rem;
+  margin-bottom: 0.9rem;
+  color: var(--color-darkgray);
+}
+.problems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+.addButton {
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0.3rem 0.5rem;
+  background-color: var(--color-accent);
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
