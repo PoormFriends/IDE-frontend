@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import styles from "./MyListProblem.module.css";
 
 export default function MyListProblem({ title, level }) {
@@ -25,7 +26,12 @@ export default function MyListProblem({ title, level }) {
   };
   return (
     <div className={styles.container}>
-      <p className={styles.title}>{title}</p>
+      <p className={styles.title}>
+        {/* to={`/solve/${userId}/${problemId}`} 로 수정예정 */}
+        <NavLink to="/solve/{userId}/{problemId}" className={styles.link}>
+          {title}
+        </NavLink>
+      </p>
       <span className={styles.level}>Lv. {level}</span>
       <button
         className={styles.deleteButton}

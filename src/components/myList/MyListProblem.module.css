@@ -15,6 +15,10 @@
   color: var(--color-text);
   font-size: 0.9rem;
 }
+.link {
+  color: var(--color-text);
+  text-decoration: none;
+}
 .level {
   justify-content: end;
   color: var(--color-accent);
