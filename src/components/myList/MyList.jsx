@@ -3,49 +3,53 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { FaCircleMinus } from "react-icons/fa6";
 import { Tooltip } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import MyListProblem from "./MyListProblem";
 import styles from "./MyList.module.css";
+import {
+  fetchAddMyListProblem,
+  fetchDeleteMyList,
+} from "../../api/MyListService";
 
-export default function MyList({ id, title, list }) {
+export default function MyList({ directoryId, directoryName, problemList }) {
   const { userId, problemId } = useParams();
-  const handleAddProblem = () => {
-    fetch("http://localhost:8080/directory/problem", {
-      method: "POST",
-      headers: {
-        // 추후 Authorization: Bearer <Token> 로 수정 예정
-        "Content-Type": "application/json",
+  const queryClient = useQueryClient();
+
+  const addMyListProblemMutation = useMutation(
+    newMyListProblemData => fetchAddMyListProblem(newMyListProblemData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
       },
-      body: JSON.stringify({
-        userId,
-        directoryId: id,
-        problemId,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
+    },
+  );
+  const handleAddMyListProblem = () => {
+    addMyListProblemMutation.mutate({
+      userId,
+      directoryId,
+      problemId,
+    });
   };
-  const handleDeleteList = () => {
-    fetch("http://localhost:8080/directory", {
-      method: "DELETE",
-      headers: {
-        // 추후 Authorization: Bearer <Token> 로 수정 예정
-        "Content-Type": "application/json",
+
+  const deleteMyListMutation = useMutation(
+    myListData => fetchDeleteMyList(myListData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
       },
-      body: JSON.stringify({
-        userId,
-        directoryId: id,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
+    },
+  );
+  const handleDeleteList = () => {
+    deleteMyListMutation.mutate({
+      userId,
+      directoryId,
+    });
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h4 className={styles.title}>{title}</h4>
+        <h4 className={styles.title}>{directoryName}</h4>
         <Tooltip title="리스트를 삭제합니다">
           <button
             className={styles.deleteButton}
@@ -59,19 +63,21 @@ export default function MyList({ id, title, list }) {
       </div>
       {/* 문제들 */}
       <div className={styles.problems}>
-        {list &&
-          list.map(problem => (
+        {problemList &&
+          problemList.map(problem => (
             <MyListProblem
               key={problem.directoryProblemId}
-              title={problem.problemTitle}
-              level={problem.problemLevel}
+              directoryId={directoryId}
+              directoryProblemId={problem.directoryProblemId}
+              problemTitle={problem.problemTitle}
+              problemLevel={problem.problemLevel}
             />
           ))}
       </div>
       <button
         className={styles.addButton}
         type="button"
-        onClick={handleAddProblem}
+        onClick={handleAddMyListProblem}
       >
         문제 추가하기
       </button>
