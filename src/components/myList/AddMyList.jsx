@@ -2,40 +2,31 @@
 import React, { useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 import { useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./AddMyList.module.css";
+import { fetchAddMyList } from "../../api/MyListService";
 
-export default function AddMyList({ onSubmit, onToggleEdit }) {
+export default function AddMyList({ onToggleEdit }) {
   const [title, setTitle] = useState("");
   const { userId } = useParams();
+  const queryClient = useQueryClient();
 
   const handleInput = e => {
     setTitle(e.target.value);
   };
-  const fetchPostMyList = name => {
-    // "http://localhost:8080/directory" 로 변경
-    fetch("https://jsonplaceholder.typicode.com/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+
+  const addMyListMutation = useMutation(
+    newMyListData => fetchAddMyList(newMyListData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
       },
-      body: JSON.stringify({
-        userId,
-        directoryTitle: name,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => console.error("Errors: ", error));
-  };
+    },
+  );
   const handleSubmit = e => {
     e.preventDefault();
     if (title !== "") {
-      console.log("리스트 제목이 빈값이 아님");
-      // title을 db에 post, MyListContainer로 보내서 setLists
-      fetchPostMyList(title);
-      onSubmit(true);
+      addMyListMutation.mutate({ userId, title });
     }
     onToggleEdit(false);
   };
