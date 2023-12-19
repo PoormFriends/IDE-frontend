@@ -25,7 +25,7 @@ export default function MyList({ id, title, list }) {
   };
   return (
     <div className={styles.container}>
-      <h4 className={styles.label}>{title}</h4>
+      <h4 className={styles.title}>{title}</h4>
       {/* 문제들 */}
       <div className={styles.problems}>
         {list &&
