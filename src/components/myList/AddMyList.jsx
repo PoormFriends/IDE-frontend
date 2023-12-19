@@ -31,9 +31,12 @@ export default function AddMyList({ onSubmit, onToggleEdit }) {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    // title을 db에 post, MyListContainer로 보내서 setLists
-    fetchPostMyList(title);
-    onSubmit(true);
+    if (title !== "") {
+      console.log("리스트 제목이 빈값이 아님");
+      // title을 db에 post, MyListContainer로 보내서 setLists
+      fetchPostMyList(title);
+      onSubmit(true);
+    }
     onToggleEdit(false);
   };
 
