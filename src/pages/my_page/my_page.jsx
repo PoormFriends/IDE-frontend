@@ -47,7 +47,7 @@ function MyPage() {
       <div className={styles.container}>
         <div className={styles.user_info}>
           <div>
-            {user.profileImage ? (
+            {user?.profileImage ? (
               <img
                 className={styles.user_profile}
                 src={user.profileImage}

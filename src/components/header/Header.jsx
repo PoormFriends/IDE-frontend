@@ -2,6 +2,7 @@ import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import styles from "./Header.module.css";
 import titleLogo from "../../assets/images/title_logo.png";
+import { requestLogout } from "../../pages/login-page/api";
 
 function Header() {
   return (
@@ -19,7 +20,7 @@ function Header() {
           src="https://avatars.githubusercontent.com/u/100774811?v=4"
           alt="user-profile"
         />
-        <FiLogOut className={styles.logout_icon} />
+        <FiLogOut onClick={requestLogout} className={styles.logout_icon} />
       </div>
     </div>
   );
