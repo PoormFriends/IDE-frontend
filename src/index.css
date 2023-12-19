@@ -15,7 +15,7 @@ code {
 :root {
   /* App Colors */
   --color-primary: #ffffff;
-  --color-primary-accent: #f4f4f4;
+  --color-primary-variant: #f4f4f4;
   --color-accent: #2793f2;
   --color-level0: var(--color-blue);
   --color-level1: var(--color-skyblue);
