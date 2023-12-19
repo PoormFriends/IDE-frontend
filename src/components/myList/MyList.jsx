@@ -1,9 +1,31 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+// import { useParams } from "react-router-dom";
 import MyListProblem from "./MyListProblem";
 import styles from "./MyList.module.css";
 
 export default function MyList({ title, contents }) {
+  // const { userId, problemIds } = useParams();
+  const handleAddProblem = () => {
+    fetch("http://localhost:8080/directory/problem", {
+      method: "POST",
+      headers: {
+        // 추후 Authorization: Bearer <Token> 로 수정 예정
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({
+      //   userId,
+      //   directoryId,
+      //   problemId,
+      // }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        const { directoryId, problemId, directoryProblemId } = data;
+        console.log(directoryId, problemId, directoryProblemId);
+      })
+      .catch(error => console.error(error));
+  };
   return (
     <div className={styles.container}>
       <h4 className={styles.label}>{title}</h4>
@@ -17,7 +39,11 @@ export default function MyList({ title, contents }) {
           />
         ))}
       </div>
-      <button className={styles.addButton} type="button">
+      <button
+        className={styles.addButton}
+        type="button"
+        onClick={handleAddProblem}
+      >
         문제 추가하기
       </button>
     </div>
