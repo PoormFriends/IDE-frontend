@@ -9,10 +9,26 @@
   background-color: var(--color-primary-variant);
   border-radius: 0.6rem;
 }
-.title {
-  font-size: 1.05rem;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.9rem;
+}
+.title {
+  flex: 1;
+  font-size: 1.05rem;
+
   color: var(--color-darkgray);
+}
+.deleteButton {
+  display: flex;
+  align-items: center;
+  transition: all 150ms ease-in-out;
+}
+.deleteButton:hover {
+  color: var(--color-red);
+  transform: scale(1.1);
 }
 .problems {
   display: flex;
