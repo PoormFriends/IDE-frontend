@@ -3,49 +3,24 @@ import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
 
-const initialLists = [
-  {
-    id: "list1",
-    title: "다시 풀 문제",
-    contents: [
-      {
-        id: "1",
-        title: "약수의 합",
-        level: "1",
-      },
-      {
-        id: "2",
-        title: "피보나치 수",
-        level: "2",
-      },
-      {
-        id: "3",
-        title: "JadenCase 문자열이 몇개일까요알아맞춰보세요딩동댕동",
-        level: "2",
-      },
-    ],
-  },
-  {
-    id: "list2",
-    title: "코딩테스트 대비 문제 모음",
-    contents: [],
-  },
-];
-
 export default function MyListContainer() {
-  const [lists, setLists] = useState(initialLists);
+  const [myLists, setMyLists] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
   // react query로 서버 상태 업데이트 필요(현재는 첫번째 렌더링)
   useEffect(() => {
-    fetch(`https://localhost:8080/directory?userId=${"id"}`)
+    // `https://localhost:8080/directory?userId=${"id"}` 으로 변경
+    fetch("/SampleMyLists.json")
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        const { newMyLists } = data;
+        setMyLists(newMyLists);
+      })
       .catch(error => console.error("Errors: ", error));
   }, []);
 
   const handleListChange = newList => {
-    setLists(prevLists => [...prevLists, newList]);
+    setMyLists(prevLists => [...prevLists, newList]);
   };
   const handleClick = () => {
     setIsEdit(prev => !prev);
@@ -54,8 +29,8 @@ export default function MyListContainer() {
     <div className={styles.container}>
       <h4 className={styles.label}>oo의 마이리스트</h4>
       <div className={styles.lists}>
-        {lists.map(list => (
-          <MyList key={list.id} title={list.title} contents={list.contents} />
+        {myLists.map(myList => (
+          <MyList key={myList.directoryId} myList={myList} />
         ))}
       </div>
       {/* isEdit 상태면 <AppMyList />을 보여주고,
