@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
+import { useParams } from "react-router-dom";
 import styles from "./AddMyList.module.css";
 
 export default function AddMyList({ onSubmit, onToggleEdit }) {
   const [title, setTitle] = useState("");
+  const { userId } = useParams();
 
   const handleInput = e => {
     setTitle(e.target.value);
@@ -16,7 +18,7 @@ export default function AddMyList({ onSubmit, onToggleEdit }) {
         "Content-Type": "application/json",
       },
       body: {
-        userId: "",
+        userId,
         directoryTitle,
       },
     })
