@@ -1,43 +1,49 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./MyListProblem.module.css";
+import { fetchDeleteMyListProblem } from "../../api/MyListService";
 
-export default function MyListProblem({ title, level }) {
-  const handleDeleteProblem = () => {
-    fetch("http://localhost:8080/directory/problem", {
-      method: "DELETE",
-      header: {
-        // Authorization: Bearer 수정 예정
-        "Content-Type": "application/json",
+export default function MyListProblem({
+  directoryId,
+  directoryProblemId,
+  problemTitle,
+  problemLevel,
+}) {
+  const { userId, problemId } = useParams();
+  const queryClient = useQueryClient();
+  const deleteMyListProblemMutation = useMutation(
+    myListProblemData => fetchDeleteMyListProblem(myListProblemData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
       },
-      body: JSON.stringify({
-        // react-query로 전역상태 관리 수정예정
-        // userId,
-        // directory,
-        // problemId,
-        // directoryProblemId,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
+    },
+  );
+
+  const handleDeleteMyListProblem = () => {
+    deleteMyListProblemMutation.mutate({
+      userId,
+      directoryId,
+      problemId,
+      directoryProblemId,
+    });
   };
   return (
     <div className={styles.container}>
       <p className={styles.title}>
-        {/* to={`/solve/${userId}/${problemId}`} 로 수정예정 */}
-        <NavLink to="/solve/{userId}/{problemId}" className={styles.link}>
-          {title}
+        <NavLink to={`/solve/${userId}/${problemId}`} className={styles.link}>
+          {problemTitle}
         </NavLink>
       </p>
-      <span className={styles.level}>Lv. {level}</span>
+      <span className={styles.level}>Lv. {problemLevel}</span>
       <button
         className={styles.deleteButton}
         type="button"
         aria-label="trash button"
-        onClick={handleDeleteProblem}
+        onClick={handleDeleteMyListProblem}
       >
         <FaTrashAlt />
       </button>
