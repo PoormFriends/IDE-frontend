@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { EditorContext } from "../../contexts/EditorContext";

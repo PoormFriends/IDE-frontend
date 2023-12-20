@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import { useParams } from "react-router-dom";
 import { FaCircleMinus } from "react-icons/fa6";

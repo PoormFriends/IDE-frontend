@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
