@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 import { useParams } from "react-router-dom";
@@ -15,18 +14,18 @@ export default function AddMyList({ onToggleEdit }) {
     setTitle(e.target.value);
   };
 
-  const addMyListMutation = useMutation(
-    newMyListData => fetchAddMyList(newMyListData),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["myLists", userId]);
-      },
+  const addMyListMutation = useMutation(() => fetchAddMyList(userId, title), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["myLists", userId]);
     },
-  );
+    onError: error => {
+      console.log(error);
+    },
+  });
   const handleSubmit = e => {
     e.preventDefault();
     if (title !== "") {
-      addMyListMutation.mutate({ userId, title });
+      addMyListMutation.mutate();
     }
     onToggleEdit(false);
   };
