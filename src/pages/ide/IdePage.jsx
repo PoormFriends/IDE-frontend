@@ -6,11 +6,16 @@ import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
 import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
+// import MyListContainer from "../../components/myList/MyListContainer";
+import MyListContainer from "../../components/myList/TestModal";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
   const { editor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
+  const [isMyListVisible, setIsMyListVisible] = useState(false);
+  // const containerRef = useRef(null); // 외부 클릭 감지
+
   const getUserIDProblemId = () => {
     const path = window.location.pathname;
     const segments = path.split("/").filter(Boolean);
@@ -19,6 +24,7 @@ export default function IdePage() {
 
     return { problemId, userId };
   };
+
   useEffect(() => {
     const { userId, problemId } = getUserIDProblemId();
     // `/api/problems/ide/${userId}/${problemId}`
@@ -50,16 +56,36 @@ export default function IdePage() {
       .catch(error => console.error("Error: ", error));
   };
 
+  const toggleMyListVisible = () => {
+    setIsMyListVisible(!isMyListVisible);
+  };
+
   return (
     <div>
       <header className={styles.header}>
         <button
           type="button"
-          aria-label="myListMenu"
+          aria-label="마이리스트 메뉴 열기 버튼"
           className={styles.myListMenuButton}
+          onClick={toggleMyListVisible}
         >
           <CiMenuBurger />
         </button>
+        {isMyListVisible && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.2)",
+              zIndex: 999,
+            }}
+          >
+            <MyListContainer onClose={() => setIsMyListVisible(false)} />
+          </div>
+        )}
         {problems && (
           <>
             <h2 className={styles.problemTitle}>{problems.title}</h2>
