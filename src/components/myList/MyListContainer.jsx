@@ -15,7 +15,7 @@ export default function MyListContainer() {
     isLoading,
     error,
   } = useQuery(["myLists", userId], () => fetchMyLists(userId));
-  console.log(myLists);
+  console.log("myLists: ", myLists);
 
   const handleClick = () => {
     setIsEdit(prev => !prev);
