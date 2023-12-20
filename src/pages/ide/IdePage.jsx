@@ -8,27 +8,45 @@ import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
 
 export default function IdePage() {
+  const [executionResult, setExecutionResult] = useState("");
   const { editor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
+  const getUserIDProblemId = () => {
+    const path = window.location.pathname;
+    const segments = path.split("/").filter(Boolean);
+    const problemId = segments.slice(-1);
+    const userId = segments.slice(-2, -1);
+
+    return { problemId, userId };
+  };
   useEffect(() => {
-    fetch("/ProblemFakeData.json")
+    const { userId, problemId } = getUserIDProblemId();
+    // `/api/problems/ide/${userId}/${problemId}`
+    fetch(`/data/ProblemFakeData.json`)
       .then(response => response.json())
       .then(data => {
         setProblems(data.problems);
+        console.log(`userId: ${userId}, problemId: ${problemId}`);
+        // setProblems(data.information);
       })
       .catch(error => console.error(error));
   }, []);
 
   const handleSubmit = () => {
+    // solve/${userId}/${problemId}
     fetch("", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ body: editor }),
+      body: JSON.stringify({ usercode: editor }),
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        console.log(data.information);
+        const { state } = data.information;
+        setExecutionResult(state);
+      })
       .catch(error => console.error("Error: ", error));
   };
 
@@ -55,22 +73,22 @@ export default function IdePage() {
             <ProblemContent type="문제 설명" content={problems.content} />
           )}
           {problems &&
-            problems.examples.map((example, index) => (
+            problems.testCases.map((testCase, index) => (
               <InputOutput
-                key={example.id}
+                key={testCase.id}
                 num={index}
-                input={example.input}
-                output={example.output}
+                input={testCase.input}
+                output={testCase.output}
               />
             ))}
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
-            <MonacoEditor />
+            <MonacoEditor userCode={problems?.usercode || ""} />
           </div>
           <div className={styles.executeResult}>
             <h4 className={styles.executeResultLabel}>실행 결과</h4>
-            <div className={styles.executeResultContent}>실행 결과 내용</div>
+            <div className={styles.executeResultContent}>{executionResult}</div>
           </div>
         </section>
       </div>
