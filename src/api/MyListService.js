@@ -1,12 +1,26 @@
 // 마이리스트 전체 조회
 export const fetchMyLists = async userId => {
-  const response = await fetch(
-    `https://localhost:8080/directory?userId=${userId}`,
-  );
-  if (!response.ok) {
-    throw new Error("마이리스트 전체 조회 실패");
+  try {
+    console.log("fetchMyLists 호출됨", userId);
+    const response = await fetch(
+      `https://localhost:8080/directory?userId=${userId}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`마이리스트 전체 조회 실패 ${userId}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("서버 요청에 실패했습니다: ", error);
+
+    // test: 서버 요청이 실패했을 때 모의 데이터 반환
+    return Promise.resolve([
+      { directoryId: "1", directoryName: "List 1", problemList: [] },
+    ]);
+
+    // 실제로는 test 부분 삭제하고 아래 코드 주석 해제
+    // throw error;
   }
-  return response.json();
 };
 
 // 마이리스트 추가
