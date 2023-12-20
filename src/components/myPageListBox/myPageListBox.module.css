@@ -30,3 +30,7 @@
 .problemName {
   margin-left: 15px;
 }
+.link {
+  text-decoration: none;
+  color: #000;
+}

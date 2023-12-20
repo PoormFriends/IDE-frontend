@@ -8,15 +8,21 @@ import RedirectPage from "./pages/login-page/RedirectPage";
 import MyPage from "./pages/my_page/my_page";
 
 function App() {
+  const isLogin = JSON.parse(localStorage.getItem("user"));
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<ProblemListsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/oauth2" element={<RedirectPage />} />
-        <Route path="/solve/:user_id/:problem_id" element={<IdePage />} />
-        <Route path="/mypage" element={<MyPage />} />
-      </Routes>
+      {isLogin ? (
+        <Routes>
+          <Route path="/" element={<ProblemListsPage />} />
+          <Route path="/oauth2" element={<RedirectPage />} />
+          <Route path="/solve/:userId/:problem_Id" element={<IdePage />} />
+          <Route path="/mypage" element={<MyPage />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      )}
     </Router>
   );
 }
