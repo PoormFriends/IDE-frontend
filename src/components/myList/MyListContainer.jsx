@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";

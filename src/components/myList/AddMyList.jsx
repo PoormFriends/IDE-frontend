@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 import { useParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styles from "./AddMyList.module.css";
 import { fetchAddMyList } from "../../api/MyListService";
 

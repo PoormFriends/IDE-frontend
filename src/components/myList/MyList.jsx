@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { FaCircleMinus } from "react-icons/fa6";
 import { Tooltip } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "react-query";
 import MyListProblem from "./MyListProblem";
 import styles from "./MyList.module.css";
 import {

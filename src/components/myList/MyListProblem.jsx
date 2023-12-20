@@ -2,7 +2,7 @@
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styles from "./MyListProblem.module.css";
 import { fetchDeleteMyListProblem } from "../../api/MyListService";
 
