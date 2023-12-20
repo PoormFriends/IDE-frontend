@@ -14,14 +14,19 @@ export default function MyListContainer() {
     data: myLists,
     isLoading,
     error,
-  } = useQuery(["myLists", userId], fetchMyLists);
+  } = useQuery(["myLists", userId], () => fetchMyLists(userId));
+  console.log(myLists);
 
   const handleClick = () => {
     setIsEdit(prev => !prev);
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>An error occurred: {error.message}</div>;
+  if (error) {
+    console.log("my list error");
+    console.log(error);
+    return <div>An error occurred: {error.message}</div>;
+  }
 
   return (
     <div className={styles.container}>
