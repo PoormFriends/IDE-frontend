@@ -18,7 +18,7 @@
   position: relative;
 }
 
-.sort_isCorrect {
+.sort_state {
   max-width: 100px;
   position: absolute;
   left: 130px;
@@ -42,5 +42,30 @@
   margin-left: 5px;
   padding: 2px;
   border-radius: 5px;
-  background-color: lightblue;
+  background-color: rgba(156, 202, 255, 0.479);
+}
+
+.OText {
+  font-weight: bold;
+  color: green;
+}
+
+.XText {
+  font-weight: bold;
+  color: red;
+}
+
+.lv0 {
+  font-weight: bold;
+  color: skyblue;
+}
+
+.lv1 {
+  font-weight: bold;
+  color: rgb(255, 155, 5);
+}
+
+.lv2 {
+  font-weight: bold;
+  color: rgb(111, 0, 255);
 }
