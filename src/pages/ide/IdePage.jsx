@@ -24,11 +24,10 @@ export default function IdePage() {
 
     return { problemId, userId };
   };
+  const { userId, problemId } = getUserIDProblemId();
 
   useEffect(() => {
-    const { userId, problemId } = getUserIDProblemId();
-    // `/api/problems/ide/${userId}/${problemId}`
-    fetch(`/data/ProblemFakeData.json`)
+    fetch(`http://localhost:8080/api/problems/ide/${userId}/${problemId}`)
       .then(response => response.json())
       .then(data => {
         setProblems(data.problems);
@@ -39,8 +38,7 @@ export default function IdePage() {
   }, []);
 
   const handleSubmit = () => {
-    // solve/${userId}/${problemId}
-    fetch("", {
+    fetch(`http://localhost:8080/solve/${userId}/${problemId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
