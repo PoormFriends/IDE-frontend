@@ -7,7 +7,7 @@ import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
 import { fetchMyLists } from "../../api/MyListService";
 
-export default function MyListContainer() {
+export default function MyListContainer({ onClose }) {
   const [isEdit, setIsEdit] = useState(false);
   const { userId } = useParams();
 
@@ -21,6 +21,7 @@ export default function MyListContainer() {
   const handleClick = () => {
     setIsEdit(prev => !prev);
   };
+  // const handleClose = () => {};
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
@@ -37,6 +38,7 @@ export default function MyListContainer() {
           className={styles.closeButton}
           type="button"
           aria-label="마이리스트 닫기"
+          onClick={onClose}
         >
           <IoMdClose />
         </button>
