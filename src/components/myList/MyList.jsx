@@ -15,7 +15,7 @@ export default function MyList({ directoryId, directoryName, problemList }) {
   const queryClient = useQueryClient();
 
   const addMyListProblemMutation = useMutation(
-    newMyListProblemData => fetchAddMyListProblem(newMyListProblemData),
+    () => fetchAddMyListProblem(userId, directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["myLists", userId]);
@@ -31,7 +31,7 @@ export default function MyList({ directoryId, directoryName, problemList }) {
   };
 
   const deleteMyListMutation = useMutation(
-    myListData => fetchDeleteMyList(myListData),
+    () => fetchDeleteMyList(userId, directoryId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["myLists", userId]);
