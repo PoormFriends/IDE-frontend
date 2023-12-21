@@ -12,6 +12,10 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
+  "rules": {
+    // React prop-types 규칙 비활성화
+    "react/prop-types": "off"
+  },
 
   "plugins": ["react", "prettier"]
 }

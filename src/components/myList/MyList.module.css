@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 0.8rem;
+  background-color: var(--color-primary-variant);
+  border-radius: 0.6rem;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+.title {
+  flex: 1;
+  font-size: 1.05rem;
+
+  color: var(--color-darkgray);
+}
+.deleteButton {
+  display: flex;
+  align-items: center;
+  transition: all 150ms ease-in-out;
+}
+.deleteButton:hover {
+  color: var(--color-red);
+  transform: scale(1.1);
+}
+.problems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+.addButton {
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0.3rem 0.5rem;
+  background-color: var(--color-accent);
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
