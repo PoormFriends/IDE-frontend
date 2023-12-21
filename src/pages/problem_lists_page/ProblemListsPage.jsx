@@ -55,7 +55,7 @@ const problemListsPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [problemLists, setProblemLists] = useState(rows);
   const [searchFilter, setSearchFilter] = useState("");
-  const [isCorrectFilter, setIsCorrectFilter] = useState("default");
+  const [stateFilter, setstateFilter] = useState("default");
   const [levelFilter, setLevelFilter] = useState("default");
 
   const handleChangePage = (event, newPage) => {
@@ -67,50 +67,34 @@ const problemListsPage = () => {
     setPage(0);
   };
 
-  // 한글을 자음, 모음으로 분리하는 함수
-  const hangulToJamo = text => {
-    return [...text].map(char => {
-      const code = char.charCodeAt(0);
-      // 한글 범위 내에서 자음, 모음으로 분리
-      if (code >= 44032 && code <= 55203) {
-        const initialSoundIndex = (code - 44032) / 588;
-        return String.fromCharCode(44032 + Math.floor(initialSoundIndex) * 588);
-      }
-      return char;
-    });
-  };
-
   const filterProblems = (searchTerm, corFilter, levFilter) => {
     const filteredRows = rows.filter(item => {
-      // item.title이 정의되어 있는지 확인하고, 정의되어 있지 않다면 빈 문자열을 사용
       const itemText = item.title ? item.title : "";
+      const itemNum = item.num ? item.num.toString() : "";
 
       if (
         !searchTerm.trim() &&
         corFilter === "default" &&
         levFilter === "default"
       ) {
-        // 검색어, 정답여부, 난이도가 모두 비어 있는 경우, 모든 문제를 출력
         return true;
       }
 
-      // 검색어가 비어 있는 경우, 모든 문제를 대상으로 필터 적용
-      const searchTermSeparated = hangulToJamo(itemText.toLowerCase());
-      const separatedSearchTerm = hangulToJamo(searchTerm.toLowerCase());
+      const searchTermRegex = new RegExp([...searchTerm].join(".*"), "i");
       const corFilterMatch =
         corFilter === "default" || item.state === corFilter;
       const levFilterMatch =
         levFilter === "default" ||
         item.level.toLowerCase() === levFilter.toLowerCase();
+      const numMatch = itemNum.includes(searchTerm.trim());
 
       return (
-        searchTermSeparated.join("").includes(separatedSearchTerm.join("")) &&
+        (searchTermRegex.test(itemText.toLowerCase()) || numMatch) &&
         corFilterMatch &&
         levFilterMatch
       );
     });
 
-    // 검색어, 정답여부, 난이도가 모두 비어 있는 경우 problemLists를 다시 rows로 설정
     setProblemLists(
       !searchTerm.trim() && corFilter === "default" && levFilter === "default"
         ? rows
@@ -120,29 +104,29 @@ const problemListsPage = () => {
 
   const handleFilterInput = e => {
     setSearchFilter(e.target.value);
-    filterProblems(e.target.value, isCorrectFilter, levelFilter);
+    filterProblems(e.target.value, stateFilter, levelFilter);
   };
 
-  const handleIsCorrectFilterChange = event => {
-    const newIsCorrect = event.target.value;
+  const handlestateFilterChange = event => {
+    const newstate = event.target.value;
 
-    setIsCorrectFilter(newIsCorrect);
-    filterProblems(searchFilter, newIsCorrect, levelFilter);
+    setstateFilter(newstate);
+    filterProblems(searchFilter, newstate, levelFilter);
   };
 
   const handleLevelFilterChange = event => {
     const newLevel = event.target.value;
 
     setLevelFilter(newLevel);
-    filterProblems(searchFilter, isCorrectFilter, newLevel);
+    filterProblems(searchFilter, stateFilter, newLevel);
   };
 
   return (
     <div>
       <Header />
-      <wrapper className={styles.wrapper}>
+      <div className={styles.wrapper}>
         <div className={styles.search_bar}>
-          <Container sx={{ mt: 15 }}>
+          <Container sx={{ mt: 5 }}>
             <TextField
               type="search"
               id="search"
@@ -154,16 +138,16 @@ const problemListsPage = () => {
           </Container>
         </div>
         <div className={styles.sort_standard}>
-          <div className={styles.sort_isCorrect}>
+          <div className={styles.sort_state}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel id="isCorrect-select-label">상태</InputLabel>
+                <InputLabel id="state-select-label">상태</InputLabel>
                 <Select
-                  labelId="isCorrect-select-label"
-                  id="isCorrect-select"
-                  label="isCorrect"
-                  value={isCorrectFilter}
-                  onChange={handleIsCorrectFilterChange}
+                  labelId="state-select-label"
+                  id="state-select"
+                  label="state"
+                  value={stateFilter}
+                  onChange={handlestateFilterChange}
                 >
                   <MenuItem value="default">none</MenuItem>
                   <MenuItem value="O">O</MenuItem>
@@ -207,6 +191,18 @@ const problemListsPage = () => {
                   {problemLists
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(problemList => {
+                      const stateClass =
+                        problemList.state === "O" ? styles.OText : styles.XText;
+
+                      const levelMap = {
+                        "lv.0": styles.lv0,
+                        "lv.1": styles.lv1,
+                        "lv.2": styles.lv2,
+                      };
+
+                      const levelClass =
+                        levelMap[problemList.level.toLowerCase()] || "";
+
                       return (
                         <TableRow
                           hover
@@ -214,7 +210,11 @@ const problemListsPage = () => {
                           tabIndex={-1}
                           key={problemList.id}
                         >
-                          <TableCell width="60" align="center">
+                          <TableCell
+                            width="60"
+                            align="center"
+                            className={stateClass}
+                          >
                             {problemList.state}
                           </TableCell>
                           <TableCell
@@ -235,12 +235,16 @@ const problemListsPage = () => {
 
                             {/* 문제 num과 id를 조합한 값의 url을 만들어주어야 함. */}
                           </TableCell>
-                          <TableCell width="50" align="center">
+                          <TableCell
+                            width="50"
+                            align="center"
+                            className={levelClass}
+                          >
                             {problemList.level}
                           </TableCell>
                           <TableCell width="150" align="left">
                             {problemList.lists.map(item => (
-                              <span className={styles.list_box} key={item.num}>
+                              <span className={styles.list_box} key={item.id}>
                                 {item}
                               </span>
 
@@ -265,7 +269,7 @@ const problemListsPage = () => {
           </Paper>
           <div className={styles.proplem_table_container} />
         </div>
-      </wrapper>
+      </div>
     </div>
   );
 };

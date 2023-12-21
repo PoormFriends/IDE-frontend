@@ -6,9 +6,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  position: fixed;
-  top: 0px;
 }
 
 .header_title_icon {
