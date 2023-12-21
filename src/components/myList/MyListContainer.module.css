@@ -7,9 +7,19 @@
   background-color: var(--color-primary);
   padding: 1rem;
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 .label {
   font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+}
+.closeButton {
+  background-color: transparent;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 .lists {
   display: flex;

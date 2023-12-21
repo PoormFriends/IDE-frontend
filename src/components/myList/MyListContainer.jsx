@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { IoMdClose } from "react-icons/io";
 import MyList from "./MyList";
 import styles from "./MyListContainer.module.css";
 import AddMyList from "./AddMyList";
@@ -30,7 +31,17 @@ export default function MyListContainer() {
 
   return (
     <div className={styles.container}>
-      <h4 className={styles.label}>oo의 마이리스트</h4>
+      <header className={styles.header}>
+        <h4 className={styles.label}>oo의 마이리스트</h4>
+        <button
+          className={styles.closeButton}
+          type="button"
+          aria-label="마이리스트 닫기"
+        >
+          <IoMdClose />
+        </button>
+      </header>
+
       <div className={styles.lists}>
         {myLists &&
           myLists.map(myList => (
