@@ -21,7 +21,6 @@ export default function MyListContainer({ onClose }) {
   const handleClick = () => {
     setIsEdit(prev => !prev);
   };
-  // const handleClose = () => {};
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
