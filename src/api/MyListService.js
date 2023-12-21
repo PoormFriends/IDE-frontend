@@ -64,7 +64,6 @@ export const fetchDeleteMyList = async (userId, directoryId) => {
       throw new Error(`access token 없음`);
     }
     console.log("fetchDeleteMyList 호출됨", userId, directoryId);
-    // /userId=${encodeURIComponent(userId)}&directoryId=${encodeURIComponent(directoryId)
     const response = await fetch(`http://localhost:8081/directory}`, {
       method: "DELETE",
       headers: {
