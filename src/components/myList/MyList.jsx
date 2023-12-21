@@ -1,43 +1,83 @@
-import React, { useState } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { FaCircleMinus } from "react-icons/fa6";
+import { Tooltip } from "@mui/material";
+import { useMutation, useQueryClient } from "react-query";
 import MyListProblem from "./MyListProblem";
 import styles from "./MyList.module.css";
+import {
+  fetchAddMyListProblem,
+  fetchDeleteMyList,
+} from "../../api/MyListService";
 
-export default function MyList() {
-  const [list, setList] = useState([
-    {
-      id: "1",
-      title: "약수의 합",
-      level: "1",
-    },
-    {
-      id: "2",
-      title: "피보나치 수",
-      level: "2",
-    },
-    {
-      id: "3",
-      title: "JadenCase 문자열이 몇개일까요알아맞춰보세요딩동댕동",
-      level: "2",
-    },
-  ]);
+export default function MyList({ directoryId, directoryName, problemList }) {
+  const { userId, problemId } = useParams();
+  const queryClient = useQueryClient();
 
-  const tempFunction = () => {
-    setList([]);
+  const addMyListProblemMutation = useMutation(
+    newMyListProblemData => fetchAddMyListProblem(newMyListProblemData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
+      },
+    },
+  );
+  const handleAddMyListProblem = () => {
+    addMyListProblemMutation.mutate({
+      userId,
+      directoryId,
+      problemId,
+    });
   };
+
+  const deleteMyListMutation = useMutation(
+    myListData => fetchDeleteMyList(myListData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["myLists", userId]);
+      },
+    },
+  );
+  const handleDeleteList = () => {
+    deleteMyListMutation.mutate({
+      userId,
+      directoryId,
+    });
+  };
+
   return (
     <div className={styles.container}>
-      <h4 className={styles.title}>마이리스트 이름</h4>
+      <div className={styles.header}>
+        <h4 className={styles.title}>{directoryName}</h4>
+        <Tooltip title="리스트를 삭제합니다">
+          <button
+            className={styles.deleteButton}
+            type="button"
+            aria-label="리스트 삭제하기 버튼"
+            onClick={handleDeleteList}
+          >
+            <FaCircleMinus className={styles.deleteIcon} />
+          </button>
+        </Tooltip>
+      </div>
       {/* 문제들 */}
       <div className={styles.problems}>
-        {list.map(problem => (
-          <MyListProblem
-            key={problem.id}
-            title={problem.title}
-            level={problem.level}
-          />
-        ))}
+        {problemList &&
+          problemList.map(problem => (
+            <MyListProblem
+              key={problem.directoryProblemId}
+              directoryId={directoryId}
+              directoryProblemId={problem.directoryProblemId}
+              problemTitle={problem.problemTitle}
+              problemLevel={problem.problemLevel}
+            />
+          ))}
       </div>
-      <button className={styles.addButton} type="button" onClick={tempFunction}>
+      <button
+        className={styles.addButton}
+        type="button"
+        onClick={handleAddMyListProblem}
+      >
         문제 추가하기
       </button>
     </div>

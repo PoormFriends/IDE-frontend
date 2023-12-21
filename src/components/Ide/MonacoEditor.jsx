@@ -1,10 +1,13 @@
-/* eslint-disable react/prop-types */
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { EditorContext } from "../../contexts/EditorContext";
 
-export default function MonacoEditor() {
+export default function MonacoEditor({ userCode }) {
   const { setEditor } = useContext(EditorContext);
+
+  useEffect(() => {
+    setEditor(userCode);
+  }, []);
 
   const handleEditorChange = value => {
     setEditor(value);
