@@ -6,29 +6,36 @@ import ProblemListsPage from "./pages/problem_lists_page/ProblemListsPage";
 import IdePage from "./pages/ide/IdePage";
 import LoginPage from "./pages/login-page/LoginPage";
 import RedirectPage from "./pages/login-page/RedirectPage";
+import MyPage from "./pages/my_page/my_page";
 import MyListContainer from "./components/myList/MyListContainer";
 import { EditorProvider } from "./contexts/EditorContext";
 
+
+
 const queryClient = new QueryClient();
 function App() {
-  const isLogin = localStorage.getItem("accessToken");
+  const isLogin = JSON.parse(localStorage.getItem("accessToken"));
   return (
     <QueryClientProvider client={queryClient}>
       <EditorProvider>
         <Router>
-          <Routes>
+   {isLogin? (<Routes>
             <Route
               path="/"
-              element={isLogin ? <ProblemListsPage /> : <LoginPage />}
-            />
+              element={<ProblemListsPage />}
+             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/oauth2" element={<RedirectPage />} />
-            <Route path="/solve/:user_id/:problem_id" element={<IdePage />} />
+            <Route path="/solve/:userId/:problemId" element={<IdePage />} />
             <Route
               path="/mylist/:userId/:problemId"
               element={<MyListContainer />}
             />
-          </Routes>
+          </Routes>):(
+            <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+            )}
         </Router>
       </EditorProvider>
     </QueryClientProvider>

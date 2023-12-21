@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
 
-  position: fixed;
+  /* position: fixed; */
   top: 0px;
 }
 
@@ -28,6 +28,7 @@
 
 .buttons {
   padding-right: 70px;
+  display: flex;
 }
 
 .header_user_profile {
@@ -54,4 +55,8 @@
 .logout_icon:hover {
   transition: 0.1s;
   opacity: 0.8;
+}
+.profile_button {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
 }
