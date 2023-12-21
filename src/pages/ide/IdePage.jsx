@@ -6,8 +6,7 @@ import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
 import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
-// import MyListContainer from "../../components/myList/MyListContainer";
-import MyListContainer from "../../components/myList/TestModal";
+import MyListContainer from "../../components/myList/MyListContainer";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
