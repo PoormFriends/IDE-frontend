@@ -1,18 +1,32 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: fit-content;
+  height: 100vh;
   background-color: var(--color-primary);
   padding: 1rem;
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 .label {
   font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+}
+.closeButton {
+  background-color: transparent;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 .lists {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 0.7rem;
+  overflow-y: scroll;
 }
 .addContainer {
   display: flex;

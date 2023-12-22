@@ -14,7 +14,13 @@ export default function MyListProblem({
   const { userId, problemId } = useParams();
   const queryClient = useQueryClient();
   const deleteMyListProblemMutation = useMutation(
-    myListProblemData => fetchDeleteMyListProblem(myListProblemData),
+    () =>
+      fetchDeleteMyListProblem(
+        userId,
+        directoryId,
+        problemId,
+        directoryProblemId,
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["myLists", userId]);

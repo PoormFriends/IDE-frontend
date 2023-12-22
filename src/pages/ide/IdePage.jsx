@@ -6,8 +6,7 @@ import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
 import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
-// import MyListContainer from "../../components/myList/MyListContainer";
-import MyListContainer from "../../components/myList/TestModal";
+import MyListContainer from "../../components/myList/MyListContainer";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
@@ -24,21 +23,36 @@ export default function IdePage() {
 
     return { problemId, userId };
   };
-  const { userId, problemId } = getUserIDProblemId();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/problems/ide/${userId}/${problemId}`)
-      .then(response => response.json())
+    const { userId, problemId } = getUserIDProblemId();
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      console.error("No access token available");
+      return;
+    }
+    fetch(`http://localhost:8081/api/problems/ide/${userId}/${problemId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
-        setProblems(data.problems);
+        setProblems(data);
         console.log(`userId: ${userId}, problemId: ${problemId}`);
-        // setProblems(data.information);
       })
       .catch(error => console.error(error));
   }, []);
 
   const handleSubmit = () => {
-    fetch(`http://localhost:8080/solve/${userId}/${problemId}`, {
+    const { userId, problemId } = getUserIDProblemId();
+    fetch(`http://localhost:8081/solve/${userId}/${problemId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,8 +61,8 @@ export default function IdePage() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data.information);
-        const { state } = data.information;
+        console.log(data);
+        const { state } = data;
         setExecutionResult(state);
       })
       .catch(error => console.error("Error: ", error));
