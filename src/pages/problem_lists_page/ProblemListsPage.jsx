@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -17,46 +17,30 @@ import TablePagination from "@mui/material/TablePagination";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
 
-function createData(id, num, title, level, lists, state) {
-  return { id, num, title, level, lists, state };
-}
-
-const rows = [
-  createData("fjsda423897", 1, "최댓값과 최솟값", "Lv.1", ["A", "B"], "O"),
-  createData("razcg56", 2, "길 찾기", "Lv.2", [], "O"),
-  createData("fgsrwer456", 3, "최소 비용 찾기", "Lv.0", ["B"], null),
-  createData("rtfgxb", 4, "문제4", "Lv.0", [], null),
-  createData("adfeqrttz", 5, "문제5", "Lv.2", [], null),
-  createData("fasdfae", 6, "카드 놀이", "Lv.1", ["C"], null),
-  createData("yrtsfg", 8, "문자열", "Lv.0", [], "X"),
-  createData("sdfgsrt", 9, "별 찍기", "Lv.1", [], "O"),
-  createData("fgsty", 10, "ABCDEFG", "Lv.2", ["C"], "X"),
-  createData("gafdgfda", 11, "abcdwer", "Lv.1", [], null),
-  createData("gadfgazvb", 12, "qwert", "Lv.0", ["B"], "X"),
-  createData("dgafgqr", 13, "QWERabc", "Lv.1", ["B"], "O"),
-  createData("agafdzc", 14, "문제10", "Lv.2", [], "X"),
-  createData("dafrtq4", 15, "문제6", "Lv.1", [], null),
-  createData("ertqertafdg5", 16, "문제8", "Lv.0", ["C"], "X"),
-  createData("sdfasdf", 17, "문제9", "Lv.1", [], "O"),
-  createData("ghdfghfdg", 18, "문제10", "Lv.2", ["A"], "X"),
-  createData("bxcv", 19, "문제6", "Lv.1", ["A"], null),
-  createData("54645adfg", 20, "문제8", "Lv.0", ["B"], "X"),
-  createData("dfsgsdf", 21, "문제9", "Lv.1", [], "O"),
-  createData("5345adf", 22, "문제10", "Lv.2", [], "X"),
-  createData("45fgsd", 23, "문제6", "Lv.1", [], null),
-  createData("fdasfa", 24, "문제8", "Lv.0", [], "X"),
-  createData("534gsdf456", 25, "문제9", "Lv.1", [], "O"),
-  createData("gsdf45645", 26, "문제10", "Lv.2", [], "X"),
-];
-
 const problemListsPage = () => {
-  const userId = "zivjoij45892ldfk";
+  const userDataString = localStorage.getItem("user");
+  const userData = JSON.parse(userDataString);
+  const { userId } = userData;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [problemLists, setProblemLists] = useState(rows);
+  const [rows, setRows] = useState([]);
+  const [problemLists, setProblemLists] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
   const [stateFilter, setstateFilter] = useState("default");
   const [levelFilter, setLevelFilter] = useState("default");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `http://localhost:8081/api/problems/${userId}`,
+      );
+      const data = await response.json();
+      setProblemLists(data);
+      setRows(data);
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -70,7 +54,7 @@ const problemListsPage = () => {
   const filterProblems = (searchTerm, corFilter, levFilter) => {
     const filteredRows = rows.filter(item => {
       const itemText = item.title ? item.title : "";
-      const itemNum = item.num ? item.num.toString() : "";
+      const itemNum = item.problemId ? item.problemId.toString() : "";
 
       if (
         !searchTerm.trim() &&
@@ -82,7 +66,7 @@ const problemListsPage = () => {
 
       const searchTermRegex = new RegExp([...searchTerm].join(".*"), "i");
       const corFilterMatch =
-        corFilter === "default" || item.state === corFilter;
+        corFilter === "default" || item.ideState.includes(corFilter);
       const levFilterMatch =
         levFilter === "default" ||
         item.level.toLowerCase() === levFilter.toLowerCase();
@@ -150,8 +134,8 @@ const problemListsPage = () => {
                   onChange={handlestateFilterChange}
                 >
                   <MenuItem value="default">none</MenuItem>
-                  <MenuItem value="O">O</MenuItem>
-                  <MenuItem value="X">X</MenuItem>
+                  <MenuItem value="SUCCESS">O</MenuItem>
+                  <MenuItem value="FAILURE">X</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -168,9 +152,9 @@ const problemListsPage = () => {
                   onChange={handleLevelFilterChange}
                 >
                   <MenuItem value="default">none</MenuItem>
-                  <MenuItem value="lv.0">Lv.0</MenuItem>
-                  <MenuItem value="lv.1">Lv.1</MenuItem>
-                  <MenuItem value="lv.2">Lv.2</MenuItem>
+                  <MenuItem value="0">Lv.0</MenuItem>
+                  <MenuItem value="1">Lv.1</MenuItem>
+                  <MenuItem value="2">Lv.2</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -188,72 +172,82 @@ const problemListsPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {problemLists
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(problemList => {
-                      const stateClass =
-                        problemList.state === "O" ? styles.OText : styles.XText;
+                  {problemLists.length > 0 &&
+                    problemLists
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage,
+                      )
+                      .map(problemList => {
+                        const levelMap = {
+                          0: styles.lv0,
+                          1: styles.lv1,
+                          2: styles.lv2,
+                        };
 
-                      const levelMap = {
-                        "lv.0": styles.lv0,
-                        "lv.1": styles.lv1,
-                        "lv.2": styles.lv2,
-                      };
+                        const levelClass =
+                          levelMap[problemList.level.toString()] || "";
 
-                      const levelClass =
-                        levelMap[problemList.level.toLowerCase()] || "";
+                        let stateIcon = null;
+                        if (
+                          problemList.ideState &&
+                          problemList.ideState === "SUCCESS"
+                        ) {
+                          stateIcon = <span className={styles.OText}>O</span>;
+                        } else if (
+                          problemList.ideState &&
+                          problemList.ideState === "FAILURE"
+                        ) {
+                          stateIcon = <span className={styles.XText}>X</span>;
+                        }
 
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={problemList.id}
-                        >
-                          <TableCell
-                            width="60"
-                            align="center"
-                            className={stateClass}
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={problemList.problemId}
                           >
-                            {problemList.state}
-                          </TableCell>
-                          <TableCell
-                            width="30"
-                            component="th"
-                            scope="row"
-                            align="right"
-                          >
-                            {problemList.num}
-                          </TableCell>
-                          <TableCell width="200" align="left">
-                            <Link
-                              className={styles.problem_title}
-                              to={`/solve/${userId}/${problemList.num}`}
+                            <TableCell width="60" align="center">
+                              {stateIcon}
+                            </TableCell>
+                            <TableCell
+                              width="30"
+                              component="th"
+                              scope="row"
+                              align="right"
                             >
-                              {problemList.title}
-                            </Link>
-
-                            {/* 문제 num과 id를 조합한 값의 url을 만들어주어야 함. */}
-                          </TableCell>
-                          <TableCell
-                            width="50"
-                            align="center"
-                            className={levelClass}
-                          >
-                            {problemList.level}
-                          </TableCell>
-                          <TableCell width="150" align="left">
-                            {problemList.lists.map(item => (
-                              <span className={styles.list_box} key={item.id}>
-                                {item}
-                              </span>
-
-                              // item의 id가 아니라 태그 각각의 id를 넣어주어야 함!!(추후 수정)
-                            ))}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                              {problemList.problemId}
+                            </TableCell>
+                            <TableCell width="200" align="left">
+                              <Link
+                                className={styles.problem_title}
+                                to={`/solve/${userId}/${problemList.problemId}`}
+                              >
+                                {problemList.title}
+                              </Link>
+                            </TableCell>
+                            <TableCell
+                              width="50"
+                              align="center"
+                              className={levelClass}
+                            >
+                              {`Lv.${problemList.level}`}
+                            </TableCell>
+                            <TableCell width="150" align="left">
+                              {problemList.customDirectoryInfos &&
+                                problemList.customDirectoryInfos.map(item => (
+                                  <span
+                                    className={styles.list_box}
+                                    key={item.customDirectoryId}
+                                  >
+                                    {item.customDirectoryName}
+                                  </span>
+                                ))}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                 </TableBody>
               </Table>
             </TableContainer>
