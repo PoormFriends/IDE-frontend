@@ -1,38 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
 import InputOutput from "../../components/Ide/InputOutput";
+import { EditorContext } from "../../contexts/EditorContext";
+// import MyListContainer from "../../components/myList/MyListContainer";
+import MyListContainer from "../../components/myList/TestModal";
 
 export default function IdePage() {
+  const [executionResult, setExecutionResult] = useState("");
+  const { editor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
-  const [code, setCode] = useState("");
+  const [isMyListVisible, setIsMyListVisible] = useState(false);
+  // const containerRef = useRef(null); // 외부 클릭 감지
+
+  const getUserIDProblemId = () => {
+    const path = window.location.pathname;
+    const segments = path.split("/").filter(Boolean);
+    const problemId = segments.slice(-1);
+    const userId = segments.slice(-2, -1);
+
+    return { problemId, userId };
+  };
+  const { userId, problemId } = getUserIDProblemId();
+
   useEffect(() => {
-    fetch("/ProblemFakeData.json")
+    fetch(`http://localhost:8080/api/problems/ide/${userId}/${problemId}`)
       .then(response => response.json())
       .then(data => {
         setProblems(data.problems);
+        console.log(`userId: ${userId}, problemId: ${problemId}`);
+        // setProblems(data.information);
       })
       .catch(error => console.error(error));
   }, []);
 
   const handleSubmit = () => {
-    fetch("", {
+    fetch(`http://localhost:8080/solve/${userId}/${problemId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(code),
+      body: JSON.stringify({ usercode: editor }),
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        console.log(data.information);
+        const { state } = data.information;
+        setExecutionResult(state);
+      })
       .catch(error => console.error("Error: ", error));
   };
 
-  const handleValueChange = newCode => {
-    setCode(newCode);
+  const toggleMyListVisible = () => {
+    setIsMyListVisible(!isMyListVisible);
   };
 
   return (
@@ -40,11 +63,27 @@ export default function IdePage() {
       <header className={styles.header}>
         <button
           type="button"
-          aria-label="myListMenu"
+          aria-label="마이리스트 메뉴 열기 버튼"
           className={styles.myListMenuButton}
+          onClick={toggleMyListVisible}
         >
           <CiMenuBurger />
         </button>
+        {isMyListVisible && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.2)",
+              zIndex: 999,
+            }}
+          >
+            <MyListContainer onClose={() => setIsMyListVisible(false)} />
+          </div>
+        )}
         {problems && (
           <>
             <h2 className={styles.problemTitle}>{problems.title}</h2>
@@ -58,22 +97,22 @@ export default function IdePage() {
             <ProblemContent type="문제 설명" content={problems.content} />
           )}
           {problems &&
-            problems.examples.map((example, index) => (
+            problems.testCases.map((testCase, index) => (
               <InputOutput
-                key={example.id}
+                key={testCase.id}
                 num={index}
-                input={example.input}
-                output={example.output}
+                input={testCase.input}
+                output={testCase.output}
               />
             ))}
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
-            <MonacoEditor onValueChange={handleValueChange} />
+            <MonacoEditor userCode={problems?.usercode || ""} />
           </div>
           <div className={styles.executeResult}>
             <h4 className={styles.executeResultLabel}>실행 결과</h4>
-            <div className={styles.executeResultContent}>실행 결과 내용</div>
+            <div className={styles.executeResultContent}>{executionResult}</div>
           </div>
         </section>
       </div>

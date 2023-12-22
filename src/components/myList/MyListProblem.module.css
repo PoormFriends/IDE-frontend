@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+}
+.title {
+  flex: 1;
+  margin-right: 0.3rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+.link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.level {
+  justify-content: end;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.deleteButton {
+  border: none;
+  background-color: transparent;
+  margin-left: 0.5rem;
+  transition: all 150ms ease-in-out;
+}
+.deleteButton:hover {
+  color: var(--color-accent);
+  transform: scale(1.2) rotate(20deg);
+}
