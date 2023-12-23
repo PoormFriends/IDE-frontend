@@ -26,6 +26,7 @@ export const requestLogout = async () => {
   // 로그아웃 요청
   localStorage.clear();
   const result = await instance.get(`/user/logout`);
+  window.location.href("http://glocalhost:3000");
   return result;
 };
 // auth 역할
