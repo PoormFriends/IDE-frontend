@@ -47,25 +47,25 @@
 
 .OText {
   font-weight: bold;
-  color: green;
+  color: var(--color-green);
 }
 
 .XText {
   font-weight: bold;
-  color: red;
+  color: var(--color-red);
 }
 
 .lv0 {
   font-weight: bold;
-  color: skyblue;
+  color: var(--color-level0);
 }
 
 .lv1 {
   font-weight: bold;
-  color: rgb(255, 155, 5);
+  color: var(--color-level1);
 }
 
 .lv2 {
   font-weight: bold;
-  color: rgb(111, 0, 255);
+  color: var(--color-level2);
 }

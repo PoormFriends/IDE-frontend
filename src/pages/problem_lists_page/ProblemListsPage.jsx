@@ -16,11 +16,13 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
+import MiniMyList from "../../components/miniMyList/MiniMyList";
 
 const problemListsPage = () => {
-  const userDataString = localStorage.getItem("user");
-  const userData = JSON.parse(userDataString);
-  const { userId } = userData;
+  // const userDataString = localStorage.getItem("user");
+  // const userData = JSON.parse(userDataString);
+  // const { userId } = userData;
+  const userId = "2";
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -66,11 +68,10 @@ const problemListsPage = () => {
 
       const searchTermRegex = new RegExp([...searchTerm].join(".*"), "i");
       const corFilterMatch =
-        corFilter === "default" || item.ideState.includes(corFilter);
+        corFilter === "default" || item.ideState === corFilter;
       const levFilterMatch =
-        levFilter === "default" ||
-        item.level.toLowerCase() === levFilter.toLowerCase();
-      const numMatch = itemNum.includes(searchTerm.trim());
+        levFilter === "default" || String(item.level) === levFilter;
+      const numMatch = String(itemNum).includes(searchTerm);
 
       return (
         (searchTermRegex.test(itemText.toLowerCase()) || numMatch) &&
@@ -227,12 +228,10 @@ const problemListsPage = () => {
                                 {problemList.title}
                               </Link>
                             </TableCell>
-                            <TableCell
-                              width="50"
-                              align="center"
-                              className={levelClass}
-                            >
-                              {`Lv.${problemList.level}`}
+                            <TableCell width="50" align="center">
+                              <span
+                                className={levelClass}
+                              >{`Lv.${problemList.level}`}</span>
                             </TableCell>
                             <TableCell width="150" align="left">
                               {problemList.customDirectoryInfos &&
@@ -244,6 +243,7 @@ const problemListsPage = () => {
                                     {item.customDirectoryName}
                                   </span>
                                 ))}
+                              <MiniMyList />
                             </TableCell>
                           </TableRow>
                         );
