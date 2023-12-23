@@ -6,6 +6,7 @@ import titleLogo from "../../assets/images/title_logo.png";
 import { requestLogout } from "../../pages/login-page/api";
 
 function Header() {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className={styles.header}>
       <div className={styles.header_title}>
@@ -21,7 +22,7 @@ function Header() {
         <Link to="/mypage">
           <img
             className={styles.header_user_profile}
-            src="https://avatars.githubusercontent.com/u/100774811?v=4"
+            src={user.profileImage}
             alt="user-profile"
           />
         </Link>
