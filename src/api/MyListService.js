@@ -1,8 +1,7 @@
-const accessToken = localStorage.getItem("accessToken");
-
 // 마이리스트 전체 조회
 export const fetchMyLists = async userId => {
   try {
+    const accessToken = window.localStorage.getItem("accessToken"); // window. 추가?, 모든 try 안에 추가해야함.
     if (!accessToken) {
       console.log("access token is not available");
       throw new Error(`access token 없음`);
@@ -31,6 +30,7 @@ export const fetchMyLists = async userId => {
 // 마이리스트 추가
 export const fetchAddMyList = async (userId, directoryTitle) => {
   try {
+    const accessToken = window.localStorage.getItem("accessToken");
     if (!accessToken) {
       console.log("access token is not available");
       throw new Error(`access token 없음`);
@@ -47,7 +47,7 @@ export const fetchAddMyList = async (userId, directoryTitle) => {
     if (!response.ok) {
       throw new Error("마이리스트 추가 실패");
     }
-    return response.json();
+    // return response.json();
   } catch (error) {
     console.error("fetchAddMyList 서버 요청에 실패했습니다: ", error);
 
@@ -58,6 +58,7 @@ export const fetchAddMyList = async (userId, directoryTitle) => {
 // 마이리스트 삭제
 export const fetchDeleteMyList = async (userId, directoryId) => {
   try {
+    const accessToken = window.localStorage.getItem("accessToken");
     console.log(accessToken);
     if (!accessToken) {
       console.log("access token is not available");
@@ -75,7 +76,9 @@ export const fetchDeleteMyList = async (userId, directoryId) => {
     if (!response.ok) {
       throw new Error("마이리스트 삭제 실패");
     }
-    return response.json();
+
+    const text = await response.text();
+    return text ? JSON.parse(text) : {};
   } catch (error) {
     console.error("fetchDeleteMyList 서버 요청에 실패했습니다: ", error);
 
@@ -86,6 +89,7 @@ export const fetchDeleteMyList = async (userId, directoryId) => {
 // 마이리스트 문제 추가
 export const fetchAddMyListProblem = async (userId, directoryId, problemId) => {
   try {
+    const accessToken = window.localStorage.getItem("accessToken");
     if (!accessToken) {
       console.log("access token is not available");
       throw new Error(`access token 없음`);
@@ -118,6 +122,7 @@ export const fetchDeleteMyListProblem = async (
   directoryProblemId,
 ) => {
   try {
+    const accessToken = window.localStorage.getItem("accessToken");
     if (!accessToken) {
       console.log("access token is not available");
       throw new Error(`access token 없음`);
@@ -145,7 +150,7 @@ export const fetchDeleteMyListProblem = async (
     if (!response.ok) {
       throw new Error("마이리스트 문제 삭제 실패");
     }
-    return response.json();
+    // return response.json();
   } catch (error) {
     console.error("fetchDeleteMyListProblem 서버 요청에 실패했습니다: ", error);
 
