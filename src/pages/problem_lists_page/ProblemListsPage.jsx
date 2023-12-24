@@ -19,9 +19,10 @@ import Header from "../../components/header/Header";
 import MiniMyList from "../../components/miniMyList/MiniMyList";
 
 const problemListsPage = () => {
-  const userDataString = localStorage.getItem("user");
-  const userData = JSON.parse(userDataString);
-  const { userId } = userData;
+  // const userDataString = localStorage.getItem("user");
+  // const userData = JSON.parse(userDataString);
+  // const { userId } = userData;
+  const userId = "3";
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -281,7 +282,7 @@ const problemListsPage = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={problemLists.length}
+              count={problemLists ? problemLists.length : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

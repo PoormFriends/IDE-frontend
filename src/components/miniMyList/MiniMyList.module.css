@@ -25,7 +25,7 @@ hr {
   background-color: var(--color-primary-variant);
   position: fixed;
   top: 30vh;
-  right: 10vw;
+  right: 20vw;
   min-width: 200px;
   min-height: 300px;
 }
@@ -64,4 +64,31 @@ hr {
 
 .all_lists_wrapper {
   font-weight: bold;
+}
+
+.cur_lists {
+  display: flex;
+}
+
+.cur_lists_list {
+  display: flex;
+  margin: 5px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: rgba(156, 202, 255, 0.479);
+}
+.del_btn {
+  margin-left: 10px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.all_lists {
+  display: flex;
+}
+
+.all_lists_list {
+  margin: 5px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: rgba(156, 202, 255, 0.479);
 }
