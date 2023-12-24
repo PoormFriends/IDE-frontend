@@ -49,7 +49,7 @@ export default function MyListContainer({ onClose }) {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h4 className={styles.label}>oo의 마이리스트</h4>
+        <h4 className={styles.label}>마이리스트</h4>
         <button
           className={styles.closeButton}
           type="button"
