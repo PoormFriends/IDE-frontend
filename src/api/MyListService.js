@@ -119,7 +119,6 @@ export const fetchDeleteMyListProblem = async (
   userId,
   directoryId,
   problemId,
-  directoryProblemId,
 ) => {
   try {
     const accessToken = window.localStorage.getItem("accessToken");
@@ -132,7 +131,6 @@ export const fetchDeleteMyListProblem = async (
       userId,
       directoryId,
       problemId,
-      directoryProblemId,
     );
     const response = await fetch(`http://localhost:8081/directory/problem`, {
       method: "DELETE",
@@ -144,7 +142,6 @@ export const fetchDeleteMyListProblem = async (
         userId,
         directoryId,
         problemId,
-        directoryProblemId,
       }),
     });
     if (!response.ok) {
