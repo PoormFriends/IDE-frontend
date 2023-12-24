@@ -19,10 +19,9 @@ import Header from "../../components/header/Header";
 import MiniMyList from "../../components/miniMyList/MiniMyList";
 
 const problemListsPage = () => {
-  // const userDataString = localStorage.getItem("user");
-  // const userData = JSON.parse(userDataString);
-  // const { userId } = userData;
-  const userId = "2";
+  const userDataString = localStorage.getItem("user");
+  const userData = JSON.parse(userDataString);
+  const { userId } = userData;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -30,6 +29,8 @@ const problemListsPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const [stateFilter, setstateFilter] = useState("default");
   const [levelFilter, setLevelFilter] = useState("default");
+  const [isListsEditing, setIsListsEditing] = useState(false);
+  const [editingNum, setEditingNum] = useState(-1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,6 +105,17 @@ const problemListsPage = () => {
 
     setLevelFilter(newLevel);
     filterProblems(searchFilter, stateFilter, newLevel);
+  };
+
+  const toggleOnListsEditor = num => () => {
+    setIsListsEditing(true);
+    setEditingNum(num);
+  };
+
+  const toggleOffListsEditor = e => {
+    e.stopPropagation();
+    setIsListsEditing(false);
+    setEditingNum(-1);
   };
 
   return (
@@ -233,7 +245,13 @@ const problemListsPage = () => {
                                 className={levelClass}
                               >{`Lv.${problemList.level}`}</span>
                             </TableCell>
-                            <TableCell width="150" align="left">
+                            <TableCell
+                              width="150"
+                              align="left"
+                              onClick={toggleOnListsEditor(
+                                problemList.problemId,
+                              )}
+                            >
                               {problemList.customDirectoryInfos &&
                                 problemList.customDirectoryInfos.map(item => (
                                   <span
@@ -243,7 +261,16 @@ const problemListsPage = () => {
                                     {item.customDirectoryName}
                                   </span>
                                 ))}
-                              <MiniMyList />
+                              {isListsEditing &&
+                              editingNum === problemList.problemId ? (
+                                <MiniMyList
+                                  userId={userId}
+                                  lists={problemList.customDirectoryInfos}
+                                  num={problemList.problemId}
+                                  isListsEditing={isListsEditing}
+                                  toggleOffListsEditor={toggleOffListsEditor}
+                                />
+                              ) : null}
                             </TableCell>
                           </TableRow>
                         );
