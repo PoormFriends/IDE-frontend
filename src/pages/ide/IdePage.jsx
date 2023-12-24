@@ -26,6 +26,7 @@ export default function IdePage() {
     return { problemId, userId };
   };
 
+  // ide 데이터 조회
   useEffect(() => {
     const { userId, problemId } = getUserIDProblemId();
     const accessToken = localStorage.getItem("accessToken");
@@ -55,6 +56,7 @@ export default function IdePage() {
       .catch(error => console.error(error));
   }, [location]);
 
+  // 제출 후 채점하기
   const handleSubmit = async () => {
     const { userId, problemId } = getUserIDProblemId();
     const accessToken = window.localStorage.getItem("accessToken");
