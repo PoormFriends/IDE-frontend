@@ -22,7 +22,7 @@ function Header() {
         <Link to="/mypage">
           <img
             className={styles.header_user_profile}
-            src={user.profileImage}
+            src={user?.profileImage}
             alt="user-profile"
           />
         </Link>

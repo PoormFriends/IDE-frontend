@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -20,7 +20,7 @@ import Header from "../../components/header/Header";
 const problemListsPage = () => {
   const userDataString = localStorage.getItem("user");
   const userData = JSON.parse(userDataString);
-  const { userId } = userData;
+  const userId = userData?.userId;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -29,7 +29,13 @@ const problemListsPage = () => {
   const [stateFilter, setstateFilter] = useState("default");
   const [levelFilter, setLevelFilter] = useState("default");
 
+  const isLogin = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
     const fetchData = async () => {
       const response = await fetch(
         `http://localhost:8081/api/problems/${userId}`,
