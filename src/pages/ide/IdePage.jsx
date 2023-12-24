@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { useLocation } from "react-router-dom";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
@@ -13,6 +14,7 @@ export default function IdePage() {
   const { editor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
   const [isMyListVisible, setIsMyListVisible] = useState(false);
+  const location = useLocation();
   // const containerRef = useRef(null); // 외부 클릭 감지
 
   const getUserIDProblemId = () => {
@@ -38,34 +40,52 @@ export default function IdePage() {
       },
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`HTTP error! Status: ${response.status}`);
+        // }
         return response.json();
       })
+      // 초대 받은 사람인지 / 주인인지 확인 먼저(백엔드 -> status code -> 어떻게 보여줄지)
+      // 200일때는 데이터를 같이 받아서 / 403일때는 데이터없이 유저를 이동 유도
       .then(data => {
         setProblems(data);
+        console.log("data", { data });
         console.log(`userId: ${userId}, problemId: ${problemId}`);
       })
       .catch(error => console.error(error));
-  }, []);
+  }, [location]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { userId, problemId } = getUserIDProblemId();
-    fetch(`http://localhost:8081/solve/${userId}/${problemId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ usercode: editor }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        const { state } = data;
-        setExecutionResult(state);
-      })
-      .catch(error => console.error("Error: ", error));
+    const accessToken = window.localStorage.getItem("accessToken");
+    try {
+      const response = await fetch(
+        `http://localhost:8081/solve/${userId}/${problemId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ usercode: editor }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("response data", { data });
+
+      // 아래 부분을 백엔드 응답 구조에 맞게 조정
+      const state = data.information?.state || data.state;
+      console.log({ state });
+      setExecutionResult(state);
+    } catch (error) {
+      console.error("Error: ", error);
+      // 여기에 사용자에게 오류 메시지 표시 로직을 추가할 수 있습니다.
+    }
   };
 
   const toggleMyListVisible = () => {
@@ -113,7 +133,7 @@ export default function IdePage() {
           {problems &&
             problems.testCases.map((testCase, index) => (
               <InputOutput
-                key={testCase.id}
+                key={testCase.testCaseId}
                 num={index}
                 input={testCase.input}
                 output={testCase.output}
