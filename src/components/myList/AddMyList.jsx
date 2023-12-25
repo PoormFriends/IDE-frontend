@@ -14,6 +14,7 @@ export default function AddMyList({ onToggleEdit }) {
     setTitle(e.target.value);
   };
 
+  // 마이리스트 추가
   const addMyListMutation = useMutation(() => fetchAddMyList(userId, title), {
     onSuccess: () => {
       queryClient.invalidateQueries(["myLists", userId]);
