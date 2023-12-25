@@ -11,7 +11,7 @@ import MyListContainer from "../../components/myList/MyListContainer";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
-  const { editor } = useContext(EditorContext);
+  const { editor, setEditor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
   const [isMyListVisible, setIsMyListVisible] = useState(false);
   const location = useLocation();
@@ -47,10 +47,16 @@ export default function IdePage() {
       // 200일때는 데이터를 같이 받아서 / 403일때는 데이터없이 유저를 이동 유도
       .then(data => {
         setProblems(data);
+        if (data.usercode) {
+          setEditor(data.usercode);
+        }
         console.log("data", { data });
         console.log(`userId: ${userId}, problemId: ${problemId}`);
       })
       .catch(error => console.error(error));
+
+    setExecutionResult("");
+    setIsMyListVisible(false);
   }, [location]);
 
   // 제출 후 채점하기
@@ -138,15 +144,14 @@ export default function IdePage() {
           {problems && (
             <ProblemContent type="문제 설명" content={problems.content} />
           )}
-          {problems &&
-            problems.testCases.map((testCase, index) => (
-              <InputOutput
-                key={testCase.testCaseId}
-                num={index}
-                input={testCase.input}
-                output={testCase.output}
-              />
-            ))}
+          {problems?.testCases?.map((testCase, index) => (
+            <InputOutput
+              key={testCase.testCaseId}
+              num={index}
+              input={testCase.input}
+              output={testCase.output}
+            />
+          ))}
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
