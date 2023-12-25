@@ -27,39 +27,6 @@ function MyPage() {
   };
 
   useEffect(() => {
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        userId: "11",
-        name: "푸르미",
-        email: "poorm@poormfriends.com",
-      }), // test value
-    );
-    localStorage.setItem(
-      "problemList",
-      JSON.stringify([
-        {
-          directoryId: 1,
-          directoryName: "1번 리스트",
-          problemList: [
-            { directoryProblemId: 1, problemNum: 1, problemTitle: "1번 문제" },
-          ],
-        },
-        {
-          directoryId: 2,
-          directoryName: "2번 리스트",
-          problemList: [
-            { directoryProblemId: 1, problemNum: 1, problemTitle: "1번 문제" },
-            {
-              directoryProblemId: 2,
-              problemNum: 2,
-              problemTitle: "2번 문제",
-            },
-          ],
-        }, // test value
-      ]),
-    );
-    // setMyList(JSON.parse(localStorage.getItem("problemList")));
     fetchData();
   }, []);
 
