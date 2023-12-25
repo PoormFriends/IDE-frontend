@@ -80,8 +80,17 @@ export default function IdePage() {
       console.log("response data", { data });
 
       const state = data.information?.state || data.state;
-      console.log({ state });
-      setExecutionResult(state);
+      let executeResultPhase = "";
+      if (state === "COMPILE_ERROR") {
+        executeResultPhase = "컴파일 에러입니다.";
+      } else if (state === "WRONG_ANSWER") {
+        executeResultPhase = "오답입니다.";
+      } else if (state === "SUCCESS") {
+        executeResultPhase = "정답입니다!";
+      } else {
+        executeResultPhase = "ERROR! 다시 시도해주세요.";
+      }
+      setExecutionResult(executeResultPhase);
     } catch (error) {
       console.error("Error: ", error);
     }
