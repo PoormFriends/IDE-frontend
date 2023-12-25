@@ -49,7 +49,7 @@ const problemListsPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [problemLists]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
