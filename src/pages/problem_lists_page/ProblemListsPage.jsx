@@ -27,8 +27,8 @@ const problemListsPage = () => {
   const [rows, setRows] = useState([]);
   const [problemLists, setProblemLists] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
-  const [stateFilter, setstateFilter] = useState("default");
-  const [levelFilter, setLevelFilter] = useState("default");
+  const [stateFilter, setstateFilter] = useState("DEFAULT");
+  const [levelFilter, setLevelFilter] = useState("DEFAULT");
   const [isListsEditing, setIsListsEditing] = useState(false);
   const [editingNum, setEditingNum] = useState(-1);
 
@@ -67,17 +67,17 @@ const problemListsPage = () => {
 
       if (
         !searchTerm.trim() &&
-        corFilter === "default" &&
-        levFilter === "default"
+        corFilter === "DEFAULT" &&
+        levFilter === "DEFAULT"
       ) {
         return true;
       }
 
       const searchTermRegex = new RegExp([...searchTerm].join(".*"), "i");
       const corFilterMatch =
-        corFilter === "default" || item.ideState === corFilter;
+        corFilter === "DEFAULT" || item.ideState === corFilter;
       const levFilterMatch =
-        levFilter === "default" || String(item.level) === levFilter;
+        levFilter === "DEFAULT" || String(item.level) === levFilter;
       const numMatch = String(itemNum).includes(searchTerm);
 
       return (
@@ -88,7 +88,7 @@ const problemListsPage = () => {
     });
 
     setProblemLists(
-      !searchTerm.trim() && corFilter === "default" && levFilter === "default"
+      !searchTerm.trim() && corFilter === "DEFAULT" && levFilter === "DEFAULT"
         ? rows
         : filteredRows,
     );
@@ -152,7 +152,7 @@ const problemListsPage = () => {
                   value={stateFilter}
                   onChange={handlestateFilterChange}
                 >
-                  <MenuItem value="default">none</MenuItem>
+                  <MenuItem value="DEFAULT">none</MenuItem>
                   <MenuItem value="SUCCESS">O</MenuItem>
                   <MenuItem value="FAILURE">X</MenuItem>
                 </Select>
@@ -170,7 +170,7 @@ const problemListsPage = () => {
                   value={levelFilter}
                   onChange={handleLevelFilterChange}
                 >
-                  <MenuItem value="default">none</MenuItem>
+                  <MenuItem value="DEFAULT">none</MenuItem>
                   <MenuItem value="0">Lv.0</MenuItem>
                   <MenuItem value="1">Lv.1</MenuItem>
                   <MenuItem value="2">Lv.2</MenuItem>
