@@ -19,6 +19,9 @@
   color: var(--color-text);
   text-decoration: none;
 }
+.link:hover {
+  text-decoration: underline;
+}
 .level {
   justify-content: end;
   color: var(--color-accent);
