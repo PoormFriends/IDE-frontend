@@ -12,28 +12,21 @@ import { EditorProvider } from "./contexts/EditorContext";
 
 const queryClient = new QueryClient();
 function App() {
-  const isLogin = localStorage.getItem("accessToken");
   return (
     <QueryClientProvider client={queryClient}>
       <EditorProvider>
         <Router>
-          {isLogin ? (
-            <Routes>
-              <Route path="/" element={<ProblemListsPage />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/solve/:userId/:problemId" element={<IdePage />} />
-              <Route
-                path="/mylist/:userId/:problemId"
-                element={<MyListContainer />}
-              />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/" element={<LoginPage />} />
-              <Route path="/oauth2" element={<RedirectPage />} />
-            </Routes>
-          )}
+          <Routes>
+            <Route path="/" element={<ProblemListsPage />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/solve/:userId/:problemId" element={<IdePage />} />
+            <Route
+              path="/mylist/:userId/:problemId"
+              element={<MyListContainer />}
+            />
+            <Route path="/oauth2" element={<RedirectPage />} />
+          </Routes>
         </Router>
       </EditorProvider>
     </QueryClientProvider>
