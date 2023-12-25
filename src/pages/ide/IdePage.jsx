@@ -59,6 +59,8 @@ export default function IdePage() {
   // 제출 후 채점하기
   const handleSubmit = async () => {
     const { userId, problemId } = getUserIDProblemId();
+    console.log("handleSubmit: ", userId, problemId);
+    console.log("usercode: ", { editor });
     const accessToken = window.localStorage.getItem("accessToken");
     try {
       const response = await fetch(
