@@ -8,12 +8,14 @@ import ProblemContent from "../../components/Ide/ProblemContent";
 import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
 import MyListContainer from "../../components/myList/MyListContainer";
+import ChatModal from "../../components/chatModal/ChatModal";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
   const { editor, setEditor } = useContext(EditorContext);
   const [problems, setProblems] = useState(null);
   const [isMyListVisible, setIsMyListVisible] = useState(false);
+  const [isChatVisible, setIsChatVisible] = useState(false);
   const location = useLocation();
   // const containerRef = useRef(null); // 외부 클릭 감지
 
@@ -106,6 +108,10 @@ export default function IdePage() {
     setIsMyListVisible(!isMyListVisible);
   };
 
+  const toggleChatVisible = () => {
+    setIsChatVisible(!isChatVisible);
+  };
+
   return (
     <div>
       <header className={styles.header}>
@@ -168,9 +174,15 @@ export default function IdePage() {
           type="button"
           aria-label="chattingButton"
           className={styles.chattingButton}
+          onClick={() => toggleChatVisible()}
         >
           <IoChatboxEllipsesOutline className={styles.chattingIcon} />
         </button>
+        {isChatVisible && (
+          <div className={styles.chat_modal}>
+            <ChatModal />
+          </div>
+        )}
         <button
           type="button"
           className={styles.executeButton}
