@@ -41,9 +41,6 @@ export default function IdePage() {
       },
     })
       .then(response => {
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! Status: ${response.status}`);
-        // }
         return response.json();
       })
       // 초대 받은 사람인지 / 주인인지 확인 먼저(백엔드 -> status code -> 어떻게 보여줄지)
@@ -82,13 +79,11 @@ export default function IdePage() {
       const data = await response.json();
       console.log("response data", { data });
 
-      // 아래 부분을 백엔드 응답 구조에 맞게 조정
       const state = data.information?.state || data.state;
       console.log({ state });
       setExecutionResult(state);
     } catch (error) {
       console.error("Error: ", error);
-      // 여기에 사용자에게 오류 메시지 표시 로직을 추가할 수 있습니다.
     }
   };
 
