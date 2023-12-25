@@ -1,21 +1,22 @@
 .input_wrapper {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   background-color: white;
   display: flex;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
+
 .text_editor {
   max-height: 150px;
-  min-width: 100vh;
-  border: 1px solid gray;
+  width: 430px;
+  border: 2px solid gray;
+  border-radius: 5px;
 }
 
 .submit_btn {
+  width: 70px;
   cursor: pointer;
-  border: 1px solid gray;
-  border-radius: 0 5px 5px 0;
+  border: 2px solid gray;
+  border-radius: 0 0 5px 0;
 }
 
 .submit_btn:active {
@@ -24,5 +25,4 @@
 
 button.is-active {
   background-color: rgb(197, 197, 197);
-  border-radius: 2px;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MessageContainer from "./MessageContainer";
 import InputField from "./InputField";
+import styles from "./ChatModal.module.css";
 
 const chatLog = [
   {
@@ -50,19 +51,17 @@ function ChatModal() {
   };
 
   return (
-    <div>
-      <div className="App">
-        <MessageContainer
-          messageLists={messageLists}
-          user={userNickname}
-          userId={userId}
-        />
-        <InputField
-          message={message}
-          setMessage={setMessage}
-          sendmessage={sendmessage}
-        />
-      </div>
+    <div className={styles.chat_box}>
+      <MessageContainer
+        messageLists={messageLists}
+        user={userNickname}
+        userId={userId}
+      />
+      <InputField
+        message={message}
+        setMessage={setMessage}
+        sendmessage={sendmessage}
+      />
     </div>
   );
 }

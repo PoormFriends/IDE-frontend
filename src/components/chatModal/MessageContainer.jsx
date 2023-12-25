@@ -35,7 +35,10 @@ function MessageContainer({ messageLists, user }) {
           }
 
           return (
-            <Container key={list.time} className={styles.message_container}>
+            <Container
+              key={list.time}
+              sx={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
+            >
               {messageContainer}
             </Container>
           );

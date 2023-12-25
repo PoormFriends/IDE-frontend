@@ -124,3 +124,9 @@
 .executeButton:hover {
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
 }
+.chat_modal {
+  border-radius: 5px;
+  z-index: 1100;
+  position: absolute;
+  bottom: 50px;
+}

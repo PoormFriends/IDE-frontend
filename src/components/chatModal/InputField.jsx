@@ -17,7 +17,7 @@ function InputField({ message, setMessage, sendmessage }) {
   return (
     <div className={styles.input_wrapper}>
       <div className={styles.text_editor}>
-        <EditorContent className={styles.tiptap} editor={editor} />
+        <EditorContent editor={editor} />
       </div>
       <button
         type="button"

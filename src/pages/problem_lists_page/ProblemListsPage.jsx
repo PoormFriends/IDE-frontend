@@ -49,7 +49,7 @@ const problemListsPage = () => {
     };
 
     fetchData();
-  }, [problemLists]);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -287,7 +287,7 @@ const problemListsPage = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={problemLists ? problemLists.length : 0}
+              count={problemLists ? problemLists.length : 10}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
