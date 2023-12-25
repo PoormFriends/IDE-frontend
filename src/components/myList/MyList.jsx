@@ -14,16 +14,20 @@ export default function MyList({ directoryId, directoryName, problemList }) {
   const { userId, problemId } = useParams();
   const queryClient = useQueryClient();
 
+  // isLoading 이 있어서 진행중 과정을 확인가능
   const addMyListProblemMutation = useMutation(
     () => fetchAddMyListProblem(userId, directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["myLists", userId]);
+        // queryClient.setDataQuery(["myLists", userId], );
       },
     },
   );
   const handleAddMyListProblem = () => {
     addMyListProblemMutation.mutate({
+      // mutate async + await⭐️
+      // 비동기 실행 순서 로그 찍어서 확인해보기!
       userId,
       directoryId,
       problemId,
@@ -33,16 +37,23 @@ export default function MyList({ directoryId, directoryName, problemList }) {
   const deleteMyListMutation = useMutation(
     () => fetchDeleteMyList(userId, directoryId),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["myLists", userId]);
+      onSuccess: data => {
+        console.log("deleteMyListMutation 성공", { data });
+        // queryClient.invalidateQueries(["myLists", userId]); // 렌더링에는 직접 영향을 미치지 않음
+        queryClient.refetchQueries(["myLists", userId]);
+      },
+      onError: error => {
+        console.log("deleteMyListMutation error", error);
       },
     },
   );
+  // try catch에서 toast
   const handleDeleteList = () => {
     deleteMyListMutation.mutate({
       userId,
       directoryId,
     });
+    console.log("handleDeleteList");
   };
 
   return (
@@ -67,6 +78,7 @@ export default function MyList({ directoryId, directoryName, problemList }) {
             <MyListProblem
               key={problem.directoryProblemId}
               directoryId={directoryId}
+              problemNum={problem.problemNum}
               directoryProblemId={problem.directoryProblemId}
               problemTitle={problem.problemTitle}
               problemLevel={problem.problemLevel}

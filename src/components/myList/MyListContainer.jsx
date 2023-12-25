@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -11,18 +11,35 @@ export default function MyListContainer({ onClose }) {
   const [isEdit, setIsEdit] = useState(false);
   const { userId } = useParams();
 
+  // 마이리스트 조회
   const {
     data: myLists,
     isLoading,
+    isFetching,
     error,
   } = useQuery(["myLists", userId], () => fetchMyLists(userId));
   console.log("myLists: ", myLists);
+
+  const list = useMemo(
+    () =>
+      myLists &&
+      myLists.map(myList => (
+        <MyList
+          key={myList.directoryId}
+          directoryId={myList.directoryId}
+          directoryName={myList.directoryName}
+          problemList={myList.problemList}
+        />
+      )),
+    [myLists],
+  );
 
   const handleClick = () => {
     setIsEdit(prev => !prev);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>; // 첫 로딩에서만
+  if (isFetching) console.log({ isFetching }); // 변화가 있을 때마다 보여주고 싶을 때
   if (error) {
     console.log("my list error");
     console.log(error);
@@ -32,7 +49,7 @@ export default function MyListContainer({ onClose }) {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h4 className={styles.label}>oo의 마이리스트</h4>
+        <h4 className={styles.label}>마이리스트</h4>
         <button
           className={styles.closeButton}
           type="button"
@@ -43,17 +60,7 @@ export default function MyListContainer({ onClose }) {
         </button>
       </header>
 
-      <div className={styles.lists}>
-        {myLists &&
-          myLists.map(myList => (
-            <MyList
-              key={myList.directoryId}
-              directoryId={myList.directoryId}
-              directoryName={myList.directoryName}
-              problemList={myList.problemList}
-            />
-          ))}
-      </div>
+      <div className={styles.lists}>{list}</div>
       <div className={styles.addContainer}>
         {isEdit ? (
           <AddMyList onToggleEdit={handleClick} />

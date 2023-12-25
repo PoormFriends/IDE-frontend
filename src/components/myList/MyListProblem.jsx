@@ -1,29 +1,28 @@
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import styles from "./MyListProblem.module.css";
 import { fetchDeleteMyListProblem } from "../../api/MyListService";
 
 export default function MyListProblem({
   directoryId,
-  directoryProblemId,
+  problemNum,
   problemTitle,
   problemLevel,
 }) {
   const { userId, problemId } = useParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const deleteMyListProblemMutation = useMutation(
-    () =>
-      fetchDeleteMyListProblem(
-        userId,
-        directoryId,
-        problemId,
-        directoryProblemId,
-      ),
+    () => fetchDeleteMyListProblem(userId, directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["myLists", userId]);
+      },
+      onError: error => {
+        console.log("문제 삭제하기 실패", error);
       },
     },
   );
@@ -33,13 +32,21 @@ export default function MyListProblem({
       userId,
       directoryId,
       problemId,
-      directoryProblemId,
     });
+  };
+
+  const handleClick = () => {
+    const path = `/solve/${userId}/${problemNum}`;
+    navigate(path);
   };
   return (
     <div className={styles.container}>
       <p className={styles.title}>
-        <NavLink to={`/solve/${userId}/${problemId}`} className={styles.link}>
+        <NavLink
+          to={`/solve/${userId}/${problemNum}`}
+          className={styles.link}
+          onClick={handleClick}
+        >
           {problemTitle}
         </NavLink>
       </p>
