@@ -2,15 +2,18 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
   padding: 2rem 1rem;
+  width: 1500px;
 }
 .searchFilter_container {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  width: 100%;
 }
 .searchbar {
-  width: 900px;
+  flex: 1;
 }
 .filter_container {
   display: grid;
@@ -23,7 +26,7 @@
   display: flex;
   flex-direction: column;
   align-self: center;
-  width: 1250px;
+  width: 100%;
 }
 .problem_title {
   color: black;

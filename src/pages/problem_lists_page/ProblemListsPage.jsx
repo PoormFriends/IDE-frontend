@@ -183,7 +183,7 @@ const problemListsPage = () => {
                 <TableCell align="center">번호</TableCell>
                 <TableCell align="center">제목</TableCell>
                 <TableCell align="center">난이도</TableCell>
-                <TableCell align="center">리스트</TableCell>
+                <TableCell align="center">마이리스트</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
