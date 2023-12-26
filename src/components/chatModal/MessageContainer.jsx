@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Container from "@mui/material/Container";
 import parser from "html-react-parser";
 import styles from "./MessageContainer.module.css";
 
 function MessageContainer({ messageLists, user }) {
+  const scrollRef = useRef();
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  });
+
   return (
-    <div className={styles.message_container_wrap}>
+    <div ref={scrollRef} className={styles.message_container_wrap}>
       {messageLists &&
         messageLists.map(list => {
           let messageContainer = null;
