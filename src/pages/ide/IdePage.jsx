@@ -69,19 +69,6 @@ export default function IdePage() {
       brokerURL: "ws://localhost:8081/ws",
       onConnect: () => {
         subscribe(); // 연결 성공 시 구독하는 로직 실행
-        const time = new Date().getTime();
-        client.current.publish({
-          destination: "/pub/chat",
-          body: JSON.stringify({
-            ownerId: userId,
-            problemId,
-            userId: "-1",
-            userNickname: "system",
-            userProfile: null,
-            time,
-            message: `${guestNickname}님이 입장하셨습니다.`,
-          }),
-        });
       },
     });
     client.current.activate(); // 클라이언트 활성화
@@ -89,19 +76,6 @@ export default function IdePage() {
 
   // 연결이 끊겼을 때
   const disconnect = () => {
-    const time = new Date().getTime();
-    client.current.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify({
-        ownerId: userId,
-        problemId,
-        userId: guestId,
-        userNickname: guestNickname,
-        userProfile: guestProfile,
-        time,
-        message: `${guestNickname}님이 퇴장하셨습니다.`,
-      }),
-    });
     client.current.deactivate();
   };
 
