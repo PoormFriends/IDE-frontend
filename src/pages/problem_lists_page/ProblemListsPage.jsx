@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+// import { Link } from "react-router-dom";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,14 +17,12 @@ import TablePagination from "@mui/material/TablePagination";
 import { useQuery } from "react-query";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
-import MiniMyList from "../../components/miniMyList/MiniMyList";
+// import MiniMyList from "../../components/miniMyList/MiniMyList";
 import fetchProblemLists from "../../api/ProblemListsService";
-import { fetchMyLists } from "../../api/MyListService";
+// import { fetchMyLists } from "../../api/MyListService";
+import ProblemRow from "../../components/problemList/ProblemRow";
 
 const problemListsPage = () => {
-  const userDataString = localStorage.getItem("user");
-  const userData = JSON.parse(userDataString);
-  const userId = userData?.userId;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -32,32 +30,39 @@ const problemListsPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const [stateFilter, setstateFilter] = useState("DEFAULT");
   const [levelFilter, setLevelFilter] = useState("DEFAULT");
-  const [isListsEditing, setIsListsEditing] = useState(false);
-  const [editingNum, setEditingNum] = useState(-1);
+  // const [isListsEditing, setIsListsEditing] = useState(false);
+  // const [editingNum, setEditingNum] = useState(-1);
 
   // const isLogin = localStorage.getItem("accessToken");
   // const navigate = useNavigate();
 
+  // localStorage에서 userId 가져오기
+  const getUserId = () => {
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const userId = userData?.userId;
+
+    return userId;
+  };
+  const userId = getUserId();
+
   const {
-    data: total,
+    data: problems,
     isLoading,
     error,
     isFetching,
   } = useQuery(["problemLists", userId], () => fetchProblemLists(userId));
 
-  const { data: totalMyLists } = useQuery(["myLists", userId], () =>
-    fetchMyLists(userId),
-  );
   // invalidate를 전체 problem를 1번
 
   // 내가 갖고 있는 모든 디렉토리->minimylsit로 props 넘겨줌, 문제들-> 테이블
   // minimylists는 그 문제에 대한 리스트: 현재리스트 / 전체리스트(보여주기만)
   // minimylits 추가 삭제: mutation마다 최상단의 문제들 problemLists를 invalidate(무효화) -> 리렌더링(마이리스트처럼 해결)
 
-  useEffect(() => {
-    // 불러오는 방법
-    // context api(둘을 감싸서 바텀업) or react query
-  }, [isListsEditing]);
+  // useEffect(() => {
+  //   // 불러오는 방법
+  //   // context api(둘을 감싸서 바텀업) or react query
+  // }, [isListsEditing]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -122,16 +127,16 @@ const problemListsPage = () => {
     filterProblems(searchFilter, stateFilter, newLevel);
   };
 
-  const toggleOnListsEditor = num => () => {
-    setIsListsEditing(true);
-    setEditingNum(num);
-  };
+  // const toggleOnListsEditor = num => () => {
+  //   setIsListsEditing(true);
+  //   setEditingNum(num);
+  // };
 
-  const toggleOffListsEditor = e => {
-    e.stopPropagation();
-    setIsListsEditing(false);
-    setEditingNum(-1);
-  };
+  // const toggleOffListsEditor = e => {
+  //   e.stopPropagation();
+  //   setIsListsEditing(false);
+  //   setEditingNum(-1);
+  // };
 
   if (isLoading) return <div>Loading...</div>;
   if (isFetching) console.log({ isFetching });
@@ -207,99 +212,23 @@ const problemListsPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {total &&
-                    total
+                  {problems &&
+                    problems
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage,
                       )
-                      .map(problemList => {
-                        const levelMap = {
-                          0: styles.lv0,
-                          1: styles.lv1,
-                          2: styles.lv2,
-                        };
-
-                        const levelClass =
-                          levelMap[problemList.level.toString()] || "";
-
-                        let stateIcon = null;
-                        if (
-                          problemList.ideState &&
-                          problemList.ideState === "SUCCESS"
-                        ) {
-                          stateIcon = <span className={styles.OText}>O</span>;
-                        } else if (
-                          problemList.ideState &&
-                          problemList.ideState === "FAILURE"
-                        ) {
-                          stateIcon = <span className={styles.XText}>X</span>;
-                        }
-
-                        return (
-                          <TableRow
-                            hover
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={problemList.problemId}
-                          >
-                            <TableCell width="60" align="center">
-                              {stateIcon}
-                            </TableCell>
-                            <TableCell
-                              width="30"
-                              component="th"
-                              scope="row"
-                              align="right"
-                            >
-                              {problemList.problemId}
-                            </TableCell>
-                            <TableCell width="200" align="left">
-                              <Link
-                                className={styles.problem_title}
-                                to={`/solve/${userId}/${problemList.problemId}`}
-                              >
-                                {problemList.title}
-                              </Link>
-                            </TableCell>
-                            <TableCell width="50" align="center">
-                              <span
-                                className={levelClass}
-                              >{`Lv.${problemList.level}`}</span>
-                            </TableCell>
-                            <TableCell
-                              width="150"
-                              align="left"
-                              onClick={toggleOnListsEditor(
-                                problemList.problemId,
-                              )}
-                            >
-                              {problemList.customDirectoryInfos &&
-                                problemList.customDirectoryInfos.map(item => (
-                                  <span
-                                    className={styles.list_box}
-                                    key={item.customDirectoryId}
-                                  >
-                                    {item.customDirectoryName}
-                                  </span>
-                                ))}
-                              {isListsEditing &&
-                              editingNum === problemList.problemId ? (
-                                <MiniMyList
-                                  userId={userId}
-                                  currentMyLists={
-                                    problemList.customDirectoryInfos
-                                  }
-                                  totalMyLists={totalMyLists}
-                                  problemId={problemList.problemId}
-                                  isListsEditing={isListsEditing}
-                                  toggleOffListsEditor={toggleOffListsEditor}
-                                />
-                              ) : null}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                      .map(problem => (
+                        <ProblemRow
+                          key={problem.problemId}
+                          userId={userId}
+                          state={problem.ideState}
+                          problemId={problem.problemId}
+                          problemName={problem.title}
+                          level={problem.level}
+                          directories={problem.customDirectoryInfos}
+                        />
+                      ))}
                 </TableBody>
               </Table>
             </TableContainer>

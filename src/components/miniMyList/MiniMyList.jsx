@@ -6,38 +6,30 @@ import {
   fetchDeleteMyListProblem,
 } from "../../api/MyListService";
 
-function MiniMyList({
-  userId,
-  currentMyLists,
-  totalMyLists,
-  problemId,
-  toggleOffListsEditor,
-}) {
-  console.log(`userId: ${userId}, problemId: ${problemId}`);
-  console.log("현재리스트: ", currentMyLists);
-  console.log("전체리스트: ", totalMyLists);
-
+function MiniMyList({ userId, currentMyLists, totalMyLists, problemId }) {
   const queryClient = useQueryClient();
 
   const addMyListMutation = useMutation(
-    () => fetchAddMyListProblem(userId, currentMyLists.directoryId, problemId),
+    ({ directoryId }) => fetchAddMyListProblem(userId, directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["problemLists", userId]);
+      },
+      onError: error => {
+        console.log("문제리스트 fetchAddMyListProblem error", error);
       },
     },
   );
 
   const handleAddDirectory = directoryId => {
     addMyListMutation.mutate({
-      userId,
       directoryId,
-      problemId,
     });
   };
 
   const deleteMyListMutation = useMutation(
-    () => fetchDeleteMyListProblem(userId, directoryId, problemId),
+    ({ directoryId }) =>
+      fetchDeleteMyListProblem(userId, directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["problemLists", userId]);
@@ -49,11 +41,8 @@ function MiniMyList({
   );
 
   const handleDeleteDirectory = directoryId => {
-    console.log(`directoryId: ${directoryId}`);
     deleteMyListMutation.mutate({
-      userId,
       directoryId,
-      problemId,
     });
   };
 
@@ -65,11 +54,7 @@ function MiniMyList({
             <div className={styles.modal_title}>
               {problemId}번 문제 리스트 편집
             </div>
-            <button
-              type="button"
-              className={styles.exit_button}
-              onClick={toggleOffListsEditor}
-            >
+            <button type="button" className={styles.exit_button}>
               x
             </button>
           </div>
