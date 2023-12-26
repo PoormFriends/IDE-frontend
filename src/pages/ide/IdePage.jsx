@@ -89,6 +89,7 @@ export default function IdePage() {
 
   // 연결이 끊겼을 때
   const disconnect = () => {
+    const time = new Date().getTime();
     client.current.publish({
       destination: "/pub/chat",
       body: JSON.stringify({
