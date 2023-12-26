@@ -37,7 +37,7 @@ export default function ProblemRow({
         </Link>
       </TableCell>
       <TableCell align="center">
-        <span>{`Lv.${level}`}</span>
+        <span className={styles.level}>{`Lv.${level}`}</span>
       </TableCell>
       <TableCell align="center" onClick={toggleMyListModal}>
         <div>

@@ -7,3 +7,9 @@
   text-decoration: none;
   cursor: pointer;
 }
+.level {
+  color: var(--color-accent);
+  border-radius: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  font-weight: bold;
+}
