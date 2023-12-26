@@ -1,38 +1,33 @@
-.wrapper {
-  max-width: 60vw;
-  margin: auto;
-  position: relative;
-}
-
-.search_bar {
-  max-width: 650px;
-  margin: auto;
+.container {
+  overflow-y: auto;
   display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  width: 1500px;
+}
+.searchFilter_container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+.searchbar {
+  flex: 1;
+}
+.filter_container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 350px;
 }
 
-.sort_standard {
-  padding-top: 15px;
-  max-width: 600px;
-  margin: auto;
-
-  position: relative;
+.table_container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 100%;
 }
-
-.sort_state {
-  max-width: 100px;
-  position: absolute;
-  left: 130px;
-}
-
-.sort_level {
-  max-width: 100px;
-}
-
-.proplem_table_container {
-  margin-top: 20px;
-  position: absolute;
-}
-
 .problem_title {
   color: black;
   text-decoration: none;

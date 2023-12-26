@@ -1,0 +1,26 @@
+.table_row:hover {
+  background-color: #f9fafb;
+}
+.link {
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.level {
+  color: var(--color-accent);
+  border-radius: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  font-weight: bold;
+}
+.mylist_cell {
+  max-width: 500px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mylist_container {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
