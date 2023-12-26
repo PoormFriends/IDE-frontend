@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+/* eslint-disable */
+import React, { useContext, useEffect, useState, useRef } from "react";
+import * as StompJs from "@stomp/stompjs";
 import {
   IoChatboxEllipsesOutline,
   IoExitOutline,
@@ -22,6 +24,66 @@ export default function IdePage() {
   const location = useLocation();
   const { userId, problemId } = useParams();
   // const containerRef = useRef(null); // 외부 클릭 감지
+  const [messageLists, setMessageLists] = useState([]);
+  const [message, setMessage] = useState("");
+  const guestDataString = localStorage.getItem("user");
+  const guestData = JSON.parse(guestDataString);
+  const guestId = String(guestData?.userId);
+  const guestNickname = guestData?.name;
+  const guestProfile = guestData?.profileImage;
+
+  // 클라이언트 생성
+  const client = useRef({});
+
+  // 데이터 가져오기
+  const subscribe = () => {
+    client.current.subscribe(`/sub/chat/${userId}/${problemId}`, body => {
+      const jsonBody = JSON.parse(body.body);
+      setMessageLists(prevMessagList => [...prevMessagList, jsonBody]);
+    });
+  };
+
+  // 메시지 보내기
+  const publish = chat => {
+    if (!client.current.connected) return; // 연결되지 않았으면 메시지를 보내지 않는다.
+    const time = new Date().getTime();
+    client.current.publish({
+      destination: "/pub/chat",
+      body: JSON.stringify({
+        ownerId: userId,
+        problemId,
+        userId: guestId,
+        userNickname: guestNickname,
+        userProfile: guestProfile,
+        time,
+        message: chat,
+      }),
+    });
+
+    setMessage("");
+  };
+
+  // 웹소켓 연결
+  const connect = () => {
+    client.current = new StompJs.Client({
+      brokerURL: "ws://localhost:8081/ws",
+      onConnect: () => {
+        subscribe(); // 연결 성공 시 구독하는 로직 실행
+      },
+    });
+    client.current.activate(); // 클라이언트 활성화
+  };
+
+  // 연결이 끊겼을 때
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  useEffect(() => {
+    connect();
+
+    return () => disconnect();
+  }, []);
 
   // ide 데이터 조회
   useEffect(() => {
@@ -179,7 +241,13 @@ export default function IdePage() {
         </button>
         {isChatVisible && (
           <div className={styles.chat_modal}>
-            <ChatModal ownerId={userId} problemId={problemId} />
+            <ChatModal
+              message={message}
+              setMessage={setMessage}
+              messageLists={messageLists}
+              userId={guestId}
+              publish={publish}
+            />
           </div>
         )}
         <button
