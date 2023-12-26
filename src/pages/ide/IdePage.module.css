@@ -21,8 +21,9 @@
   background-color: transparent;
   border: none;
   outline: none;
-  font-size: 1.4rem;
-  margin-right: 1rem;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  margin-right: 0.4rem;
 }
 .problemTitle {
   font-size: 1rem;
@@ -33,6 +34,25 @@
   font-size: 0.7rem;
   font-weight: bold;
   color: var(--color-accent);
+}
+.linkContainer {
+  display: flex;
+  flex: 1;
+  justify-content: right;
+}
+.link {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  font-size: 0.8rem;
+  color: var(--color-darkgray);
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.linkIcon {
+  margin-right: 0.2rem;
 }
 /* Body */
 .container {

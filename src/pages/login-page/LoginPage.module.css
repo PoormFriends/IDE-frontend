@@ -1,56 +1,51 @@
-.login_container {
+.container {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+  width: 100vw;
+  height: 80vh;
   align-items: center;
   justify-content: center;
-  position: relative;
-  height: 95vh;
 }
-.btn_kakao {
-  border: none;
-  background-color: #fbe400;
-  width: 300px;
-  height: 45px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: -30px;
+.logoContainer {
+  height: fit-content;
 }
-.logo_kakao {
-  width: 25px;
-  margin-bottom: -8px;
-  margin-right: 10px;
-}
-
-.btn_github {
-  color: #000;
-  background-color: #fff;
-  width: 300px;
-  height: 45px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.logo_github {
-  width: 30px;
-  margin-bottom: -8px;
-  margin-right: 10px;
+.logo_poorm {
+  width: 15rem;
+  margin: 0 auto;
 }
 .btn_container {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+.loginButton {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 13vh;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 300px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 5px;
+  color: black;
+  border: 1px solid #e6e6e6;
 }
-.logo_poorm {
-  width: 30vw;
-  height: 40vh;
+.kakaoButton {
+  border: none;
+  background-color: #fbe400;
 }
-.login_title {
-  width: 25vw;
-  margin-left: -170px;
-  margin-bottom: 100px;
+.githubButton {
+  background-color: #fff;
 }
+.loginLogo {
+  width: 25px;
+}
+
 .login_footer {
+  position: fixed;
+  bottom: 0;
   background-color: #000;
+  width: 100vw;
   height: 5vh;
 }

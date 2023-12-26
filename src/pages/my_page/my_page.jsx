@@ -20,7 +20,7 @@ function MyPage() {
     try {
       const data = await requestMyList();
       setMyList(data);
-      console.log(myList);
+      console.log("data:", data);
     } catch (error) {
       console.error(error);
     }
@@ -28,6 +28,7 @@ function MyPage() {
 
   useEffect(() => {
     fetchData();
+    console.log("mylist: ", myList);
   }, []);
 
   return (
@@ -58,6 +59,7 @@ function MyPage() {
         <div className={styles.problem_list}>
           {myList.map(item => (
             <MyListBox
+              key={item.directoryId}
               listName={item.directoryName}
               listInfo={item.problemList}
             />
