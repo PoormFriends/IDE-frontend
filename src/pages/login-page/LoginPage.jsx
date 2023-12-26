@@ -13,42 +13,42 @@ export default function LoginPage() {
 
   return (
     <div>
-      <section className={styles.login_container}>
-        <h2 className={styles.login_title}>
+      <div className={styles.container}>
+        <div className={styles.logoContainer}>
           <img
             className={styles.logo_poorm}
             alt="Poorm Friends IDE"
             src={logo}
           />
-        </h2>
+        </div>
         <section className={styles.btn_container}>
           <button
-            className={styles.btn_kakao}
+            className={`${styles.loginButton} ${styles.kakaoButton}`}
             type="button"
             onClick={kakaoLoginHandler}
           >
             <img
-              className={styles.logo_kakao}
+              className={styles.loginLogo}
               alt="kakao logo"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Kakao_Corp._symbol_-_2012.svg/100px-Kakao_Corp._symbol_-_2012.svg.png?20151013114543"
             />
-            login with kakao
+            카카오로 시작하기
           </button>
 
           <button
-            onClick={githubLoginHandler}
-            className={styles.btn_github}
+            className={`${styles.loginButton} ${styles.githubButton}`}
             type="button"
+            onClick={githubLoginHandler}
           >
             <img
-              className={styles.logo_github}
+              className={styles.loginLogo}
               alt="github"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/220px-Font_Awesome_5_brands_github.svg.png"
             />
-            Login with Github
+            깃허브로 시작하기
           </button>
         </section>
-      </section>
+      </div>
       <footer className={styles.login_footer}>footer</footer>
     </div>
   );
