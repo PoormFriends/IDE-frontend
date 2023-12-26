@@ -9,7 +9,6 @@ function MessageContainer({ messageLists, userId }) {
       {messageLists &&
         messageLists.map(list => {
           let messageContainer = null;
-          console.log({ list, userId });
 
           if (list.userId === "-1") {
             messageContainer = (
