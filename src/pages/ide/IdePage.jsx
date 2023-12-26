@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IoChatboxEllipsesOutline, IoExitOutline } from "react-icons/io5";
-import { CiMenuBurger } from "react-icons/ci";
+import {
+  IoChatboxEllipsesOutline,
+  IoExitOutline,
+  IoBookmarks,
+} from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
@@ -115,7 +118,7 @@ export default function IdePage() {
           className={styles.myListMenuButton}
           onClick={toggleMyListVisible}
         >
-          <CiMenuBurger />
+          <IoBookmarks />
         </button>
         {isMyListVisible && (
           <div
