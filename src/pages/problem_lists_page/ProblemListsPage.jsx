@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,9 +14,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
+import { useQuery } from "react-query";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
 import MiniMyList from "../../components/miniMyList/MiniMyList";
+import fetchProblemLists from "../../api/ProblemListsService";
+import { fetchMyLists } from "../../api/MyListService";
 
 const problemListsPage = () => {
   const userDataString = localStorage.getItem("user");
@@ -32,24 +35,29 @@ const problemListsPage = () => {
   const [isListsEditing, setIsListsEditing] = useState(false);
   const [editingNum, setEditingNum] = useState(-1);
 
-  const isLogin = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
+  // const isLogin = localStorage.getItem("accessToken");
+  // const navigate = useNavigate();
+
+  const {
+    data: total,
+    isLoading,
+    error,
+    isFetching,
+  } = useQuery(["problemLists", userId], () => fetchProblemLists(userId));
+
+  const { data: totalMyLists } = useQuery(["myLists", userId], () =>
+    fetchMyLists(userId),
+  );
+  // invalidate를 전체 problem를 1번
+
+  // 내가 갖고 있는 모든 디렉토리->minimylsit로 props 넘겨줌, 문제들-> 테이블
+  // minimylists는 그 문제에 대한 리스트: 현재리스트 / 전체리스트(보여주기만)
+  // minimylits 추가 삭제: mutation마다 최상단의 문제들 problemLists를 invalidate(무효화) -> 리렌더링(마이리스트처럼 해결)
 
   useEffect(() => {
-    if (!isLogin) {
-      navigate("/login");
-    }
-    const fetchData = async () => {
-      const response = await fetch(
-        `http://localhost:8081/api/problems/${userId}`,
-      );
-      const data = await response.json();
-      setProblemLists(data);
-      setRows(data);
-    };
-
-    fetchData();
-  }, []);
+    // 불러오는 방법
+    // context api(둘을 감싸서 바텀업) or react query
+  }, [isListsEditing]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -87,6 +95,7 @@ const problemListsPage = () => {
       );
     });
 
+    setRows();
     setProblemLists(
       !searchTerm.trim() && corFilter === "DEFAULT" && levFilter === "DEFAULT"
         ? rows
@@ -124,6 +133,13 @@ const problemListsPage = () => {
     setEditingNum(-1);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isFetching) console.log({ isFetching });
+  if (error) {
+    console.log("my list error");
+    console.log(error);
+    return <div>An error occurred: {error.message}</div>;
+  }
   return (
     <div>
       <Header />
@@ -191,8 +207,8 @@ const problemListsPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {problemLists.length > 0 &&
-                    problemLists
+                  {total &&
+                    total
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage,
@@ -271,8 +287,11 @@ const problemListsPage = () => {
                               editingNum === problemList.problemId ? (
                                 <MiniMyList
                                   userId={userId}
-                                  lists={problemList.customDirectoryInfos}
-                                  num={problemList.problemId}
+                                  currentMyLists={
+                                    problemList.customDirectoryInfos
+                                  }
+                                  totalMyLists={totalMyLists}
+                                  problemId={problemList.problemId}
                                   isListsEditing={isListsEditing}
                                   toggleOffListsEditor={toggleOffListsEditor}
                                 />
