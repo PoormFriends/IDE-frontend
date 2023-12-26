@@ -6,6 +6,7 @@ import { FaRegCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import MiniMyList from "../miniMyList/MiniMyList";
 import { fetchMyLists } from "../../api/MyListService";
+// import styles from "./ProblemRow.module.css";
 
 export default function ProblemRow({
   userId,
@@ -24,21 +25,19 @@ export default function ProblemRow({
   };
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1}>
-      <TableCell width="60" align="center">
+    <TableRow>
+      <TableCell align="center">
         {state === "SUCCESS" && <FaRegCircle />}
         {state === "FAILURE" && <IoMdClose />}
       </TableCell>
-      <TableCell width="30" component="th" scope="row" align="right">
-        {problemId}
-      </TableCell>
-      <TableCell width="200" align="left">
+      <TableCell align="center">{problemId}</TableCell>
+      <TableCell align="left">
         <Link to={`/solve/${userId}/${problemId}`}>{problemName}</Link>
       </TableCell>
-      <TableCell width="50" align="center">
+      <TableCell align="center">
         <span>{`Lv.${level}`}</span>
       </TableCell>
-      <TableCell width="150" align="left" onClick={toggleMyListModal}>
+      <TableCell align="center" onClick={toggleMyListModal}>
         <div>
           {directories &&
             directories.map(directory => (
