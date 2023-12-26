@@ -22,9 +22,6 @@ import fetchProblemLists from "../../api/ProblemListsService";
 import { fetchMyLists } from "../../api/MyListService";
 
 const problemListsPage = () => {
-  const userDataString = localStorage.getItem("user");
-  const userData = JSON.parse(userDataString);
-  const userId = userData?.userId;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -37,6 +34,16 @@ const problemListsPage = () => {
 
   // const isLogin = localStorage.getItem("accessToken");
   // const navigate = useNavigate();
+
+  // localStorage에서 userId 가져오기
+  const getUserId = () => {
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const userId = userData?.userId;
+
+    return userId;
+  };
+  const userId = getUserId();
 
   const {
     data: total,
