@@ -33,14 +33,3 @@
   align-items: start;
   gap: 1rem;
 }
-.footer {
-  border-top: solid 1px #f4f4f4;
-  display: flex;
-  justify-content: space-between;
-}
-.user_text {
-  margin-top: 10px;
-}
-.list_footer p {
-  color: #5d5a88;
-}
