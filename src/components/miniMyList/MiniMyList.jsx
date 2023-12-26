@@ -6,13 +6,8 @@ import {
   fetchDeleteMyListProblem,
 } from "../../api/MyListService";
 
-function MiniMyList({
-  userId,
-  currentMyLists,
-  totalMyLists,
-  problemId,
-  toggleOffListsEditor,
-}) {
+function MiniMyList({ userId, currentMyLists, totalMyLists, problemId }) {
+  console.log("mini my list open");
   console.log(`userId: ${userId}, problemId: ${problemId}`);
   console.log("현재리스트: ", currentMyLists);
   console.log("전체리스트: ", totalMyLists);
@@ -37,7 +32,8 @@ function MiniMyList({
   };
 
   const deleteMyListMutation = useMutation(
-    () => fetchDeleteMyListProblem(userId, directoryId, problemId),
+    () =>
+      fetchDeleteMyListProblem(userId, currentMyLists.directoryId, problemId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["problemLists", userId]);
@@ -65,11 +61,7 @@ function MiniMyList({
             <div className={styles.modal_title}>
               {problemId}번 문제 리스트 편집
             </div>
-            <button
-              type="button"
-              className={styles.exit_button}
-              onClick={toggleOffListsEditor}
-            >
+            <button type="button" className={styles.exit_button}>
               x
             </button>
           </div>
