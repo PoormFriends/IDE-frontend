@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@mui/material";
+import { Chip, TableCell, TableRow } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -40,12 +40,17 @@ export default function ProblemRow({
         <span className={styles.level}>{`Lv.${level}`}</span>
       </TableCell>
       <TableCell align="center" onClick={toggleMyListModal}>
-        <div>
+        <div className={styles.mylist_container}>
           {directories &&
             directories.map(directory => (
-              <span key={directory.customDirectoryId}>
-                {directory.customDirectoryName}
-              </span>
+              <Chip
+                key={directory.customDirectoryId}
+                label={`${directory.customDirectoryName}`}
+                variant="outlined"
+                sx={{
+                  "--Chip-radius": "4px",
+                }}
+              />
             ))}
         </div>
         {isMiniMyListVisible && (

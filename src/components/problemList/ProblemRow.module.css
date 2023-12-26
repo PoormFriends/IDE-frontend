@@ -13,3 +13,8 @@
   padding: 0.2rem 0.5rem;
   font-weight: bold;
 }
+.mylist_container {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
