@@ -14,6 +14,7 @@ import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
 import MyListContainer from "../../components/myList/MyListContainer";
 import ChatModal from "../../components/chatModal/ChatModal";
+import { Tooltip } from "@mui/material";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
@@ -169,14 +170,6 @@ export default function IdePage() {
   return (
     <div>
       <header className={styles.header}>
-        <button
-          type="button"
-          aria-label="마이리스트 메뉴 열기 버튼"
-          className={styles.myListMenuButton}
-          onClick={toggleMyListVisible}
-        >
-          <IoBookmarks />
-        </button>
         {isMyListVisible && (
           <div
             style={{
@@ -194,14 +187,13 @@ export default function IdePage() {
         )}
         {problems && (
           <>
-            <h2 className={styles.problemTitle}>{problems.title}</h2>
+            <p className={styles.problemTitle}>{problems.title}</p>
             <span className={styles.problemLevel}>Lv. {problems.level}</span>
           </>
         )}
         <div className={styles.linkContainer}>
           <NavLink to="/" className={styles.link}>
-            <IoExitOutline className={styles.linkIcon} />
-            나가기
+            문제 목록으로 나가기
           </NavLink>
         </div>
       </header>
@@ -230,14 +222,28 @@ export default function IdePage() {
         </section>
       </div>
       <footer className={styles.footer}>
-        <button
-          type="button"
-          aria-label="chattingButton"
-          className={styles.chattingButton}
-          onClick={() => toggleChatVisible()}
-        >
-          <IoChatboxEllipsesOutline className={styles.chattingIcon} />
-        </button>
+        <div className={styles.button_container}>
+          <Tooltip title="채팅">
+            <button
+              type="button"
+              aria-label="chattingButton"
+              className={styles.chattingButton}
+              onClick={() => toggleChatVisible()}
+            >
+              <IoChatboxEllipsesOutline className={styles.chattingIcon} />
+            </button>
+          </Tooltip>
+          <Tooltip title="마이리스트 메뉴">
+            <button
+              type="button"
+              aria-label="마이리스트 메뉴 열기 버튼"
+              className={styles.myListMenuButton}
+              onClick={toggleMyListVisible}
+            >
+              <IoBookmarks />
+            </button>
+          </Tooltip>
+        </div>
         {isChatVisible && (
           <div className={styles.chat_modal}>
             <ChatModal
