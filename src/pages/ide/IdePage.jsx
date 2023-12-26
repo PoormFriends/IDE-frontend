@@ -23,7 +23,6 @@ export default function IdePage() {
   const [isChatVisible, setIsChatVisible] = useState(false);
   const location = useLocation();
   const { userId, problemId } = useParams();
-  // const containerRef = useRef(null); // 외부 클릭 감지
   const [messageLists, setMessageLists] = useState([]);
   const [message, setMessage] = useState("");
   const guestDataString = localStorage.getItem("user");

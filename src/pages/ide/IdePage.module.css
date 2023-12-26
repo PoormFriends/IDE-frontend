@@ -1,4 +1,3 @@
-/* * 부분은 index.css에 넣어야함 */
 * {
   box-sizing: border-box;
 }
@@ -102,8 +101,6 @@
 .executeResultLabel {
   font-size: 0.85rem;
   color: var(--color-darkgray);
-}
-.executeResultContent {
 }
 /* Footer */
 .footer {
