@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
+import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,10 +7,8 @@ import Select from "@mui/material/Select";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -126,25 +123,24 @@ const problemListsPage = () => {
     console.log(error);
     return <div>An error occurred: {error.message}</div>;
   }
+
   return (
     <div>
       <Header />
-      <div className={styles.wrapper}>
-        <div className={styles.search_bar}>
-          <Container sx={{ mt: 5 }}>
+      <div className={styles.container}>
+        <div className={styles.searchFilter_container}>
+          <div className={styles.searchbar}>
             <TextField
+              fullWidth
               type="search"
               id="search"
-              label="Search"
+              label="🔍  풀고 싶은 문제 번호, 제목을 검색하세요"
               value={searchFilter}
               onChange={e => handleFilterInput(e)}
-              sx={{ width: 680 }}
             />
-          </Container>
-        </div>
-        <div className={styles.sort_standard}>
-          <div className={styles.sort_state}>
-            <Box sx={{ minWidth: 120 }}>
+          </div>
+          <div className={styles.filter_container}>
+            <div className={styles.filter}>
               <FormControl fullWidth>
                 <InputLabel id="state-select-label">상태</InputLabel>
                 <Select
@@ -154,15 +150,13 @@ const problemListsPage = () => {
                   value={stateFilter}
                   onChange={handlestateFilterChange}
                 >
-                  <MenuItem value="DEFAULT">none</MenuItem>
+                  <MenuItem value="DEFAULT">전체</MenuItem>
                   <MenuItem value="SUCCESS">O</MenuItem>
                   <MenuItem value="FAILURE">X</MenuItem>
                 </Select>
               </FormControl>
-            </Box>
-          </div>
-          <div className={styles.sort_level}>
-            <Box sx={{ minWidth: 120 }}>
+            </div>
+            <div className={styles.filter}>
               <FormControl fullWidth>
                 <InputLabel id="level-select-label">난이도</InputLabel>
                 <Select
@@ -172,58 +166,52 @@ const problemListsPage = () => {
                   value={levelFilter}
                   onChange={handleLevelFilterChange}
                 >
-                  <MenuItem value="DEFAULT">none</MenuItem>
+                  <MenuItem value="DEFAULT">전체</MenuItem>
                   <MenuItem value="0">Lv.0</MenuItem>
                   <MenuItem value="1">Lv.1</MenuItem>
                   <MenuItem value="2">Lv.2</MenuItem>
                 </Select>
               </FormControl>
-            </Box>
+            </div>
           </div>
-          <Paper sx={{ mt: 2, width: 680 }}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">상태</TableCell>
-                    <TableCell align="right">번호</TableCell>
-                    <TableCell align="left">제목</TableCell>
-                    <TableCell align="center">난이도</TableCell>
-                    <TableCell align="left">리스트</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {problems &&
-                    problems
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage,
-                      )
-                      .map(problem => (
-                        <ProblemRow
-                          key={problem.problemId}
-                          userId={userId}
-                          state={problem.ideState}
-                          problemId={problem.problemId}
-                          problemName={problem.title}
-                          level={problem.level}
-                          directories={problem.customDirectoryInfos}
-                        />
-                      ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={problemLists ? problemLists.length : 10}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Paper>
-          <div className={styles.proplem_table_container} />
+        </div>
+        <div className={styles.table_container}>
+          <Table aria-label="problem table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">상태</TableCell>
+                <TableCell align="center">번호</TableCell>
+                <TableCell align="center">제목</TableCell>
+                <TableCell align="center">난이도</TableCell>
+                <TableCell align="center">리스트</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {problems &&
+                problems
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(problem => (
+                    <ProblemRow
+                      key={problem.problemId}
+                      userId={userId}
+                      state={problem.ideState}
+                      problemId={problem.problemId}
+                      problemName={problem.title}
+                      level={problem.level}
+                      directories={problem.customDirectoryInfos}
+                    />
+                  ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={problemLists ? problemLists.length : 10}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </div>
       </div>
       <Footer />
