@@ -17,6 +17,7 @@ import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
 import fetchProblemLists from "../../api/ProblemListsService";
 import ProblemRow from "../../components/problemList/ProblemRow";
 
@@ -225,6 +226,7 @@ const problemListsPage = () => {
           <div className={styles.proplem_table_container} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
