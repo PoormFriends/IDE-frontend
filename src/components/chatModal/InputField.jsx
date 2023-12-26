@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./InputField.module.css";
 import "./TipTap.css";
 
-function InputField({ message, setMessage, sendmessage }) {
+function InputField({ message, setMessage, sendMessage }) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
@@ -22,9 +22,9 @@ function InputField({ message, setMessage, sendmessage }) {
       <button
         type="button"
         className={styles.submit_btn}
-        onClick={e => {
+        onClick={() => {
           if (message.length > 0) {
-            sendmessage(e);
+            sendMessage(message);
             editor.commands.clearContent();
           }
         }}

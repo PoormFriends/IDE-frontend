@@ -4,7 +4,7 @@ import {
   IoExitOutline,
   IoBookmarks,
 } from "react-icons/io5";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
@@ -20,20 +20,11 @@ export default function IdePage() {
   const [isMyListVisible, setIsMyListVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const location = useLocation();
+  const { userId, problemId } = useParams();
   // const containerRef = useRef(null); // 외부 클릭 감지
-
-  const getUserIDProblemId = () => {
-    const path = window.location.pathname;
-    const segments = path.split("/").filter(Boolean);
-    const problemId = segments.slice(-1);
-    const userId = segments.slice(-2, -1);
-
-    return { problemId, userId };
-  };
 
   // ide 데이터 조회
   useEffect(() => {
-    const { userId, problemId } = getUserIDProblemId();
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
@@ -66,7 +57,6 @@ export default function IdePage() {
 
   // 제출 후 채점하기
   const handleSubmit = async () => {
-    const { userId, problemId } = getUserIDProblemId();
     console.log("handleSubmit: ", userId, problemId);
     console.log("usercode: ", { editor });
     const accessToken = window.localStorage.getItem("accessToken");
@@ -189,7 +179,7 @@ export default function IdePage() {
         </button>
         {isChatVisible && (
           <div className={styles.chat_modal}>
-            <ChatModal />
+            <ChatModal ownerId={userId} problemId={problemId} />
           </div>
         )}
         <button
