@@ -1,36 +1,41 @@
 .container {
-  width: 400px;
-  height: 200px;
-  background-color: var(--color-lightgray);
-  border-radius: 15px;
-  transition: box-shadow 0.3s ease;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  min-width: 300px;
+  width: 300px;
+  padding: 0.8rem;
+  background-color: var(--color-primary-variant);
+  border-radius: 0.6rem;
+  transition: box-shadow 0.3s ease;
 }
 .container:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-.list_item {
-  background-color: #fff;
-  width: 300px;
-  height: 50px;
-  margin-top: 10px;
-  border-radius: 5px;
+.title {
+  flex: 1;
+  font-size: 1.05rem;
+  color: var(--color-darkgray);
+  margin-bottom: 0.9rem;
+}
+.itemContainer {
   display: flex;
-
   align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
 }
-.wrapper {
-  margin-top: 10px;
-}
-.list_title {
-  color: #5d5a88;
-  margin-bottom: 20px;
-}
-.problemName {
-  margin-left: 15px;
+.title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  color: var(--color-text);
+  font-size: 0.9rem;
 }
 .link {
+  color: var(--color-text);
   text-decoration: none;
-  color: #000;
+}
+.link:hover {
+  text-decoration: underline;
 }
