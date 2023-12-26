@@ -13,6 +13,12 @@
   padding: 0.2rem 0.5rem;
   font-weight: bold;
 }
+.mylist_cell {
+  max-width: 500px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .mylist_container {
   display: flex;
   gap: 0.5rem;
