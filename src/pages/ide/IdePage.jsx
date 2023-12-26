@@ -56,7 +56,7 @@ export default function IdePage() {
         userNickname: guestNickname,
         userProfile: guestProfile,
         time,
-        message: `${guestNickname}님이 입장하셨습니다.`,
+        message: chat,
       }),
     });
 
@@ -79,7 +79,7 @@ export default function IdePage() {
             userNickname: "system",
             userProfile: null,
             time,
-            message: chat,
+            message: `${guestNickname}님이 입장하셨습니다.`,
           }),
         });
       },
