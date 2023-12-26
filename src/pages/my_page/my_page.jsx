@@ -3,6 +3,7 @@ import Header from "../../components/header/Header";
 import styles from "./my_page.module.css";
 import MyListBox from "../../components/myPageListBox/myPageListBox";
 import instance from "../login-page/api";
+import Footer from "../../components/footer/Footer";
 
 function MyPage() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -52,8 +53,8 @@ function MyPage() {
             )}
           </div>
           <div className={styles.user_text}>
-            <h1>{user ? user.name : "userName"}</h1>
-            <p>{user ? user.email : "userEmail"}</p>
+            <h1>{user ? user.name : "이름"}</h1>
+            <p>{user ? user.email : "Email"}</p>
           </div>
         </div>
         <div className={styles.problem_list}>
@@ -66,10 +67,7 @@ function MyPage() {
           ))}
         </div>
       </div>
-      <footer className={styles.footer}>
-        <h2>Poorm Friends</h2>
-        <p>Copyright © 2023 GoormFreinds | All Rights Reserved </p>
-      </footer>
+      <Footer />
     </>
   );
 }
