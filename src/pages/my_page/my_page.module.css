@@ -5,14 +5,11 @@
   cursor: pointer;
   border-radius: 50px;
 }
-
 .user_profile:hover {
   transition: 0.1s;
   opacity: 0.8;
 }
 .user_info {
-  margin-top: -200px;
-  margin-bottom: 100px;
   display: flex;
   width: 850px;
   height: 100px;
@@ -30,9 +27,11 @@
   height: 600px;
 }
 .problem_list {
-  width: 850px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(min-content, max-content);
+  align-items: start;
+  gap: 1rem;
 }
 .footer {
   border-top: solid 1px #f4f4f4;
