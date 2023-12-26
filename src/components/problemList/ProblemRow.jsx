@@ -6,7 +6,7 @@ import { FaRegCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import MiniMyList from "../miniMyList/MiniMyList";
 import { fetchMyLists } from "../../api/MyListService";
-// import styles from "./ProblemRow.module.css";
+import styles from "./ProblemRow.module.css";
 
 export default function ProblemRow({
   userId,
@@ -25,14 +25,16 @@ export default function ProblemRow({
   };
 
   return (
-    <TableRow>
+    <TableRow className={styles.table_row}>
       <TableCell align="center">
         {state === "SUCCESS" && <FaRegCircle />}
         {state === "FAILURE" && <IoMdClose />}
       </TableCell>
       <TableCell align="center">{problemId}</TableCell>
       <TableCell align="left">
-        <Link to={`/solve/${userId}/${problemId}`}>{problemName}</Link>
+        <Link to={`/solve/${userId}/${problemId}`} className={styles.link}>
+          {problemName}
+        </Link>
       </TableCell>
       <TableCell align="center">
         <span>{`Lv.${level}`}</span>
