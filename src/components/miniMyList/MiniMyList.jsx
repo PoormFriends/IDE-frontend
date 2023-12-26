@@ -1,91 +1,49 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styles from "./MiniMyList.module.css";
 import {
-  fetchMyLists,
   fetchAddMyListProblem,
   fetchDeleteMyListProblem,
 } from "../../api/MyListService";
 
-function MiniMyList({ userId, lists, num, toggleOffListsEditor }) {
-  const {
-    data: myLists,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery(["myLists", userId], () => fetchMyLists(userId));
+function MiniMyList({ userId, currentMyLists, totalMyLists, problemId }) {
+  const queryClient = useQueryClient();
 
-  console.log({ myLists });
-  console.log({ lists });
+  const addMyListMutation = useMutation(
+    ({ directoryId }) => fetchAddMyListProblem(userId, directoryId, problemId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["problemLists", userId]);
+      },
+      onError: error => {
+        console.log("문제리스트 fetchAddMyListProblem error", error);
+      },
+    },
+  );
 
-  if (isLoading) {
-    console.log({ isLoading });
-  }
-  if (error) {
-    console.log({ error });
-  }
-
-  const findDirectoryProblemId = (
-    myList,
-    customDirectoryId,
-    customDirectoryName,
-    problemId,
-  ) => {
-    if (myList && Array.isArray(myList)) {
-      const foundList = myList.find(
-        list =>
-          list.directoryId === customDirectoryId &&
-          list.directoryName === customDirectoryName &&
-          list.problemList &&
-          Array.isArray(list.problemList),
-      );
-
-      if (foundList && Array.isArray(foundList.problemList)) {
-        const foundProblem = foundList.problemList.find(
-          problem => problem.problemNum === problemId,
-        );
-
-        if (foundProblem) {
-          return foundProblem.directoryProblemId;
-        }
-      }
-    }
-    return undefined;
+  const handleAddDirectory = directoryId => {
+    addMyListMutation.mutate({
+      directoryId,
+    });
   };
 
-  const handleDeleteButtonClick = async list => {
-    const directoryProblemId = findDirectoryProblemId(
-      myLists,
-      list.customDirectoryId,
-      list.customDirectoryName,
-      num,
-    );
-    if (directoryProblemId !== undefined) {
-      try {
-        await fetchDeleteMyListProblem(
-          userId,
-          list.customDirectoryId,
-          num,
-          directoryProblemId,
-        );
-        console.log("삭제 성공");
-        refetch();
-      } catch (fetchError) {
-        console.error("서버 요청 중 에러 발생:", fetchError);
-      }
-    } else {
-      console.warn("directoryProblemId가 없어서 삭제 요청을 보내지 않습니다.");
-    }
-  };
+  const deleteMyListMutation = useMutation(
+    ({ directoryId }) =>
+      fetchDeleteMyListProblem(userId, directoryId, problemId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["problemLists", userId]);
+      },
+      onError: error => {
+        console.log("마이리스트 삭제하기 실패", error);
+      },
+    },
+  );
 
-  const handleAddButtonClick = async myList => {
-    try {
-      await fetchAddMyListProblem(userId, myList.directoryId, num);
-      console.log("추가 성공");
-      refetch();
-    } catch (fetchError) {
-      console.error("서버 요청 중 에러 발생:", fetchError);
-    }
+  const handleDeleteDirectory = directoryId => {
+    deleteMyListMutation.mutate({
+      directoryId,
+    });
   };
 
   return (
@@ -93,12 +51,10 @@ function MiniMyList({ userId, lists, num, toggleOffListsEditor }) {
       <div className={styles.modal_background}>
         <div className={styles.modal_content}>
           <div className={styles.modal_header}>
-            <div className={styles.modal_title}>{num}번 문제 리스트 편집</div>
-            <button
-              type="button"
-              className={styles.exit_button}
-              onClick={toggleOffListsEditor}
-            >
+            <div className={styles.modal_title}>
+              {problemId}번 문제 리스트 편집
+            </div>
+            <button type="button" className={styles.exit_button}>
               x
             </button>
           </div>
@@ -106,19 +62,19 @@ function MiniMyList({ userId, lists, num, toggleOffListsEditor }) {
           <div className={styles.cur_lists_wrapper}>
             <div className={styles.cur_lists_title}>현재 리스트</div>
             <div className={styles.cur_lists}>
-              {lists &&
-                lists.map(list => (
+              {currentMyLists &&
+                currentMyLists.map(currentMyList => (
                   <div
                     className={styles.cur_lists_list}
-                    key={list.customDirectoryId}
+                    key={currentMyList.customDirectoryId}
                   >
-                    <div className={styles.cur_lists_list_content}>
-                      {list.customDirectoryName}
-                    </div>
+                    {currentMyList.customDirectoryName}
                     <button
                       className={styles.del_btn}
                       type="button"
-                      onClick={() => handleDeleteButtonClick(list)}
+                      onClick={() =>
+                        handleDeleteDirectory(currentMyList.customDirectoryId)
+                      }
                     >
                       x
                     </button>
@@ -130,15 +86,15 @@ function MiniMyList({ userId, lists, num, toggleOffListsEditor }) {
           <div className={styles.all_lists_wrapper}>
             <div className={styles.all_lists_title}>전체 리스트</div>
             <div className={styles.all_lists}>
-              {myLists &&
-                myLists.map(myList => (
+              {totalMyLists &&
+                totalMyLists.map(totalMyList => (
                   <button
                     className={styles.all_lists_list}
                     type="button"
-                    key={myList.directoryId}
-                    onClick={() => handleAddButtonClick(myList)}
+                    key={totalMyList.directoryId}
+                    onClick={() => handleAddDirectory(totalMyList.directoryId)}
                   >
-                    {myList.directoryName}
+                    {totalMyList.directoryName}
                   </button>
                 ))}
             </div>

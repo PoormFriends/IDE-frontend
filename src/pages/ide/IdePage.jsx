@@ -1,9 +1,12 @@
 /* eslint-disable */
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { CiMenuBurger } from "react-icons/ci";
-import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { useLocation, useParams } from "react-router-dom";
 import * as StompJs from "@stomp/stompjs";
+import {
+  IoChatboxEllipsesOutline,
+  IoExitOutline,
+  IoBookmarks,
+} from "react-icons/io5";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import styles from "./IdePage.module.css";
 import MonacoEditor from "../../components/Ide/MonacoEditor";
 import ProblemContent from "../../components/Ide/ProblemContent";
@@ -173,7 +176,7 @@ export default function IdePage() {
           className={styles.myListMenuButton}
           onClick={toggleMyListVisible}
         >
-          <CiMenuBurger />
+          <IoBookmarks />
         </button>
         {isMyListVisible && (
           <div
@@ -196,6 +199,12 @@ export default function IdePage() {
             <span className={styles.problemLevel}>Lv. {problems.level}</span>
           </>
         )}
+        <div className={styles.linkContainer}>
+          <NavLink to="/" className={styles.link}>
+            <IoExitOutline className={styles.linkIcon} />
+            나가기
+          </NavLink>
+        </div>
       </header>
       <div className={styles.container}>
         <section className={styles.problemInfoContainer}>

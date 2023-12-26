@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Container, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,14 +13,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import styles from "./ProblemListsPage.module.css";
 import Header from "../../components/header/Header";
-import MiniMyList from "../../components/miniMyList/MiniMyList";
+import fetchProblemLists from "../../api/ProblemListsService";
+import ProblemRow from "../../components/problemList/ProblemRow";
 
 const problemListsPage = () => {
-  const userDataString = localStorage.getItem("user");
-  const userData = JSON.parse(userDataString);
-  const userId = userData?.userId;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -29,8 +28,6 @@ const problemListsPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const [stateFilter, setstateFilter] = useState("DEFAULT");
   const [levelFilter, setLevelFilter] = useState("DEFAULT");
-  const [isListsEditing, setIsListsEditing] = useState(false);
-  const [editingNum, setEditingNum] = useState(-1);
 
   const isLogin = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -39,17 +36,24 @@ const problemListsPage = () => {
     if (!isLogin) {
       navigate("/login");
     }
-    const fetchData = async () => {
-      const response = await fetch(
-        `http://localhost:8081/api/problems/${userId}`,
-      );
-      const data = await response.json();
-      setProblemLists(data);
-      setRows(data);
-    };
+  });
 
-    fetchData();
-  }, []);
+  // localStorage에서 userId 가져오기
+  const getUserId = () => {
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const userId = userData?.userId;
+
+    return userId;
+  };
+  const userId = getUserId();
+
+  const {
+    data: problems,
+    isLoading,
+    error,
+    isFetching,
+  } = useQuery(["problemLists", userId], () => fetchProblemLists(userId));
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -87,6 +91,7 @@ const problemListsPage = () => {
       );
     });
 
+    setRows();
     setProblemLists(
       !searchTerm.trim() && corFilter === "DEFAULT" && levFilter === "DEFAULT"
         ? rows
@@ -113,17 +118,13 @@ const problemListsPage = () => {
     filterProblems(searchFilter, stateFilter, newLevel);
   };
 
-  const toggleOnListsEditor = num => () => {
-    setIsListsEditing(true);
-    setEditingNum(num);
-  };
-
-  const toggleOffListsEditor = e => {
-    e.stopPropagation();
-    setIsListsEditing(false);
-    setEditingNum(-1);
-  };
-
+  if (isLoading) return <div>Loading...</div>;
+  if (isFetching) console.log({ isFetching });
+  if (error) {
+    console.log("my list error");
+    console.log(error);
+    return <div>An error occurred: {error.message}</div>;
+  }
   return (
     <div>
       <Header />
@@ -191,96 +192,23 @@ const problemListsPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {problemLists.length > 0 &&
-                    problemLists
+                  {problems &&
+                    problems
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage,
                       )
-                      .map(problemList => {
-                        const levelMap = {
-                          0: styles.lv0,
-                          1: styles.lv1,
-                          2: styles.lv2,
-                        };
-
-                        const levelClass =
-                          levelMap[problemList.level.toString()] || "";
-
-                        let stateIcon = null;
-                        if (
-                          problemList.ideState &&
-                          problemList.ideState === "SUCCESS"
-                        ) {
-                          stateIcon = <span className={styles.OText}>O</span>;
-                        } else if (
-                          problemList.ideState &&
-                          problemList.ideState === "FAILURE"
-                        ) {
-                          stateIcon = <span className={styles.XText}>X</span>;
-                        }
-
-                        return (
-                          <TableRow
-                            hover
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={problemList.problemId}
-                          >
-                            <TableCell width="60" align="center">
-                              {stateIcon}
-                            </TableCell>
-                            <TableCell
-                              width="30"
-                              component="th"
-                              scope="row"
-                              align="right"
-                            >
-                              {problemList.problemId}
-                            </TableCell>
-                            <TableCell width="200" align="left">
-                              <Link
-                                className={styles.problem_title}
-                                to={`/solve/${userId}/${problemList.problemId}`}
-                              >
-                                {problemList.title}
-                              </Link>
-                            </TableCell>
-                            <TableCell width="50" align="center">
-                              <span
-                                className={levelClass}
-                              >{`Lv.${problemList.level}`}</span>
-                            </TableCell>
-                            <TableCell
-                              width="150"
-                              align="left"
-                              onClick={toggleOnListsEditor(
-                                problemList.problemId,
-                              )}
-                            >
-                              {problemList.customDirectoryInfos &&
-                                problemList.customDirectoryInfos.map(item => (
-                                  <span
-                                    className={styles.list_box}
-                                    key={item.customDirectoryId}
-                                  >
-                                    {item.customDirectoryName}
-                                  </span>
-                                ))}
-                              {isListsEditing &&
-                              editingNum === problemList.problemId ? (
-                                <MiniMyList
-                                  userId={userId}
-                                  lists={problemList.customDirectoryInfos}
-                                  num={problemList.problemId}
-                                  isListsEditing={isListsEditing}
-                                  toggleOffListsEditor={toggleOffListsEditor}
-                                />
-                              ) : null}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                      .map(problem => (
+                        <ProblemRow
+                          key={problem.problemId}
+                          userId={userId}
+                          state={problem.ideState}
+                          problemId={problem.problemId}
+                          problemName={problem.title}
+                          level={problem.level}
+                          directories={problem.customDirectoryInfos}
+                        />
+                      ))}
                 </TableBody>
               </Table>
             </TableContainer>
