@@ -1,5 +1,7 @@
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { IoClose } from "react-icons/io5";
+import { Chip } from "@mui/material";
 import styles from "./MiniMyList.module.css";
 import {
   fetchAddMyListProblem,
@@ -47,58 +49,44 @@ function MiniMyList({ userId, currentMyLists, totalMyLists, problemId }) {
   };
 
   return (
-    <div className={styles.modal_wrapper}>
-      <div className={styles.modal_background}>
-        <div className={styles.modal_content}>
-          <div className={styles.modal_header}>
-            <div className={styles.modal_title}>
-              {problemId}번 문제 리스트 편집
-            </div>
-            <button type="button" className={styles.exit_button}>
-              x
-            </button>
-          </div>
-          <hr />
-          <div className={styles.cur_lists_wrapper}>
-            <div className={styles.cur_lists_title}>현재 리스트</div>
-            <div className={styles.cur_lists}>
-              {currentMyLists &&
-                currentMyLists.map(currentMyList => (
-                  <div
-                    className={styles.cur_lists_list}
-                    key={currentMyList.customDirectoryId}
-                  >
-                    {currentMyList.customDirectoryName}
-                    <button
-                      className={styles.del_btn}
-                      type="button"
-                      onClick={() =>
-                        handleDeleteDirectory(currentMyList.customDirectoryId)
-                      }
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
-            </div>
-          </div>
-          <hr />
-          <div className={styles.all_lists_wrapper}>
-            <div className={styles.all_lists_title}>전체 리스트</div>
-            <div className={styles.all_lists}>
-              {totalMyLists &&
-                totalMyLists.map(totalMyList => (
-                  <button
-                    className={styles.all_lists_list}
-                    type="button"
-                    key={totalMyList.directoryId}
-                    onClick={() => handleAddDirectory(totalMyList.directoryId)}
-                  >
-                    {totalMyList.directoryName}
-                  </button>
-                ))}
-            </div>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.modal_header}>
+        <h4 className={styles.modal_title}>🗂️ [문제제목] 문제 담기</h4>
+        <button
+          type="button"
+          className={styles.close_button}
+          aria-label="close button"
+        >
+          <IoClose className={styles.close_icon} />
+        </button>
+      </div>
+      <div className={styles.mylist_container}>
+        <h4 className={styles.title}>현재 담은 마이리스트</h4>
+        <div className={styles.mylists}>
+          {currentMyLists &&
+            currentMyLists.map(currentMyList => (
+              <Chip
+                key={currentMyList.customDirectoryId}
+                label={currentMyList.customDirectoryName}
+                onClick={() =>
+                  handleDeleteDirectory(currentMyList.customDirectoryId)
+                }
+              />
+            ))}
+        </div>
+      </div>
+      <div className={styles.mylist_container}>
+        <h4 className={styles.title}>전체 마이리스트</h4>
+        <div className={styles.mylists}>
+          {totalMyLists &&
+            totalMyLists.map(totalMyList => (
+              <Chip
+                key={totalMyList.directoryId}
+                label={totalMyList.directoryName}
+                variant="outlined"
+                onClick={() => handleAddDirectory(totalMyList.directoryId)}
+              />
+            ))}
         </div>
       </div>
     </div>
