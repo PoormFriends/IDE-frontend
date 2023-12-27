@@ -22,6 +22,9 @@
   justify-content: start;
   gap: 0.5rem;
 }
+.list_container > .itemContainer:nth-child(n + 4) {
+  display: none;
+}
 .itemContainer {
   display: flex;
   align-items: center;
