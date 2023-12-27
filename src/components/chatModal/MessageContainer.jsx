@@ -5,6 +5,7 @@ import styles from "./MessageContainer.module.css";
 
 function MessageContainer({ messageLists, userId }) {
   const scrollRef = useRef();
+
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   });
@@ -40,12 +41,14 @@ function MessageContainer({ messageLists, userId }) {
           }
 
           return (
-            <Container
-              key={list.time}
-              sx={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
-            >
-              {messageContainer}
-            </Container>
+            <div>
+              <Container
+                key={list.time}
+                sx={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
+              >
+                {messageContainer}
+              </Container>
+            </div>
           );
         })}
     </div>
