@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: fit-content;
+  min-width: 25vw;
   height: 100vh;
   background-color: var(--color-primary);
   padding: 1rem;
@@ -26,7 +27,7 @@
   flex-direction: column;
   flex: 1;
   gap: 0.7rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .addContainer {
   display: flex;

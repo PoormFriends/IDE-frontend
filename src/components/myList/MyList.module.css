@@ -4,7 +4,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 300px;
   padding: 0.8rem;
   background-color: var(--color-primary-variant);
   border-radius: 0.6rem;
@@ -25,10 +24,11 @@
   display: flex;
   align-items: center;
   transition: all 150ms ease-in-out;
+  font-size: 1.1rem;
+  color: #959595;
 }
 .deleteButton:hover {
-  color: var(--color-red);
-  transform: scale(1.1);
+  color: var(--color-error);
 }
 .problems {
   display: flex;

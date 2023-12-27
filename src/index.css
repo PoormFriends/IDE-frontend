@@ -27,6 +27,7 @@ canvas {
   --color-level3: var(--color-orange);
   --color-level4: var(--color-red);
   --color-level5: var(--color-purple);
+  --color-error: #ba1a1a;
   /* Colors */
   --color-lightgray: #f4f4f4;
   --color-darkgray: #403e3f;
