@@ -168,7 +168,7 @@ export default function IdePage() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <header className={styles.header}>
         {isMyListVisible && (
           <div
@@ -197,7 +197,7 @@ export default function IdePage() {
           </NavLink>
         </div>
       </header>
-      <div className={styles.container}>
+      <div className={styles.body_container}>
         <section className={styles.problemInfoContainer}>
           {problems && (
             <ProblemContent type="문제 설명" content={problems.content} />
