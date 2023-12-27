@@ -202,14 +202,17 @@ export default function IdePage() {
           {problems && (
             <ProblemContent type="문제 설명" content={problems.content} />
           )}
-          {problems?.testCases?.map((testCase, index) => (
-            <InputOutput
-              key={testCase.testCaseId}
-              num={index}
-              input={testCase.input}
-              output={testCase.output}
-            />
-          ))}
+          <div className={styles.testcase_container}>
+            <h4 className={styles.testcase_label}>예제 설명</h4>
+            {problems?.testCases?.map((testCase, index) => (
+              <InputOutput
+                key={testCase.testCaseId}
+                num={index}
+                input={testCase.input}
+                output={testCase.output}
+              />
+            ))}
+          </div>
         </section>
         <section className={styles.solveContainer}>
           <div className={styles.editorContainer}>
