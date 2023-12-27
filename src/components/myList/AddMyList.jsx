@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
+import { IoMdClose } from "react-icons/io";
 import styles from "./AddMyList.module.css";
 import { fetchAddMyList } from "../../api/MyListService";
 
@@ -33,7 +33,17 @@ export default function AddMyList({ onToggleEdit }) {
 
   return (
     <div className={styles.container}>
-      <h5 className={styles.label}>리스트 추가하기</h5>
+      <header className={styles.header}>
+        <h5 className={styles.label}>마이리스트 추가하기</h5>
+        <button
+          className={styles.closeButton}
+          type="button"
+          aria-label="close button"
+          onClick={() => onToggleEdit(false)}
+        >
+          <IoMdClose />
+        </button>
+      </header>
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           className={styles.input}
@@ -41,13 +51,6 @@ export default function AddMyList({ onToggleEdit }) {
           placeholder="마이리스트 이름을 입력하세요"
           onChange={handleInput}
         />
-        <button
-          className={styles.submit}
-          type="submit"
-          aria-label="리스트 추가하기 버튼"
-        >
-          <IoIosAddCircle />
-        </button>
       </form>
     </div>
   );

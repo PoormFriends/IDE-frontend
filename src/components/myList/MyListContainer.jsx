@@ -70,7 +70,7 @@ export default function MyListContainer({ onClose }) {
             type="button"
             onClick={handleClick}
           >
-            리스트 추가하기
+            마이리스트 추가하기
           </button>
         )}
       </div>

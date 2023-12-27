@@ -2,14 +2,24 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 0.5rem;
+  gap: 0.7rem;
   padding: 0.8rem;
   border-radius: 0.6rem;
-  background-color: var(--color-lightblue);
+  background-color: var(--color-accent);
+}
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 .label {
-  font-size: 0.7rem;
-  color: var(--color-darkgray);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+.closeButton {
+  background-color: transparent;
+  font-size: 0.9rem;
+  color: var(--color-white);
 }
 .form {
   display: flex;
@@ -22,7 +32,7 @@
   border: none;
   outline: none;
   border-radius: 0.3rem;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 .submit {
   background-color: transparent;
