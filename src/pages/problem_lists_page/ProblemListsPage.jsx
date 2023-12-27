@@ -72,7 +72,8 @@ const problemListsPage = () => {
     return (problems || []).filter(item => {
       const matchesSearchTerm =
         searchTerm === "" ||
-        item.title.toLowerCase().includes(searchTerm.toLowerCase());
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(item.problemId).includes(searchTerm);
 
       const matchesStateFilter =
         stateFilter === "DEFAULT" || item.ideState === stateFilter;
