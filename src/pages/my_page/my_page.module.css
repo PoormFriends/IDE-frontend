@@ -20,6 +20,14 @@
   padding: 1rem 3rem;
   overflow-y: auto;
 }
+.link {
+  color: #6a6a6a;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+.link:hover {
+  text-decoration: underline;
+}
 .user_info {
   display: flex;
   gap: 1rem;
@@ -39,8 +47,14 @@
   font-size: 1.25rem;
 }
 .mylists_label {
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
   color: #6a6a6a;
+}
+.mylists_description {
+  font-size: 0.9rem;
+  color: #6a6a6a;
+  margin-bottom: 1.2rem;
 }
 .mylists {
   display: grid;

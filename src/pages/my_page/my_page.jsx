@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import Header from "../../components/header/Header";
 import styles from "./my_page.module.css";
 import MyListBox from "../../components/myPageListBox/myPageListBox";
@@ -37,6 +38,9 @@ function MyPage() {
       <Header />
       <div className={styles.body}>
         <div className={styles.user_container}>
+          <NavLink to="/" className={styles.link}>
+            &lt; 문제 목록으로 가기
+          </NavLink>
           <div className={styles.user_info}>
             {user?.profileImage ? (
               <img
@@ -57,6 +61,10 @@ function MyPage() {
             </div>
           </div>
           <h4 className={styles.mylists_label}>마이리스트</h4>
+          <p className={styles.mylists_description}>
+            마이리스트는 최대 3개까지 보입니다. 자세히 보시려면 마이리스트를
+            클릭하세요
+          </p>
           <div className={styles.mylists}>
             {myList.map(item => (
               <MyListBox
