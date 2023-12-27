@@ -53,6 +53,7 @@
 }
 /* Problem Information */
 .problemInfoContainer {
+  position: relative;
   padding: 1rem 1rem 1rem 2rem;
   display: flex;
   flex-direction: column;
@@ -61,6 +62,16 @@
   gap: 1rem;
   /* border-right: 1px solid var(--color-darkgray); */
   overflow-y: auto;
+}
+.problemInfoContainer::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-darkgray);
+  opacity: 0.2;
 }
 .testcase_container {
   display: flex;
@@ -75,8 +86,21 @@
   display: flex;
   flex-direction: column;
   width: 65%;
+  height: 100%;
   gap: 1rem;
   padding: 1rem 0 1rem 1rem;
+}
+.editorContainer {
+  width: 100%;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.executeResult {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 35%;
 }
 .executeResult::before {
   content: "";
@@ -84,21 +108,13 @@
   border-bottom: 1px solid var(--color-darkgray);
   opacity: 0.2;
 }
-.editorContainer {
-  width: 100%;
-  height: 60%;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.executeResult {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 .executeResultLabel {
-  font-size: 0.85rem;
-  color: var(--color-darkgray);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  padding: 1rem 0;
+}
+.executeResultContent {
+  flex: 1;
 }
 /* Footer */
 .footer {
