@@ -14,6 +14,8 @@ import InputOutput from "../../components/Ide/InputOutput";
 import { EditorContext } from "../../contexts/EditorContext";
 import MyListContainer from "../../components/myList/MyListContainer";
 import ChatModal from "../../components/chatModal/ChatModal";
+import { Tooltip } from "@mui/material";
+import Confetti from "../../components/Ide/Confetti";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
@@ -21,9 +23,9 @@ export default function IdePage() {
   const [problems, setProblems] = useState(null);
   const [isMyListVisible, setIsMyListVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
+  const [isConfetti, setIsConfetti] = useState(false);
   const location = useLocation();
   const { userId, problemId } = useParams();
-  // const containerRef = useRef(null); // 외부 클릭 감지
   const [messageLists, setMessageLists] = useState([]);
   const [message, setMessage] = useState("");
   const guestDataString = localStorage.getItem("user");
@@ -146,12 +148,20 @@ export default function IdePage() {
       let executeResultPhase = "";
       if (state === "COMPILE_ERROR") {
         executeResultPhase = "컴파일 에러입니다.";
+        setIsConfetti(false);
       } else if (state === "WRONG_ANSWER") {
         executeResultPhase = "오답입니다.";
+        setIsConfetti(false);
       } else if (state === "SUCCESS") {
         executeResultPhase = "정답입니다!";
+        setIsConfetti(true);
+
+        setTimeout(() => {
+          setIsConfetti(false);
+        }, 500); // 5000ms = 5초
       } else {
         executeResultPhase = "ERROR! 다시 시도해주세요.";
+        setIsConfetti(false);
       }
       setExecutionResult(executeResultPhase);
     } catch (error) {
@@ -169,95 +179,108 @@ export default function IdePage() {
 
   return (
     <div>
-      <header className={styles.header}>
-        <button
-          type="button"
-          aria-label="마이리스트 메뉴 열기 버튼"
-          className={styles.myListMenuButton}
-          onClick={toggleMyListVisible}
-        >
-          <IoBookmarks />
-        </button>
-        {isMyListVisible && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.2)",
-              zIndex: 999,
-            }}
-          >
-            <MyListContainer onClose={() => setIsMyListVisible(false)} />
-          </div>
-        )}
-        {problems && (
-          <>
-            <h2 className={styles.problemTitle}>{problems.title}</h2>
-            <span className={styles.problemLevel}>Lv. {problems.level}</span>
-          </>
-        )}
-        <div className={styles.linkContainer}>
-          <NavLink to="/" className={styles.link}>
-            <IoExitOutline className={styles.linkIcon} />
-            나가기
-          </NavLink>
-        </div>
-      </header>
+      <Confetti isConfetti={isConfetti} className={styles.confetti} />
       <div className={styles.container}>
-        <section className={styles.problemInfoContainer}>
-          {problems && (
-            <ProblemContent type="문제 설명" content={problems.content} />
+        <header className={styles.header}>
+          {isMyListVisible && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                zIndex: 999,
+              }}
+            >
+              <MyListContainer onClose={() => setIsMyListVisible(false)} />
+            </div>
           )}
-          {problems?.testCases?.map((testCase, index) => (
-            <InputOutput
-              key={testCase.testCaseId}
-              num={index}
-              input={testCase.input}
-              output={testCase.output}
-            />
-          ))}
-        </section>
-        <section className={styles.solveContainer}>
-          <div className={styles.editorContainer}>
-            <MonacoEditor userCode={problems?.usercode || ""} />
+          {problems && (
+            <>
+              <p className={styles.problemTitle}>{problems.title}</p>
+              <span className={styles.problemLevel}>Lv. {problems.level}</span>
+            </>
+          )}
+          <div className={styles.linkContainer}>
+            <NavLink to="/" className={styles.link}>
+              문제 목록으로 나가기
+            </NavLink>
           </div>
-          <div className={styles.executeResult}>
-            <h4 className={styles.executeResultLabel}>실행 결과</h4>
-            <div className={styles.executeResultContent}>{executionResult}</div>
+        </header>
+        <div className={styles.body_container}>
+          <section className={styles.problemInfoContainer}>
+            {problems && (
+              <ProblemContent type="문제 설명" content={problems.content} />
+            )}
+            <div className={styles.testcase_container}>
+              <h4 className={styles.testcase_label}>예제 설명</h4>
+              {problems?.testCases?.map((testCase, index) => (
+                <InputOutput
+                  key={testCase.testCaseId}
+                  num={index}
+                  input={testCase.input}
+                  output={testCase.output}
+                />
+              ))}
+            </div>
+          </section>
+          <section className={styles.solveContainer}>
+            <div className={styles.editorContainer}>
+              <MonacoEditor userCode={problems?.usercode || ""} />
+            </div>
+            <div className={styles.executeResult}>
+              <h4 className={styles.executeResultLabel}>실행 결과</h4>
+              <div className={styles.executeResultContent}>
+                {executionResult}
+              </div>
+            </div>
+          </section>
+        </div>
+        <footer className={styles.footer}>
+          <div className={styles.button_container}>
+            <Tooltip title="채팅">
+              <button
+                type="button"
+                aria-label="chattingButton"
+                className={styles.chattingButton}
+                onClick={() => toggleChatVisible()}
+              >
+                <IoChatboxEllipsesOutline className={styles.chattingIcon} />
+              </button>
+            </Tooltip>
+            <Tooltip title="마이리스트 메뉴">
+              <button
+                type="button"
+                aria-label="마이리스트 메뉴 열기 버튼"
+                className={styles.myListMenuButton}
+                onClick={toggleMyListVisible}
+              >
+                <IoBookmarks />
+              </button>
+            </Tooltip>
           </div>
-        </section>
+          {isChatVisible && (
+            <div className={styles.chat_modal}>
+              <ChatModal
+                message={message}
+                setMessage={setMessage}
+                messageLists={messageLists}
+                userId={guestId}
+                publish={publish}
+              />
+            </div>
+          )}
+          <button
+            type="button"
+            className={styles.executeButton}
+            onClick={handleSubmit}
+          >
+            제출 후 채점하기
+          </button>
+        </footer>
       </div>
-      <footer className={styles.footer}>
-        <button
-          type="button"
-          aria-label="chattingButton"
-          className={styles.chattingButton}
-          onClick={() => toggleChatVisible()}
-        >
-          <IoChatboxEllipsesOutline className={styles.chattingIcon} />
-        </button>
-        {isChatVisible && (
-          <div className={styles.chat_modal}>
-            <ChatModal
-              message={message}
-              setMessage={setMessage}
-              messageLists={messageLists}
-              userId={guestId}
-              publish={publish}
-            />
-          </div>
-        )}
-        <button
-          type="button"
-          className={styles.executeButton}
-          onClick={handleSubmit}
-        >
-          제출 후 채점하기
-        </button>
-      </footer>
     </div>
   );
 }

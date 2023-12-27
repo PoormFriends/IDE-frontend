@@ -1,37 +1,31 @@
-/* * 부분은 index.css에 넣어야함 */
 * {
   box-sizing: border-box;
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
 /* Header */
 .header {
-  position: fixed;
-  top: 0;
   display: flex;
   align-items: center;
   padding: 1rem 2rem;
   width: 100%;
   height: 45px;
+  line-height: 100%;
   z-index: 1000;
   background-color: var(--color-primary-variant);
 }
-.myListMenuButton {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  font-size: 1.1rem;
-  color: var(--color-accent);
-  margin-right: 0.4rem;
-}
 .problemTitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
   line-height: 100%;
   margin-right: 0.5rem;
 }
 .problemLevel {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: var(--color-accent);
 }
@@ -44,77 +38,98 @@
   display: flex;
   align-items: center;
   width: fit-content;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 400;
   color: var(--color-darkgray);
   text-decoration: none;
-}
-.link:hover {
-  text-decoration: underline;
 }
 .linkIcon {
   margin-right: 0.2rem;
 }
 /* Body */
-.container {
-  height: 100vh;
+.body_container {
   display: flex;
-  padding-top: 45px;
-  padding-bottom: 60px;
+  flex: 1;
 }
 /* Problem Information */
 .problemInfoContainer {
+  position: relative;
   padding: 1rem 1rem 1rem 2rem;
   display: flex;
   flex-direction: column;
   width: 35%;
   height: 100%;
   gap: 1rem;
-  border-right: 1px solid var(--color-darkgray);
-  overflow-y: scroll;
+  /* border-right: 1px solid var(--color-darkgray); */
+  overflow-y: auto;
+}
+.problemInfoContainer::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-darkgray);
+  opacity: 0.2;
+}
+.testcase_container {
+  display: flex;
+  flex-direction: column;
+}
+.testcase_label {
+  font-size: 0.9rem;
+  color: #6a6a6a;
 }
 /* Editor, Execute Result */
 .solveContainer {
   display: flex;
   flex-direction: column;
   width: 65%;
+  height: 100%;
   gap: 1rem;
   padding: 1rem 0 1rem 1rem;
 }
-.problemInfo::after,
-.editorContainer::after {
+.editorContainer {
+  width: 100%;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.executeResult {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 35%;
+}
+.executeResult::before {
   content: "";
   display: block;
-  margin-top: 0.8rem;
   border-bottom: 1px solid var(--color-darkgray);
   opacity: 0.2;
 }
-.editorContainer {
-  width: 100%;
-  height: 60%;
-  overflow-x: scroll;
-}
-.executeResult {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 .executeResultLabel {
-  font-size: 0.85rem;
-  color: var(--color-darkgray);
+  font-size: 0.9rem;
+  color: #6a6a6a;
+  padding: 1rem 0;
 }
 .executeResultContent {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 /* Footer */
 .footer {
-  position: fixed;
-  bottom: 0;
   width: 100%;
   height: 45px;
   display: flex;
   justify-content: space-between;
   padding: 0.6rem 2rem;
   background-color: var(--color-primary-variant);
+}
+.button_container {
+  display: flex;
+  gap: 1.5rem;
 }
 .chattingButton {
   cursor: pointer;
@@ -124,9 +139,18 @@
   border: none;
   outline: none;
   font-size: 1.8rem;
-  margin-right: 1rem;
 }
 .chattingIcon {
+  color: var(--color-accent);
+}
+.myListMenuButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
   color: var(--color-accent);
 }
 .executeButton {

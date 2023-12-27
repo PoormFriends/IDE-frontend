@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+canvas {
+  z-index: 10000000;
+}
+
 :root {
   /* App Colors */
   --color-primary: #ffffff;
