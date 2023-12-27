@@ -6,6 +6,7 @@
   padding: 1rem 0;
   width: 100vw;
   border-top: solid 1px var(--color-lightgray);
+  background-color: var(--color-primary);
 }
 .contents {
   color: #5d5a88;
