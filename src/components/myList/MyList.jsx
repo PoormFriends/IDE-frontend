@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { FaCircleMinus } from "react-icons/fa6";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { Tooltip } from "@mui/material";
 import { useMutation, useQueryClient } from "react-query";
 import MyListProblem from "./MyListProblem";
@@ -67,7 +67,7 @@ export default function MyList({ directoryId, directoryName, problemList }) {
             aria-label="리스트 삭제하기 버튼"
             onClick={handleDeleteList}
           >
-            <FaCircleMinus className={styles.deleteIcon} />
+            <FaRegTrashAlt className={styles.deleteIcon} />
           </button>
         </Tooltip>
       </div>

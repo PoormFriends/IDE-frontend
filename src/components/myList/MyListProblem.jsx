@@ -1,5 +1,5 @@
 import React from "react";
-import { FaTrashAlt } from "react-icons/fa";
+import { FiMinus } from "react-icons/fi";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import styles from "./MyListProblem.module.css";
@@ -56,10 +56,10 @@ export default function MyListProblem({
       <button
         className={styles.deleteButton}
         type="button"
-        aria-label="trash button"
+        aria-label="delete problem my list button"
         onClick={handleDeleteMyListProblem}
       >
-        <FaTrashAlt />
+        <FiMinus />
       </button>
     </div>
   );

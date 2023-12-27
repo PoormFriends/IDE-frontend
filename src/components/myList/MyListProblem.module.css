@@ -32,9 +32,6 @@
   border: none;
   background-color: transparent;
   margin-left: 0.5rem;
-  transition: all 150ms ease-in-out;
-}
-.deleteButton:hover {
-  color: var(--color-accent);
-  transform: scale(1.2) rotate(20deg);
+  font-size: 1.3rem;
+  color: #959595;
 }
