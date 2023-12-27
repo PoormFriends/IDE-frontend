@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,10 +21,8 @@ import ProblemRow from "../../components/problemList/ProblemRow";
 const problemListsPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [rows, setRows] = useState([]);
-  const [problemLists, setProblemLists] = useState([]);
-  const [searchFilter, setSearchFilter] = useState("");
-  const [stateFilter, setstateFilter] = useState("DEFAULT");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [stateFilter, setStateFilter] = useState("DEFAULT");
   const [levelFilter, setLevelFilter] = useState("DEFAULT");
 
   const isLogin = localStorage.getItem("accessToken");
@@ -62,59 +60,29 @@ const problemListsPage = () => {
     setPage(0);
   };
 
-  const filterProblems = (searchTerm, corFilter, levFilter) => {
-    const filteredRows = rows.filter(item => {
-      const itemText = item.title ? item.title : "";
-      const itemNum = item.problemId ? item.problemId.toString() : "";
-
-      if (
-        !searchTerm.trim() &&
-        corFilter === "DEFAULT" &&
-        levFilter === "DEFAULT"
-      ) {
-        return true;
-      }
-
-      const searchTermRegex = new RegExp([...searchTerm].join(".*"), "i");
-      const corFilterMatch =
-        corFilter === "DEFAULT" || item.ideState === corFilter;
-      const levFilterMatch =
-        levFilter === "DEFAULT" || String(item.level) === levFilter;
-      const numMatch = String(itemNum).includes(searchTerm);
-
-      return (
-        (searchTermRegex.test(itemText.toLowerCase()) || numMatch) &&
-        corFilterMatch &&
-        levFilterMatch
-      );
-    });
-
-    setRows();
-    setProblemLists(
-      !searchTerm.trim() && corFilter === "DEFAULT" && levFilter === "DEFAULT"
-        ? rows
-        : filteredRows,
-    );
-  };
-
-  const handleFilterInput = e => {
-    setSearchFilter(e.target.value);
-    filterProblems(e.target.value, stateFilter, levelFilter);
-  };
-
-  const handlestateFilterChange = event => {
-    const newstate = event.target.value;
-
-    setstateFilter(newstate);
-    filterProblems(searchFilter, newstate, levelFilter);
+  const handleStateFilterChange = event => {
+    setStateFilter(event.target.value);
   };
 
   const handleLevelFilterChange = event => {
-    const newLevel = event.target.value;
-
-    setLevelFilter(newLevel);
-    filterProblems(searchFilter, stateFilter, newLevel);
+    setLevelFilter(event.target.value);
   };
+
+  const filteredData = useMemo(() => {
+    return (problems || []).filter(item => {
+      const matchesSearchTerm =
+        searchTerm === "" ||
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(item.problemId).includes(searchTerm);
+
+      const matchesStateFilter =
+        stateFilter === "DEFAULT" || item.ideState === stateFilter;
+      const matchesLevelFilter =
+        levelFilter === "DEFAULT" || String(item.level) === levelFilter;
+
+      return matchesSearchTerm && matchesStateFilter && matchesLevelFilter;
+    });
+  }, [problems, searchTerm, stateFilter, levelFilter]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isFetching) console.log({ isFetching });
@@ -135,8 +103,8 @@ const problemListsPage = () => {
               type="search"
               id="search"
               label="🔍  풀고 싶은 문제 번호, 제목을 검색하세요"
-              value={searchFilter}
-              onChange={e => handleFilterInput(e)}
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
           <div className={styles.filter_container}>
@@ -148,7 +116,7 @@ const problemListsPage = () => {
                   id="state-select"
                   label="state"
                   value={stateFilter}
-                  onChange={handlestateFilterChange}
+                  onChange={handleStateFilterChange}
                 >
                   <MenuItem value="DEFAULT">전체</MenuItem>
                   <MenuItem value="SUCCESS">O</MenuItem>
@@ -187,8 +155,8 @@ const problemListsPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {problems &&
-                problems
+              {filteredData &&
+                filteredData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(problem => (
                     <ProblemRow
@@ -206,7 +174,7 @@ const problemListsPage = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={problemLists ? problemLists.length : 10}
+            count={filteredData ? filteredData.length : 10}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
