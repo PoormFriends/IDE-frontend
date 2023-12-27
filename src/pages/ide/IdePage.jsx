@@ -220,7 +220,9 @@ export default function IdePage() {
           </div>
           <div className={styles.executeResult}>
             <h4 className={styles.executeResultLabel}>실행 결과</h4>
-            <div className={styles.executeResultContent}>{executionResult}</div>
+            <div className={styles.executeResultContent}>
+              정답입니다!{executionResult}
+            </div>
           </div>
         </section>
       </div>

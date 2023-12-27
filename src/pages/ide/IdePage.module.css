@@ -110,11 +110,13 @@
 }
 .executeResultLabel {
   font-size: 0.9rem;
-  color: var(--color-text);
+  color: #6a6a6a;
   padding: 1rem 0;
 }
 .executeResultContent {
   flex: 1;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 /* Footer */
 .footer {
