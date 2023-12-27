@@ -14,7 +14,7 @@ function MyListBox({ listName, listInfo }) {
           <div className={styles.list_item} key={item.directoryProblemId}>
             <Link
               className={styles.link}
-              to={`/solve/${userId}/${item.problemId}`}
+              to={`/solve/${userId}/${item.problemNum}`}
             >
               <h4 key={item.problemNum} className={styles.problemName}>
                 {item.problemTitle}
