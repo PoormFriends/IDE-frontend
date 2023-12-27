@@ -13,7 +13,7 @@ function MyListBox({ listName, listInfo }) {
           <p className={styles.problemTitle}>
             <Link
               className={styles.link}
-              to={`/solve/${userId}/${item.problemId}`}
+              to={`/solve/${userId}/${item.problemNum}`}
             >
               {item.problemTitle}
             </Link>

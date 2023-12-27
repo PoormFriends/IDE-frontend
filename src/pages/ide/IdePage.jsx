@@ -16,6 +16,7 @@ import MyListContainer from "../../components/myList/MyListContainer";
 import ChatModal from "../../components/chatModal/ChatModal";
 import { Tooltip } from "@mui/material";
 import Confetti from "../../components/Ide/Confetti";
+import instance from "../login-page/api";
 
 export default function IdePage() {
   const [executionResult, setExecutionResult] = useState("");
@@ -61,9 +62,24 @@ export default function IdePage() {
         message: chat,
       }),
     });
-
     setMessage("");
   };
+
+  // 채팅 가져오기
+  const chatList = async () => {
+    try {
+      const response = await instance.get(`/chat/${userId}/${problemId}`);
+      setMessageLists(prevMessagList => [...response.data, ...prevMessagList]);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    setMessageLists([]);
+    chatList();
+  }, [location.pathname]);
 
   // 웹소켓 연결
   const connect = () => {
@@ -71,6 +87,22 @@ export default function IdePage() {
       brokerURL: "ws://localhost:8081/ws",
       onConnect: () => {
         subscribe(); // 연결 성공 시 구독하는 로직 실행
+        //시스템 메시지 보내기
+
+        // const time = new Date().getTime();
+        // const systemMessage = {
+        //   ownerId: userId,
+        //   problemId,
+        //   userId: "-1",
+        //   userNickname: "system",
+        //   userProfile: null,
+        //   time,
+        //   message: "채팅에 연결되었습니다.",
+        // };
+        // client.current.publish({
+        //   destination: `/pub/chat`,
+        //   body: JSON.stringify(systemMessage),
+        // });
       },
     });
     client.current.activate(); // 클라이언트 활성화
