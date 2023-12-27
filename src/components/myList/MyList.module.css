@@ -4,7 +4,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 300px;
   padding: 0.8rem;
   background-color: var(--color-primary-variant);
   border-radius: 0.6rem;

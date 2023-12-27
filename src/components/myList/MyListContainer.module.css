@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: fit-content;
+  min-width: 25vw;
   height: 100vh;
   background-color: var(--color-primary);
   padding: 1rem;
