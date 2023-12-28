@@ -69,7 +69,7 @@ export default function IdePage() {
   const chatList = async () => {
     try {
       const response = await instance.get(`/chat/${userId}/${problemId}`);
-      setMessageLists(prevMessagList => [...response.data, ...prevMessagList]);
+      setMessageLists(response.data);
     } catch (error) {
       console.error(error);
       throw error;
