@@ -69,3 +69,47 @@
   max-width: 35vw;
   border-left: 1px solid rgba(64, 62, 63, 0.2);
 }
+/* 회색 컨테이너 */
+.modal {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.8rem;
+  margin: 2rem;
+  background-color: var(--color-primary-variant);
+  border-radius: 0.6rem;
+}
+/* 리스트 제목 */
+.title {
+  font-size: 1.05rem;
+  color: var(--color-darkgray);
+  margin-bottom: 0.9rem;
+}
+.list_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.5rem;
+}
+.itemContainer {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+}
+.problemTitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+.problem_link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.problem_link:hover {
+  text-decoration: underline;
+}
