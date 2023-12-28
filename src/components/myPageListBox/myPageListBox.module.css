@@ -1,8 +1,8 @@
 .container {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  min-width: 300px;
-  width: 300px;
+  flex: 1;
   padding: 0.8rem;
   background-color: var(--color-primary-variant);
   border-radius: 0.6rem;
@@ -12,10 +12,18 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .title {
-  flex: 1;
   font-size: 1.05rem;
   color: var(--color-darkgray);
   margin-bottom: 0.9rem;
+}
+.list_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.5rem;
+}
+.list_container > .itemContainer:nth-child(n + 4) {
+  display: none;
 }
 .itemContainer {
   display: flex;
@@ -24,7 +32,7 @@
   border-radius: 0.5rem;
   padding: 0.6rem 1rem;
 }
-.title {
+.problemTitle {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -32,6 +40,7 @@
   color: var(--color-text);
   font-size: 0.9rem;
 }
+
 .link {
   color: var(--color-text);
   text-decoration: none;

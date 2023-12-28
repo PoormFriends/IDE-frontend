@@ -8,18 +8,20 @@ function MyListBox({ listName, listInfo }) {
   return (
     <div className={styles.container}>
       <h4 className={styles.title}>{listName}</h4>
-      {listInfo.map(item => (
-        <div className={styles.itemContainer} key={item.directoryProblemId}>
-          <p className={styles.problemTitle}>
-            <Link
-              className={styles.link}
-              to={`/solve/${userId}/${item.problemNum}`}
-            >
-              {item.problemTitle}
-            </Link>
-          </p>
-        </div>
-      ))}
+      <div className={styles.list_container}>
+        {listInfo.map(item => (
+          <div className={styles.itemContainer} key={item.directoryProblemId}>
+            <p className={styles.problemTitle}>
+              <Link
+                className={styles.link}
+                to={`/solve/${userId}/${item.problemNum}`}
+              >
+                {item.problemTitle}
+              </Link>
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
