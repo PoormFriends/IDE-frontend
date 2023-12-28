@@ -93,9 +93,9 @@ const problemListsPage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <Header />
-      <div className={styles.container}>
+      <div className={styles.body_container}>
         <div className={styles.searchFilter_container}>
           <div className={styles.searchbar}>
             <TextField
