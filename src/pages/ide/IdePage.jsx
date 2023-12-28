@@ -76,16 +76,13 @@ export default function IdePage() {
     }
   };
 
-  useEffect(() => {
-    setMessageLists([]);
-    chatList();
-  }, [location.pathname]);
-
   // 웹소켓 연결
   const connect = () => {
     client.current = new StompJs.Client({
       brokerURL: "ws://localhost:8081/ws",
       onConnect: () => {
+        setMessageLists([]);
+        chatList();
         subscribe(); // 연결 성공 시 구독하는 로직 실행
         //시스템 메시지 보내기
 
@@ -301,6 +298,7 @@ export default function IdePage() {
                 messageLists={messageLists}
                 userId={guestId}
                 publish={publish}
+                chatList={chatList}
               />
             </div>
           )}
