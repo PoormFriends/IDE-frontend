@@ -2,11 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./myPageListBox.module.css";
 
-function MyListBox({ listName, listInfo }) {
+function MyListBox({ listName, listInfo, onOpenModal }) {
   const { userId } = JSON.parse(localStorage.getItem("user"));
 
   return (
-    <div className={styles.container}>
+    <button
+      type="button"
+      className={styles.container}
+      onClick={() => onOpenModal({ listName, listInfo })}
+    >
       <h4 className={styles.title}>{listName}</h4>
       <div className={styles.list_container}>
         {listInfo.map(item => (
@@ -22,7 +26,7 @@ function MyListBox({ listName, listInfo }) {
           </div>
         ))}
       </div>
-    </div>
+    </button>
   );
 }
 export default MyListBox;

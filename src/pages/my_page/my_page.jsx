@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Header from "../../components/header/Header";
 import styles from "./my_page.module.css";
 import MyListBox from "../../components/myPageListBox/myPageListBox";
@@ -9,6 +9,8 @@ import Footer from "../../components/footer/Footer";
 function MyPage() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [myList, setMyList] = useState([]);
+  const [modalContents, setModalContents] = useState();
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const requestMyList = async () => {
     try {
       const response = await instance.get(`/directory?userId=${user.userId}`);
@@ -33,6 +35,12 @@ function MyPage() {
     console.log("mylist: ", myList);
   }, []);
 
+  const handleClick = value => {
+    setModalContents(value);
+    setIsOpenModal(true);
+  };
+
+  const { userId } = JSON.parse(localStorage.getItem("user"));
   return (
     <div className={styles.container}>
       <Header />
@@ -71,12 +79,35 @@ function MyPage() {
                 key={item.directoryId}
                 listName={item.directoryName}
                 listInfo={item.problemList}
+                onOpenModal={handleClick}
               />
             ))}
           </div>
         </div>
         <div className={styles.detail_container}>
-          <p>자세히 보시려면 마이리스트를 클릭하세요</p>
+          {isOpenModal || <p>자세히 보시려면 마이리스트를 클릭하세요</p>}
+          {isOpenModal && (
+            <div className={styles.modal}>
+              <h4 className={styles.title}>{modalContents.listName}</h4>
+              <div className={styles.list_container}>
+                {modalContents.listInfo.map(item => (
+                  <div
+                    className={styles.itemContainer}
+                    key={item.directoryProblemId}
+                  >
+                    <p className={styles.problemTitle}>
+                      <Link
+                        className={styles.problem_link}
+                        to={`/solve/${userId}/${item.problemNum}`}
+                      >
+                        {item.problemTitle}
+                      </Link>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
